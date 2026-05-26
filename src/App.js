@@ -519,7 +519,7 @@ const INITIAL_ITINERARY_DATA = [
     ],
   },
 ];
-
+const USERS = ['佑任', '軒寶', '學弟', '腳慢'];
 // ============================================
 // 基礎工具資料配置 (2026 九州精準規格)
 // ============================================
@@ -1857,7 +1857,7 @@ export default function TravelApp() {
     const onTouchStart = (e) => handleStart(e.touches[0].clientX, e.touches[0].clientY);
     const onTouchEnd = (e) => handleEnd(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
     window.addEventListener('touchstart', onTouchStart); window.addEventListener('touchend', onTouchEnd);
-    return () => { window.removeObserver('touchstart', onTouchStart); window.removeEventListener('touchend', onTouchEnd); };
+    return () => { window.removeEventListener('touchstart', onTouchStart); window.removeEventListener('touchend', onTouchEnd); };
   }, []);
 
   useEffect(() => {
