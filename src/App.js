@@ -17,6 +17,14 @@ import {
   CloudRain,
   Sun,
   Cloud,
+  Thermometer,
+  Lock,
+  KeyRound,
+  Info,
+  Camera,
+  Shirt,
+  Mountain,
+  Sparkles,
   Signal,
   Droplets,
   Calendar,
@@ -43,19 +51,18 @@ import {
   IceCream,
   UtensilsCrossed,
   Compass,
-  Pin,      
-  Ban,       
+  Pin,      // 🔥 補上這個
+  Ban,       // 🔥 補上這個
   Languages,
-  Smartphone, 
+  Smartphone, // 🔥 補上這個
   X,
-  Sparkles,
-  Camera,
 } from 'lucide-react';
 
+// 🔥🔥🔥 Firebase RTDB 核心電路
 import { ref, onValue, set, goOffline, goOnline, get } from "firebase/database";
-import { db } from "./firebase"; 
+import { db } from "./firebase"; // ⚠️ 前提：你要先建立 firebase.js 檔案
 
-// 🪷 泰式蓮花 Icon (線條版)
+// 🪷 泰式/古典雙線條版 Icon 
 const LotusIcon = ({ className }) => (
   <svg
     viewBox="0 0 24 24"
@@ -66,14 +73,20 @@ const LotusIcon = ({ className }) => (
     strokeLinejoin="round"    
     className={className}
   >
+    {/* 中央花瓣 */}
     <path d="M12 3C12 3 14.5 7 14.5 10C14.5 12.5 12 14 12 14C12 14 9.5 12.5 9.5 10C9.5 7 12 3 12 3Z" />
+    {/* 左側花瓣 */}
     <path d="M9.5 10C9.5 10 7 9.5 5.5 11C4 12.5 5 15 8 15.5" />
+    {/* 右側花瓣 */}
     <path d="M14.5 10C14.5 10 17 9.5 18.5 11C20 12.5 19 15 16 15.5" />
+    {/* 底部左葉 */}
     <path d="M12 14C12 14 9 14.5 7 16.5C5 18.5 6 20.5 12 20.5" />
+    {/* 底部右葉 */}
     <path d="M12 14C12 14 15 14.5 17 16.5C19 18.5 18 20.5 12 20.5" />
   </svg>
 );
 
+// 圖片處理自動對應
 const getLocationImage = (imageId) => {
   if (!imageId) return 'https://images.unsplash.com/photo-1542640244-7e672d6cef21?w=800&q=80';
   if (imageId.startsWith('http') || imageId.startsWith('data:')) {
@@ -83,7 +96,7 @@ const getLocationImage = (imageId) => {
 };
 
 // ============================================
-// 初始行程資料 (2026 九州 V2 5 終極生存版對接)
+// 初始行程資料 (2026 九州 V25 終極生存版精準注入)
 // ============================================
 const INITIAL_ITINERARY_DATA = [
   {
@@ -118,8 +131,8 @@ const INITIAL_ITINERARY_DATA = [
         type: 'food',
         time: '12:00',
         name: '午餐: 三瀨雞便當 / 西西里飯',
-        note: '放生季樂！體貼疲憊腸胃，胃袋優化對策。',
-        desc: '改在佐賀站內享用清爽、快速但在地的「三瀨雞（みつせ鶏）便當/定食」或「西西里飯」。省下 1.5 小時排隊時間直奔園區。',
+        note: '放生季樂！體貼疲憊腸胃，儲備戰力。',
+        desc: '改在佐賀站內享用清爽、快速但在地的「三瀨雞便當/定食」或「西西里飯」。省下大排長龍時間。',
         nav: '佐賀駅',
         highlight: '在地三瀨雞',
         difficulty: '低',
@@ -150,7 +163,7 @@ const INITIAL_ITINERARY_DATA = [
         time: '18:30',
         name: '園區夜景 & 入住核心收費區',
         note: '入住豪斯登堡阿姆斯特丹酒店。',
-        desc: '欣賞歐洲風情運河燈光秀與 3D 投影。入住核心區內飯店，憑住客憑證可自由進出專屬通道。',
+        desc: '欣賞歐洲風情運河燈光秀與 3D 投影。入住核心區內飯店，自由進出專屬通道。',
         nav: 'Hotel Amsterdam Huis Ten Bosch',
         highlight: '歐風運河燈光秀',
         difficulty: '低',
@@ -161,7 +174,7 @@ const INITIAL_ITINERARY_DATA = [
         time: '22:00',
         name: '深夜硬核探險 / 超商補貨備案',
         note: '路線 A（Lawson 補貨）/ 路線 B（針尾電波塔遠眺）',
-        desc: '路線 A：散步 20 分鐘至車站前全區唯一的 Lawson 買炸雞清酒。路線 B：步行 40-50 分鐘隔海遠眺 1922 年建的「舊佐世保海軍航空隊 針尾送信所」三座巨塔黑影，體驗深夜魔幻感。',
+        desc: '路線 A：散步 20 分鐘至車站前唯一的 Lawson 買炸雞清酒。路線 B：步行 40-50 分鐘隔海遠眺 1922 年建的「舊佐世保海軍航空隊 針尾送信所」三座巨塔黑影，體驗深夜魔幻感。',
         nav: '針尾送信所',
         difficulty: '高 (需步行陡坡)',
       },
@@ -179,7 +192,7 @@ const INITIAL_ITINERARY_DATA = [
         type: 'sight',
         time: '09:30',
         name: '豪斯登堡續玩漫遊',
-        note: '享受午後花卉展與歐風大遊行。',
+        note: '享受初夏花卉展與歐風大遊行。',
         desc: '享用阿姆斯特丹酒店早餐，隨後利用飯店續玩票暢玩園區。',
         nav: 'ハウステンボス',
         difficulty: '中 (範圍大)',
@@ -229,8 +242,8 @@ const INITIAL_ITINERARY_DATA = [
         type: 'sight',
         time: '07:00',
         name: '全行程唯一早起衝刺',
-        note: '⚠️ 全團今天絕對不吃早餐，預防外海暈船。',
-        desc: '起床戰力調整，空腹前往常盤棧橋以防風浪過大導致嘔吐。',
+        note: '⚠️ 全團今天絕對不吃早餐，預防外海過大浪暈船。',
+        desc: '起床戰力調整，空腹前往常盤棧橋以防風浪過大導致不適。',
         nav: '長崎港',
         difficulty: '低',
       },
@@ -240,7 +253,7 @@ const INITIAL_ITINERARY_DATA = [
         time: '08:30',
         name: '長崎常盤棧橋報到',
         note: '準備軍艦島登島船票。',
-        desc: '抵達常盤棧橋完成報到手續。',
+        desc: '抵達常盤棧橋完成報到與切結手續。',
         nav: '長崎常盤ターミナル',
         difficulty: '低',
       },
@@ -248,7 +261,7 @@ const INITIAL_ITINERARY_DATA = [
         imageId: 'day3_3',
         type: 'sight',
         time: '09:00',
-        name: '核心歷史: 軍艦島（端島）登島',
+        name: '核心歷史: 軍艦島（端島）登島作戰',
         note: '預約號碼：128734。',
         desc: '軍艦島登島與海上巡禮，見證極致的工業歷史現代廢墟。',
         nav: '軍艦島',
@@ -260,7 +273,7 @@ const INITIAL_ITINERARY_DATA = [
         type: 'food',
         time: '12:45',
         name: '海景午餐: 四海樓強棒麵',
-        note: '若排隊人潮過多，立刻放棄改吃外帶「角煮饅頭」。',
+        note: '若排隊人潮過多，立刻發動彈性對策放棄，改吃外帶「角煮饅頭」。',
         desc: '享用道地長崎強棒麵（Champon）並俯瞰長崎港。',
         nav: '四海樓',
         highlight: '長崎強棒麵始祖',
@@ -294,7 +307,7 @@ const INITIAL_ITINERARY_DATA = [
         note: '紅燈籠亮起的魔幻歷史感街景。',
         desc: '夜遊點燈模式下的江戶時代華人社區遺址。',
         nav: '唐人屋敷跡',
-        difficulty: '中',
+        difficulty: '暢行中',
       },
       {
         imageId: 'day3_8',
@@ -302,7 +315,7 @@ const INITIAL_ITINERARY_DATA = [
         time: '19:30',
         name: '長崎空中纜車 × 世界新三大夜景',
         note: '法拉利設計師操刀全景纜車！備案改搭斜面電車。',
-        desc: '搭計程車前往「淵神社站」搭乘空中纜車直達稻佐山山頂展望台。飽覽港口璀璨夜景！如天候不佳改往中腹轉搭斜面電車（Slope Car）。',
+        desc: '搭計程車前往「淵神社站」搭乘空中纜車直達稻佐山山頂展望台。飽覽港口夜景！如天候不佳改往中腹轉搭斜面電車（Slope Car）。',
         nav: '稻佐山山頂展望台',
         highlight: '新三大夜景',
         difficulty: '中',
@@ -312,8 +325,8 @@ const INITIAL_ITINERARY_DATA = [
         type: 'food',
         time: '21:00',
         name: '晚餐: 大阪屋濱町店（和牛大賞）',
-        note: '🔥 改版重點：移到今天！爽吃 A5 特選長崎和牛燒肉！',
-        desc: '預約 21:00 晚鳥時段，不僅留出看夜景的餘裕，更徹底解放了 Day 4 下午的逛街大戰！',
+        note: '🔥 V25改版核心：移到今天！爽吃 A5 特選長崎和牛燒肉！',
+        desc: '預約 21:00 晚鳥時段，不僅留出看夜景的餘裕，更徹底解放了 Day 4 下午不中斷的逛街血拼大戰！',
         nav: '大阪屋 浜町店',
         highlight: 'A5長崎和牛',
         difficulty: '低',
@@ -333,7 +346,7 @@ const INITIAL_ITINERARY_DATA = [
         time: '10:30',
         name: '傳奇早午餐: 珈琲冨士男',
         note: '品嚐 1946 年創業的老派傳奇雞蛋三明治。',
-        desc: '不可預約，建議提早 10 分鐘到場漫步品嚐。',
+        desc: '不可預約，建議提早 10 分鐘到場漫步品嚐老派氛圍。',
         nav: '珈琲冨士男',
         highlight: '老派雞蛋三明治',
         difficulty: '低',
@@ -354,7 +367,7 @@ const INITIAL_ITINERARY_DATA = [
         time: '15:30',
         name: '購物主戰場 (5.5小時絕不中斷！)',
         note: '🔥 觀光通 / 3COINS plus 火力全開大血拼。',
-        desc: '改版重點：因為今晚完全沒有卡死人的燒肉訂位壓力，全員可以火力全開進行免稅免狼狽打斷！',
+        desc: 'V25改版重點：因為今晚完全沒有卡死人的燒肉訂位壓力，全員可以自由控制時間，血拼免狼狽被打斷！',
         nav: '長崎 浜町空間通り',
         highlight: '5.5小時瘋狂購物',
         difficulty: '高 (範圍大)',
@@ -406,7 +419,7 @@ const INITIAL_ITINERARY_DATA = [
         time: '12:00',
         name: '靈魂老店: Café Sevilla 大正浪漫茶會',
         note: '預約號碼：A000913389。松翁軒二樓。',
-        desc: '準時至【Café Sevilla】4名席報到。在玻璃窗前享用頂級五五燒/五三燒長崎蛋糕配熱茶，悠閒看路面電車駛過。',
+        desc: '準時至【Café Sevilla】4名席報到。在玻璃窗前享用頂級五三燒長崎蛋糕配熱茶，悠閒看路面電車駛過。',
         nav: '松翁軒 本店',
         highlight: '金箔五三燒蛋糕',
         difficulty: '低',
@@ -557,6 +570,8 @@ const UTILS_DATA = {
       phone: '+81-95-820-5489',
       mapQuery: 'Dormy Inn PREMIUM Nagasaki Ekimae',
       note: '2間禁菸雙人房(官方預訂)・免費宵夜拉麵與傳奇早餐對策',
+      airbnbUrl: '', // 保持結構一致
+      guideUrl: '',
     },
     {
       name: 'Comfort Hotel 佐賀',
@@ -569,42 +584,21 @@ const UTILS_DATA = {
     },
   ],
   emergency: '日本警察通報: 110 \n火災/救護車: 119 \n台北駐日經濟文化代表處(福岡辦事處): +81-92-734-2810',
-  notes: '🔥 提醒：長崎市區全面操作路面電車一日券。Day 3 早起軍艦島行程禁吃早餐，防風浪過大嘔吐。',
+  notes: '🔥 2月是泰國燒山季，但我們六月在九州！注意防雨防海風。\n🚗 右駕左行，長崎山路多斜坡。',
   driveUrl: 'https://drive.google.com/open?id=1m7g3a4Ocau6h2zmlYNQgcClBC0lH9nhghg_yV-mhvVA',
 };
 
-const DEFAULT_ITEMS = [
-  '國際轉接插座(行前)',
-  '過濾蓮蓬頭(極推)',
-  'eSIM / 網卡(確認4人手機型號與流量)',
-  'Visit Japan Web 通關 QR Code 產出',
-  '護照正本 (效期需大於6個月)',
-  '外幣現金 (準備一些居酒屋、電車儲值備用)',
-  '信用卡 / 回饋神卡',
-  '海外旅遊平安險 ＋ 不便險憑證',
-  '防曬乳 & 墨鏡 & 帽子',
-  '相機 & 充電器 & 腳架',
-  '雙星4047與松翁軒預約憑證檔案',
-  '行動電源 (⚠️嚴禁託運！AirAsia/虎航鐵律：嚴禁放頭頂置物櫃，必須隨身放座位下！)',
-  '暈船藥 (Day 3 軍艦島專用)',
-  '衣物 & 襪子 & 睡衣',
-  '隨身雨傘 / 便利雨衣',
-  '個人私房藥品',
-];
-
-const USERS = ['佑任', '軒寶', '學弟', '腳慢'];
-
 // ============================================
-// UI 各分頁與基礎組件
+// UIUX part
 // ============================================
 
 const WeatherHero = ({ isAdmin, versionText, updateVersion, onLock, showSecret, onHardRefresh, itinerary, setItinerary }) => {
   const [data, setData] = useState(null);
-  const [aqi, setAqi] = useState(15); // 九州普遍空氣良好
+  const [aqi, setAqi] = useState(15);
   const [bannerText, setBannerText] = useState('');
   const [lastUpdate, setLastUpdate] = useState('');
   const [alerts, setAlerts] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); 
   const [secretLinks, setSecretLinks] = useState([]);
   const [newLinkName, setNewLinkName] = useState('');
   const [newLinkUrl, setNewLinkUrl] = useState('');
@@ -641,32 +635,34 @@ const WeatherHero = ({ isAdmin, versionText, updateVersion, onLock, showSecret, 
   };
 
   const fetchWeather = async () => {
-    setIsLoading(true);
+    setIsLoading(true); 
     try {
-      // 串接長崎市座標（Lat: 32.7503, Lon: 129.8777）
+      // 🎯 自動切換為日本長崎座標 (緯度 32.7503, 經度 129.8777, 日本東京時區)
       const res = await fetch(
         'https://api.open-meteo.com/v1/forecast?latitude=32.7503&longitude=129.8777&current=temperature_2m,weather_code,relative_humidity_2m&hourly=temperature_2m,weather_code,precipitation_probability&daily=temperature_2m_max,weather_code&forecast_days=16&timezone=Asia%2FTokyo'
       );
       const json = await res.json();
-      const currentHour = new Date().getHours();
-      
+
+      let currentAqi = 15;
+      let aqiSource = 'Open-Meteo';
+
       const cacheData = {
         weather: json,
-        aqi: 15,
-        source: 'Open-Meteo',
+        aqi: currentAqi,
+        source: aqiSource,
         time: new Date().toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit' })
       };
-      localStorage.setItem('kyushu_weather_cache', JSON.stringify(cacheData));
+      localStorage.setItem('cm_weather_cache', JSON.stringify(cacheData));
 
-      setAqi(15);
-      setLastUpdate(`${cacheData.time} (Japan Time)`);
+      setAqi(currentAqi);
+      setLastUpdate(`${cacheData.time} (${aqiSource})`);
 
       if (json && json.current) {
         setData(json);
         if (json.daily && json.daily.time) {
           const forecastDates = json.daily.time;
           const maxTemps = json.daily.temperature_2m_max;
-          const weatherCodes = json.daily.weather_code;
+          const weatherCodes = json.daily.weather_code; 
 
           const updatedItinerary = itinerary.map((day) => {
             const dateIndex = forecastDates.indexOf(day.date);
@@ -676,7 +672,7 @@ const WeatherHero = ({ isAdmin, versionText, updateVersion, onLock, showSecret, 
               if (code >= 51) {
                 iconStr = 'rainy';
               } else if ((code >= 1 && code <= 3) || code === 45 || code === 48) {
-                iconStr = 'cloudy';
+                iconStr = 'cloudy'; 
               }
 
               return {
@@ -684,7 +680,7 @@ const WeatherHero = ({ isAdmin, versionText, updateVersion, onLock, showSecret, 
                 weather: {
                   ...day.weather,
                   temp: `${Math.round(maxTemps[dateIndex])}°C`,
-                  icon: iconStr,
+                  icon: iconStr, 
                   realData: true,
                 }
               };
@@ -693,46 +689,60 @@ const WeatherHero = ({ isAdmin, versionText, updateVersion, onLock, showSecret, 
           });
           setItinerary(updatedItinerary);
         }
+
+        const nowInJp = new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Tokyo" }));
+        const currentHourInJp = nowInJp.getHours();
+        const next3HoursRain = json.hourly.precipitation_probability.slice(currentHourInJp, currentHourInJp + 3);
+        const maxRainProb = Math.max(...next3HoursRain);
+
+        let newAlerts = [];
+        if (maxRainProb > 40) {
+          newAlerts.push({ type: 'rain', msg: `🌧️ 局部降雨機率 ${maxRainProb}%，攜帶雨具較安全！` });
+        }
+        setAlerts(newAlerts);
       }
     } catch (e) {
-      const saved = localStorage.getItem('kyushu_weather_cache');
+      const saved = localStorage.getItem('cm_weather_cache');
       if (saved) {
         const cache = JSON.parse(saved);
         setData(cache.weather);
         setAqi(cache.aqi);
-        setLastUpdate(`${cache.time} (Offline)`);
+        setLastUpdate(`${cache.time} (Offline)`); 
       }
     } finally {
-      setIsLoading(false);
+      setIsLoading(false); 
     }
   };
 
   useEffect(() => {
     const calcTime = () => {
       const now = new Date();
-      // 日本時間計算
       const jpTimeStr = now.toLocaleString("en-US", { timeZone: "Asia/Tokyo" });
-      const nowInJp = new Date(jpTimeStr);
+      const nowInJp = new Date(jpTimeStr); 
 
-      const startDate = new Date('2026-06-16T00:00:00+09:00'); 
-      const endDate = new Date('2026-06-21T23:59:59+09:00');   
+      const startDate = new Date('2026-06-16T00:00:00'); // 改為 6/16 出發
+      const endDate = new Date('2026-06-21T23:59:59');   // 6/21 結束
 
       if (nowInJp < startDate) {
         const diff = startDate - nowInJp;
         const days = Math.ceil(diff / (1000 * 60 * 60 * 24));
         setBannerText(`✈️ 距離九州出發還有 ${days} 天！`);
       } else if (nowInJp > endDate) {
-        setBannerText('👋 深度九州之旅圓滿結束！');
+        setBannerText('👋 深度九州之旅結束了 QQ');
       } else {
         const diff = nowInJp - startDate;
         const dayNum = Math.floor(diff / (1000 * 60 * 60 * 24)) + 1;
-        setBannerText(`🇯🇵 旅程第 ${dayNum} 天 (${dayNum}/6)`);
+        if (dayNum >= 6) {
+          setBannerText('😭 旅程最後一天哭哭');
+        } else {
+          setBannerText(`🇯🇵 旅程第 ${dayNum} 天 (${dayNum}/6)`);
+        }
       }
     };
     calcTime();
     const timer = setInterval(calcTime, 60000);
     fetchWeather();
-    const weatherTimer = setInterval(fetchWeather, 20 * 60 * 1000);
+    const weatherTimer = setInterval(fetchWeather, 20 * 60 * 1000); 
 
     return () => {
       clearInterval(timer);
@@ -748,13 +758,18 @@ const WeatherHero = ({ isAdmin, versionText, updateVersion, onLock, showSecret, 
     return <CloudSun size={size} className="text-amber-400" strokeWidth={2.5} />;
   };
 
+  const getAqiColor = (val) => {
+    if (val <= 50) return 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900 dark:text-emerald-300';
+    return 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300';
+  };
+
   const getNext24Hours = () => {
     if (!data || !data.hourly || !data.hourly.time) return [];
-    const jpTimeStr = new Date().toLocaleString("en-US", { timeZone: "Asia/Tokyo" });
+    const now = new Date();
+    const jpTimeStr = now.toLocaleString("en-US", { timeZone: "Asia/Tokyo" });
     const currentHourIndex = new Date(jpTimeStr).getHours();
-
-    const startIndex = currentHourIndex + 1;
-    const endIndex = startIndex + 24;
+    const startIndex = currentHourIndex + 1; 
+    const endIndex = startIndex + 24;        
 
     return data.hourly.time.slice(startIndex, endIndex).map((t, i) => ({
       time: t.split('T')[1].slice(0, 5),
@@ -775,36 +790,48 @@ const WeatherHero = ({ isAdmin, versionText, updateVersion, onLock, showSecret, 
         </div>
       )}
 
-      <button onClick={onLock} className="absolute top-0 right-0 z-30 h-[28px] w-[30px] flex items-center justify-center text-amber-800/40 hover:text-amber-800 dark:text-amber-200/40 dark:hover:text-amber-200 transition-colors">
+      <button onClick={onLock} className="absolute top-0 right-0 z-30 h-[28px] w-[30px] flex items-center justify-center text-amber-800/40 hover:text-amber-800 dark:text-amber-200/40 dark:hover:text-amber-200 transition-colors" title="鎖定畫面">
         <Lock size={12} strokeWidth={2.5} />
       </button>
 
       <div className="absolute top-[-20px] right-[-20px] text-[8rem] font-serif text-amber-50 dark:text-stone-800 opacity-50 select-none leading-none pointer-events-none">
-        Jap
+        Japan
       </div>
 
       <div className="relative z-10 mt-10">
+        {alerts.length > 0 && (
+          <div className="mb-4 space-y-2">
+            {alerts.map((alert, idx) => (
+              <div key={idx} className="p-3 rounded-xl flex items-center gap-2 text-xs font-bold shadow-sm animate-pulse border bg-blue-50 text-blue-800 border-blue-100 dark:bg-blue-900/30 dark:text-blue-200 dark:border-blue-800">
+                <CloudRain size={16} /> {alert.msg}
+              </div>
+            ))}
+          </div>
+        )}
+
         <div className="flex justify-between items-start mb-6">
           <div className="flex-1 min-w-0 mr-4">
             <div className="flex items-center gap-2 mb-2">
               <span className="px-2.5 py-1 bg-amber-100 dark:bg-stone-800 text-amber-900 dark:text-amber-400 text-[10px] font-bold tracking-wider rounded-full whitespace-nowrap">
                 佑任・軒寶・學弟・腳慢
               </span>
+
               {isAdmin ? (
                 <input type="text" value={versionText || ''} onChange={(e) => updateVersion(e.target.value)} className="w-16 bg-transparent border-b border-amber-300 text-sm font-serif font-bold italic focus:outline-none text-center dark:text-stone-300" />
               ) : (
                 <div className="flex items-center gap-1 ml-1 relative group">
                   <LotusIcon className="w-5 h-5 text-amber-400 dark:text-amber-300 drop-shadow-[0_0_3px_rgba(251,191,36,0.5)]" />
                   <span className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-b from-[#F3E5AB] via-[#FDB931] to-[#996515] drop-shadow-sm tracking-wide ml-1.5 mt-0.5" style={{ fontFamily: '"Cinzel Decorative", serif' }}>
-                    {versionText || 'V25'}
+                    {versionText || '2026'}
                   </span>
                 </div>
               )}
             </div>
+
             <h1 className="text-4xl font-serif text-stone-800 dark:text-stone-100 tracking-tight leading-[0.9]">
               九州
               <br />
-              <span className="text-amber-600 dark:text-amber-500">深度</span>之旅
+              <span className="text-amber-600 dark:text-amber-500">生存戰</span>之旅
             </h1>
           </div>
 
@@ -812,6 +839,7 @@ const WeatherHero = ({ isAdmin, versionText, updateVersion, onLock, showSecret, 
             <div onClick={fetchWeather} className="text-[10px] font-bold text-stone-400 mb-1 uppercase tracking-widest cursor-pointer">
               Nagasaki Now
             </div>
+
             {data ? (
               <div className="flex flex-col items-end">
                 <div className="flex items-center gap-2">
@@ -820,21 +848,21 @@ const WeatherHero = ({ isAdmin, versionText, updateVersion, onLock, showSecret, 
                     {Math.round(data.current.temperature_2m)}°
                   </span>
                 </div>
+
                 <div className="flex items-center justify-end gap-2 mt-2">
-                  <div className="text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1 bg-emerald-100 text-emerald-700">
+                  <div className={`text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1 ${getAqiColor(aqi)}`}>
                     <Wind size={10} /> AQI {aqi}
                   </div>
                   <div className="text-xs text-stone-500 dark:text-stone-400 font-medium bg-white/50 dark:bg-stone-800/50 px-2 py-0.5 rounded-full flex items-center gap-1">
                     <Droplets size={10} /> {data.current.relative_humidity_2m}%
                   </div>
                 </div>
-                <div className="flex flex-col items-end gap-1 mt-2">
-                  <div className="group flex items-center justify-end gap-1.5 cursor-pointer" onClick={fetchWeather}>
-                    {lastUpdate && <span className="text-[10px] text-stone-300 dark:text-stone-600 font-mono tracking-tighter">{lastUpdate}</span>}
-                    <button disabled={isLoading} className="text-stone-300 dark:text-stone-700 transition-all duration-300 hover:text-blue-500">
-                      <RefreshCw size={10} className={isLoading ? 'animate-spin text-blue-500' : ''} />
-                    </button>
-                  </div>
+
+                <div className="flex items-center justify-end gap-1.5 cursor-pointer mt-2" onClick={fetchWeather}>
+                  {lastUpdate && <span className="text-[10px] text-stone-300 dark:text-stone-600 font-mono tracking-tighter">{lastUpdate}</span>}
+                  <button disabled={isLoading} className="text-stone-300 dark:text-stone-700 transition-all duration-300">
+                    <RefreshCw size={10} className={isLoading ? 'animate-spin text-blue-500' : ''} />
+                  </button>
                 </div>
               </div>
             ) : (
@@ -849,9 +877,7 @@ const WeatherHero = ({ isAdmin, versionText, updateVersion, onLock, showSecret, 
         {data && nextHours.length > 0 && (
           <div className="bg-white/80 dark:bg-stone-800/80 backdrop-blur-sm rounded-2xl p-4 border border-stone-100 dark:border-stone-700 shadow-sm">
             <div className="flex items-center">
-              <div className="text-[10px] font-bold text-stone-400 writing-vertical-rl border-l pl-3 mr-3 border-stone-200 dark:border-stone-600 h-10 flex items-center justify-center tracking-widest flex-shrink-0">
-                FUTURE 24H
-              </div>
+              <div className="text-[10px] font-bold text-stone-400 writing-vertical-rl border-l pl-3 mr-3 border-stone-200 h-10 flex items-center justify-center tracking-widest flex-shrink-0">FUTURE 24H</div>
               <div className="flex overflow-x-auto gap-4 pb-2 w-full no-scrollbar" style={{ scrollbarWidth: 'none' }}>
                 {nextHours.map((h, idx) => (
                   <div key={idx} className="flex flex-col items-center gap-1 min-w-[3.5rem] flex-shrink-0">
@@ -865,43 +891,12 @@ const WeatherHero = ({ isAdmin, versionText, updateVersion, onLock, showSecret, 
             </div>
           </div>
         )}
-
         <button
           onClick={() => window.open(`https://www.perplexity.ai/search?q=${encodeURIComponent('長崎 佐賀 2026 6月中旬 必吃美食與私房景點 歷史文化深度介紹 也請納入日本在地Tabelog與小紅書評價 以中文回答')}`, '_blank')}
-          className="w-full mt-3 py-3 bg-white/90 dark:bg-stone-800/90 backdrop-blur-md border border-stone-200 dark:border-stone-700 rounded-2xl flex items-center justify-center gap-2 text-sm font-bold text-stone-600 dark:text-stone-200 shadow-sm hover:bg-stone-50 group"
+          className="w-full mt-3 py-3 bg-white/90 dark:bg-stone-800/90 backdrop-blur-md border border-stone-200 rounded-2xl flex items-center justify-center gap-2 text-sm font-bold text-stone-600 dark:text-stone-200 active:scale-95 shadow-sm group"
         >
-          <Sparkles size={16} className="text-teal-500" /> Ask AI (Perplexity 深度探索)
+          <Sparkles size={16} className="text-teal-500 group-hover:rotate-12 transition-transform" /> Ask AI (Perplexity 深度探索)
         </button>
-
-        {showSecret && (
-          <div className="mt-4 relative overflow-hidden rounded-2xl border-2 border-purple-500 shadow-[0_0_15px_rgba(168,85,247,0.6)]">
-            <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-purple-900 to-green-900 opacity-90"></div>
-            <div className="relative p-4">
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex flex-col">
-                  <h3 className="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-green-400" style={{ fontFamily: '"Cinzel Decorative", serif' }}>SECRET STASH</h3>
-                  <p className="text-xs text-green-300 font-bold tracking-wider mt-1">HIDDEN ADVENTURE MODE</p>
-                </div>
-                <div className="w-24 h-24 mr-4">
-                  <img src={process.env.PUBLIC_URL + '/sanrio/kuromi.png'} alt="Kuromi" className="w-full h-full object-contain animate-bounce" />
-                </div>
-              </div>
-              <div className="space-y-3 max-h-40 overflow-y-auto pr-1">
-                {secretLinks.map((link, idx) => (
-                  <div key={idx} className="flex items-center gap-2">
-                    <button onClick={() => window.open(link.url, '_blank')} className="flex-1 bg-purple-600/80 text-white text-xs font-bold py-2 px-4 rounded-xl shadow-lg flex justify-between items-center">
-                      <span className="truncate mr-2">{link.name}</span>
-                      <Navigation size={12} className="opacity-70" />
-                    </button>
-                    {isAdmin && (
-                      <button onClick={() => handleDeleteLink(idx)} className="p-2 bg-red-500/20 text-red-300 rounded-lg"><Trash2 size={14} /></button>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );
@@ -916,10 +911,11 @@ const FloatingStatus = ({ itinerary }) => {
       const allStops = [];
 
       itinerary.forEach((day) => {
-        const dateStr = day.date;
+        const dateStr = day.date; 
         day.locations.forEach((loc) => {
           const timeMatch = loc.time.match(/(\d{1,2}):(\d{2})/);
-          let stopTimeStr = `${dateStr}T23:59:00+09:00`; // 日本時區 +09:00
+          let stopTimeStr = `${dateStr}T23:59:00+09:00`; // 🎯 修正為日本時區 (+09:00)
+
           if (timeMatch) {
             const hh = timeMatch[1].padStart(2, '0');
             const mm = timeMatch[2].padStart(2, '0');
@@ -953,7 +949,7 @@ const FloatingStatus = ({ itinerary }) => {
     <div className="fixed bottom-20 left-4 right-4 z-30">
       <div className="bg-stone-900/95 backdrop-blur-md text-stone-50 p-4 rounded-2xl shadow-2xl border border-stone-700/50 flex items-center justify-between">
         <div className="flex items-center gap-3 overflow-hidden">
-          <div className={`w-10 h-10 rounded-full flex items-center justify-center text-stone-900 flex-shrink-0 ${nextStop.finished ? 'bg-green-500' : 'bg-amber-50 animate-pulse'}`}>
+          <div className={`w-10 h-10 rounded-full flex items-center justify-center text-stone-900 flex-shrink-0 ${nextStop.finished ? 'bg-green-500' : 'bg-amber-500 animate-pulse'}`}>
             {nextStop.finished ? <CheckCircle size={20} /> : <Navigation size={20} strokeWidth={2.5} />}
           </div>
           <div className="min-w-0">
@@ -978,25 +974,43 @@ const OutfitGuide = () => {
   const [isOpen, setIsOpen] = useState(false);
   if (!isOpen)
     return (
-      <button onClick={() => setIsOpen(true)} className="mx-6 mt-6 bg-white dark:bg-stone-800 shadow-sm border border-stone-100 dark:border-stone-700 py-3 px-4 rounded-xl text-xs font-bold flex items-center justify-center gap-2 text-stone-600 dark:text-stone-300 w-[calc(100%-3rem)]">
-        <Info size={14} className="text-amber-500" /> 查看 6 月日本穿搭與難度等級說明
+      <button onClick={() => setIsOpen(true)} className="mx-6 mt-6 bg-white dark:bg-stone-800 shadow-sm border border-stone-100 dark:border-stone-700 py-3 px-4 rounded-xl text-xs font-bold flex items-center justify-center gap-2 text-stone-600 dark:text-stone-300 w-[calc(100%-3rem)] active:scale-95 transition-transform"
+      >
+        <Info size={14} className="text-amber-500" /> 查看初夏穿搭 & 爛腳等級說明
       </button>
     );
 
   return (
-    <div className="mx-6 mt-6 bg-[#FFFBF0] dark:bg-stone-800 p-5 rounded-2xl border border-amber-100/50 shadow-sm relative">
+    <div className="mx-6 mt-6 bg-[#FFFBF0] dark:bg-stone-800 p-5 rounded-2xl border border-amber-100/50 shadow-sm relative animate-fadeIn">
       <button onClick={() => setIsOpen(false)} className="absolute top-3 right-3 text-amber-300 hover:text-amber-500"><ChevronUp size={18} /></button>
       <h3 className="flex items-center gap-2 font-serif font-bold text-amber-900 dark:text-amber-500 text-base mb-3">
-        <Shirt size={18} className="text-amber-500" /> 6 月初夏穿搭指南
+        <Shirt size={18} className="text-amber-500" /> 6月日本九州穿搭指南
       </h3>
       <div className="space-y-3 text-xs text-stone-600 dark:text-stone-300 leading-relaxed mb-6">
         <div className="flex items-start gap-3">
-          <div className="bg-amber-100 dark:bg-amber-900/50 p-1.5 rounded-full text-amber-600 flex-shrink-0"><Sun size={12} /></div>
-          <div><strong>白天舒適 (22-27°C)</strong><br />短袖配薄外衣。梅雨季可能有局部陣雨，務必隨身攜帶雨具。</div>
+          <div className="bg-amber-100 p-1.5 rounded-full text-amber-600 flex-shrink-0"><Sun size={12} /></div>
+          <div><strong>白天 (23-28°C)</strong><br />短袖舒適、梅雨季可能遇陣雨，隨身帶把摺疊傘。</div>
         </div>
         <div className="flex items-start gap-3">
           <div className="bg-blue-100 p-1.5 rounded-full text-blue-600 flex-shrink-0"><Wind size={12} /></div>
-          <div><strong>海風與夜景 (傍晚體感較涼)</strong><br />稻佐山頂與海邊碼頭海風較大，看夜景時強烈建議多備一件防風薄外套。</div>
+          <div><strong>海風與稻佐山夜景 (18-20°C)</strong><br />海邊與山頂展望台風大，體感稍冷，務必攜帶薄外套防風。</div>
+        </div>
+      </div>
+      <div className="pt-4 border-t border-amber-200/50">
+        <h3 className="flex items-center gap-2 font-serif font-bold text-amber-900 dark:text-amber-500 text-base mb-3">🦵 爛腳指數說明</h3>
+        <div className="grid grid-cols-1 gap-2 text-xs">
+          <div className="flex items-center gap-3 bg-white dark:bg-stone-700 p-2 rounded-lg border border-emerald-100">
+            <span className="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded font-bold">低 / 零</span>
+            <span className="text-stone-600 dark:text-stone-300">全程坐車、特急列車、環境舒適。</span>
+          </div>
+          <div className="flex items-center gap-3 bg-white dark:bg-stone-700 p-2 rounded-lg border border-amber-100">
+            <span className="bg-amber-100 text-amber-800 px-2 py-0.5 rounded font-bold">中</span>
+            <span className="text-stone-600 dark:text-stone-300">一般步道景點參拜、有微斜坡、出島石板路。</span>
+          </div>
+          <div className="flex items-center gap-3 bg-white dark:bg-stone-700 p-2 rounded-lg border border-rose-100">
+            <span className="bg-rose-100 text-rose-700 px-2 py-0.5 rounded font-bold">高 / 極高</span>
+            <span className="text-stone-600 dark:text-stone-300">軍艦島廢墟爬坡、5.5小時連續血拼大戰。</span>
+          </div>
         </div>
       </div>
     </div>
@@ -1025,51 +1039,105 @@ const LocationCard = ({ item, day, index, isAdmin, updateTime, updateContent, on
     return 'bg-rose-50 text-rose-700 border-rose-100';
   };
 
+  const handleFileUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (file.size > 2 * 1024 * 1024) return alert('圖片請小於 2MB 🐹');
+      const reader = new FileReader();
+      reader.onloadend = () => { updateContent('imageId', reader.result); };
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
-    <div onClick={() => setIsExpanded(!isExpanded)} className={`bg-white dark:bg-stone-800 rounded-2xl border border-stone-100 dark:border-stone-700 mb-4 overflow-hidden transition-all ${isExpanded ? 'ring-2 ring-amber-100 shadow-md' : ''}`}>
+    <div onClick={() => setIsExpanded(!isExpanded)} className={`bg-white dark:bg-stone-800 rounded-2xl border border-stone-100 dark:border-stone-700 mb-4 overflow-hidden transition-all duration-300 cursor-pointer ${isExpanded ? 'ring-2 ring-amber-100 shadow-md' : ''}`}>
       <div className="p-4 flex items-start gap-4">
         <div className="mt-1 flex-shrink-0 w-8 h-8 rounded-full bg-stone-50 flex items-center justify-center border border-stone-100">{getIcon()}</div>
         <div className="flex-1 min-w-0">
           <div className="flex flex-wrap items-center gap-2 mb-1.5">
             {isAdmin ? (
-              <input type="time" value={item.time || ''} onClick={(e)=>e.stopPropagation()} onChange={(e) => updateTime(day, index - 1, e.target.value)} className="bg-amber-50 text-[14px] font-bold text-stone-800 rounded px-1 font-mono" />
+              <input type="time" value={item.time ? item.time.substring(0, 5) : ''} onClick={(e) => e.stopPropagation()} onChange={(e) => updateTime(day, index - 1, e.target.value)} className="bg-amber-50 text-[14px] font-bold text-stone-800 focus:outline-none px-1 h-7 font-mono rounded" />
             ) : (
               <span className="text-[10px] font-bold text-stone-400 font-mono uppercase tracking-wide">{item.time}</span>
             )}
-            <span className={`text-[9px] px-1.5 py-0.5 rounded-md border font-bold ${getDifficultyColor(item.difficulty)}`}>{item.difficulty}</span>
+
+            {isAdmin ? (
+              <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
+                <input type="text" value={item.difficulty || ''} onChange={(e) => updateContent('difficulty', e.target.value)} className="text-[10px] bg-stone-100 border-none rounded px-2 py-0.5 w-24" placeholder="自訂難度" />
+                <select onChange={(e) => { if (e.target.value) updateContent('difficulty', e.target.value); }} className="w-4 h-6 bg-transparent text-stone-400 outline-none cursor-pointer">
+                  <option value="">☰</option>
+                  <option value="低 (環境舒適)">🟢 低</option>
+                  <option value="中 (石板路/斜坡)">🟡 中</option>
+                  <option value="高 (軍艦島攀爬)">🟠 高</option>
+                </select>
+              </div>
+            ) : (
+              item.difficulty && <span className={`text-[9px] px-1.5 py-0.5 rounded-md border font-bold ${getDifficultyColor(item.difficulty)}`}>{item.difficulty}</span>
+            )}
             {item.highlight && <span className="text-[9px] px-1.5 py-0.5 rounded-md border border-amber-100 bg-amber-50 text-amber-700 font-bold">★ {item.highlight}</span>}
           </div>
-          <h3 className="font-bold text-stone-800 dark:text-stone-200 text-lg leading-tight mb-1">{item.name}</h3>
-          <p className="text-xs text-stone-500 dark:text-stone-400 font-medium leading-relaxed">{item.note}</p>
+
+          {isAdmin ? (
+            <input type="text" value={item.name} onClick={(e) => e.stopPropagation()} onChange={(e) => updateContent('name', e.target.value)} className="w-full font-bold text-lg text-stone-800 bg-transparent border-b border-stone-300 focus:outline-none p-0 mb-1" placeholder="輸入地點名稱..." />
+          ) : (
+            <h3 className="font-bold text-stone-800 dark:text-stone-200 text-lg leading-tight mb-1 pr-2">{item.name}</h3>
+          )}
+
+          {isAdmin ? (
+            <input type="text" value={item.note} onClick={(e) => e.stopPropagation()} onChange={(e) => updateContent('note', e.target.value)} className="w-full text-xs text-stone-600 bg-transparent border-b border-stone-300 focus:outline-none py-1" placeholder="輸入簡短備註..." />
+          ) : (
+            <p className="text-xs text-stone-500 dark:text-stone-400 font-medium leading-relaxed">{item.note}</p>
+          )}
         </div>
-        <div className="mt-2 text-stone-300 flex-shrink-0">{isExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}</div>
+        <div className="mt-8 text-stone-300 flex-shrink-0">{isExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}</div>
       </div>
 
       {isExpanded && (
         <div className="animate-fadeIn">
           <div className="w-full h-48 overflow-hidden relative bg-stone-100">
-            <img
-              src={hasError ? BACKUP_IMAGE : getLocationImage(item.imageId)}
-              alt={item.name}
-              onLoad={() => setIsImageLoaded(true)}
-              onError={() => setHasError(true)}
-              className="w-full h-full object-cover"
-            />
+            <img src={hasError ? BACKUP_IMAGE : getLocationImage(item.imageId)} alt={item.name} decoding="async" onLoad={() => setIsImageLoaded(true)} onError={() => setHasError(true)} className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+            <div className="absolute bottom-3 left-4 right-4 text-white/90 text-[10px] flex flex-col gap-2 font-mono">
+              <div className="flex items-center gap-1"><Camera size={10} /> {isAdmin ? '編輯圖片來源' : 'Image for reference'}</div>
+              {isAdmin && (
+                <div className="flex flex-col gap-1 bg-black/40 p-2 rounded-lg" onClick={(e) => e.stopPropagation()}>
+                  <input className="bg-white/90 text-stone-800 text-[10px] w-full px-2 py-1 rounded" value={item.imageId || ''} onChange={(e) => updateContent('imageId', e.target.value)} placeholder="貼上網址..." />
+                  <label className="bg-amber-500 text-white text-[9px] px-2 py-1 rounded cursor-pointer w-max"><Upload size={10} className="inline mr-1"/>上傳照片<input type="file" accept="image/*" className="hidden" onChange={handleFileUpload} /></label>
+                </div>
+              )}
+            </div>
           </div>
+
           <div className="p-5 bg-stone-50/50 dark:bg-stone-800/50">
             <div className="mb-5">
-              <h4 className="text-xs font-bold text-amber-700 mb-2 flex items-center gap-1.5 uppercase tracking-wider"><Info size={12} /> 導遊精準作戰策略</h4>
-              <p className="text-sm text-stone-600 dark:text-stone-300 leading-relaxed text-justify whitespace-pre-line font-medium">{item.desc}</p>
+              <h4 className="text-xs font-bold text-amber-700 mb-2 flex items-center gap-1.5 uppercase tracking-wider"><Info size={12} /> 導遊作戰故事環境</h4>
+              {isAdmin ? (
+                <div onClick={(e) => e.stopPropagation()} className="space-y-3">
+                  <textarea value={item.desc} onChange={(e) => updateContent('desc', e.target.value)} className="w-full text-sm text-stone-600 bg-white border rounded-lg p-3 min-h-[100px]" placeholder="輸入詳細介紹..." />
+                  <div className="flex items-center gap-2 bg-white p-2 border rounded-lg"><span className="text-xs font-bold text-stone-400">導航搜尋:</span><input type="text" value={item.nav || ''} onChange={(e) => updateContent('nav', e.target.value)} className="flex-1 text-xs focus:outline-none" placeholder="Google Maps 關鍵字" /></div>
+                </div>
+              ) : (
+                <p className="text-sm text-stone-600 dark:text-stone-300 leading-relaxed text-justify whitespace-pre-line font-medium">{item.desc || '暫無詳細介紹，但這裡絕對值得一去！'}</p>
+              )}
             </div>
+
             <div className="grid grid-cols-2 gap-3">
-              <button onClick={(e) => { e.stopPropagation(); window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.nav)}`, '_blank'); }} className="flex items-center justify-center gap-2 py-3 bg-stone-800 text-amber-50 rounded-xl font-bold text-sm shadow-md">
-                <Navigation size={16} /> Map 導航
+              <button onClick={(e) => { e.stopPropagation(); window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.nav)}`, '_blank'); }} className="flex items-center justify-center gap-2 py-3 bg-stone-800 text-amber-50 rounded-xl active:scale-95 text-sm font-bold shadow-lg">
+                <Navigation size={16} /> 導航
               </button>
-              <button onClick={(e) => { e.stopPropagation(); window.open(`https://www.perplexity.ai/search?q=${encodeURIComponent('長崎 景點特色與排隊資訊 ' + item.name)}`, '_blank'); }} className="flex items-center justify-center gap-2 py-3 bg-white border text-stone-600 rounded-xl font-bold text-sm shadow-sm">
+              <button onClick={(e) => { e.stopPropagation(); window.open(`https://www.perplexity.ai/search?q=${encodeURIComponent('日本長崎景點介紹 與旅行隱藏玩法 ' + item.name)}`, '_blank'); }} className="flex items-center justify-center gap-2 py-3 bg-white border text-stone-600 rounded-xl active:scale-95 text-sm font-bold">
                 <Sparkles size={16} className="text-teal-500" /> 問問 AI
               </button>
             </div>
+            {isAdmin && (
+              <div className="mt-4 pt-3 border-t flex justify-between items-center">
+                <div className="flex gap-2">
+                  <button onClick={(e) => { e.stopPropagation(); onMoveUp(); }} disabled={isFirst} className="p-2 bg-white border rounded-lg shadow-sm">⬆️</button>
+                  <button onClick={(e) => { e.stopPropagation(); onMoveDown(); }} disabled={isLast} className="p-2 bg-white border rounded-lg shadow-sm">⬇️</button>
+                </div>
+                <button onClick={(e) => { e.stopPropagation(); onDelete(); }} className="px-3 py-2 rounded-lg bg-red-50 text-red-600 border border-red-100 font-bold text-xs">🗑️ 刪除</button>
+              </div>
+            )}
           </div>
         </div>
       )}
@@ -1078,21 +1146,58 @@ const LocationCard = ({ item, day, index, isAdmin, updateTime, updateContent, on
 };
 
 const DayCard = ({ dayData, isOpen, toggle, isAdmin, updateTime, updateContent, onAdd, onDelete, onMove }) => {
+  const cardRef = useRef(null);
+
+  const smoothScrollTo = (element, duration = 10) => {
+    if (!element) return;
+    const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+    const offsetPosition = elementPosition - 120;
+    const startPosition = window.pageYOffset;
+    const distance = offsetPosition - startPosition;
+    let startTime = null;
+
+    const animation = (currentTime) => {
+      if (startTime === null) startTime = currentTime;
+      const timeElapsed = currentTime - startTime;
+      const run = ease(timeElapsed, startPosition, distance, duration);
+      window.scrollTo(0, run);
+      if (timeElapsed < duration) requestAnimationFrame(animation);
+    };
+    const ease = (t, b, c, d) => { t /= d; t--; return -c * (t * t * t * t - 1) + b; };
+    requestAnimationFrame(animation);
+  };
+
+  useEffect(() => {
+    if (isOpen && cardRef.current) {
+      setTimeout(() => { smoothScrollTo(cardRef.current, 10); }, 50);
+    }
+  }, [isOpen]);
+
   return (
-    <div className="mb-3 px-2">
-      <div onClick={toggle} className={`relative flex items-center justify-between p-5 rounded-2xl cursor-pointer transition-all ${isOpen ? 'bg-stone-800 text-stone-50 shadow-xl scale-[1.02]' : 'bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 shadow-sm border border-stone-100 dark:border-stone-700'}`}>
+    <div ref={cardRef} className="mb-3 px-2">
+      <div onClick={toggle} className={`relative flex items-center justify-between p-5 rounded-2xl cursor-pointer transition-all duration-300 ${isOpen ? 'bg-stone-800 text-stone-50 shadow-xl scale-[1.02]' : 'bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 shadow-sm border border-stone-100'}`}>
         <div className="flex items-center gap-4">
-          <div className={`flex flex-col items-center justify-center w-12 h-12 rounded-xl border ${isOpen ? 'bg-stone-700 border-stone-600' : 'bg-stone-50 dark:bg-stone-700 border-stone-200'}`}>
+          <div className={`flex flex-col items-center justify-center w-12 h-12 rounded-xl border ${isOpen ? 'bg-stone-700 border-stone-600' : 'bg-stone-50 dark:bg-stone-700'}`}>
             <span className="text-[10px] font-bold text-stone-400 uppercase">Day</span>
             <span className={`text-xl font-serif font-bold ${isOpen ? 'text-amber-400' : 'text-stone-800'}`}>{dayData.day}</span>
           </div>
           <div>
             <div className="text-xs font-bold mb-0.5 text-stone-400">{dayData.displayDate}</div>
-            <div className="font-bold text-lg leading-tight truncate max-w-[200px]">{dayData.title}</div>
+            <div className="font-bold text-lg leading-tight truncate max-w-[210px]">{dayData.title}</div>
           </div>
         </div>
-        <div>
-          {isOpen ? <ChevronUp size={20} className="text-stone-500" /> : <ChevronDown size={20} className="text-stone-300" />}
+        <div className="text-right">
+          <div className="flex items-center justify-end gap-2 mb-1">
+            {dayData.weather.realData && (
+              <>
+                {dayData.weather.icon === 'sunny' && <Sun size={14} className="text-amber-500" />}
+                {dayData.weather.icon === 'cloudy' && <Cloud size={14} className="text-stone-400" />}
+                {dayData.weather.icon === 'rainy' && <CloudRain size={14} className="text-blue-400" />}
+              </>
+            )}
+            <span className="text-sm font-medium">{dayData.weather.temp}</span>
+          </div>
+          {isOpen ? <ChevronUp size={20} className="text-stone-500 ml-auto" /> : <ChevronDown size={20} className="text-stone-300 ml-auto" />}
         </div>
       </div>
 
@@ -1105,8 +1210,8 @@ const DayCard = ({ dayData, isOpen, toggle, isAdmin, updateTime, updateContent, 
               day={dayData.day}
               index={idx + 1}
               isAdmin={isAdmin}
-              updateTime={updateTime}
-              updateContent={updateContent}
+              updateTime={(d, l, t) => updateTime(d, idx, t)}
+              updateContent={(field, val) => updateContent(dayData.day, idx, field, val)}
               onDelete={() => onDelete(idx)}
               onMoveUp={() => onMove(idx, -1)}
               onMoveDown={() => onMove(idx, 1)}
@@ -1114,14 +1219,17 @@ const DayCard = ({ dayData, isOpen, toggle, isAdmin, updateTime, updateContent, 
               isLast={idx === dayData.locations.length - 1}
             />
           ))}
+          {isAdmin && (
+            <button onClick={(e) => { e.stopPropagation(); onAdd(); }} className="w-full py-3 border-2 border-dashed border-stone-300 rounded-xl text-stone-400 font-bold flex items-center justify-center gap-2 hover:text-amber-500 transition-all">+ 新增行程</button>
+          )}
         </div>
       )}
     </div>
   );
 };
 
-const FlightCard = ({ type, date, flightNo, time, airline, from, to, fromCode, toCode }) => (
-  <div className="bg-white dark:bg-stone-800 rounded-2xl p-4 border border-stone-100 dark:border-stone-700 shadow-sm mb-3 relative overflow-hidden">
+const FlightCard = ({ type, date, flightNo, time, airline, from, to, fromCode, toCode, fromTerminal, toTerminal }) => (
+  <div className="bg-white dark:bg-stone-800 rounded-2xl p-4 border border-stone-100 shadow-sm mb-3 relative overflow-hidden">
     <div className="relative z-10">
       <div className="flex justify-between items-center mb-4">
         <span className={`px-2 py-1 rounded text-[10px] font-bold tracking-wider ${type === '去程' ? 'bg-amber-100 text-amber-800' : 'bg-stone-100 text-stone-600'}`}>{type}</span>
@@ -1131,83 +1239,157 @@ const FlightCard = ({ type, date, flightNo, time, airline, from, to, fromCode, t
         <div className="text-center min-w-[3rem]">
           <div className="text-2xl font-bold text-stone-800 dark:text-stone-100 leading-none mb-1">{from}</div>
           <span className="text-[10px] text-stone-400 font-bold tracking-widest">{fromCode}</span>
+          {fromTerminal && <span className="block mt-1 text-[9px] text-white bg-amber-500 px-1 rounded">{fromTerminal}</span>}
         </div>
         <div className="flex-1 px-3 flex flex-col items-center">
           <div className="text-xs font-bold text-stone-500 mb-2">{flightNo}</div>
-          <div className="w-full h-[2px] bg-stone-200 relative">
-            <Plane size={14} className="text-stone-300 rotate-90 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-0.5" />
-          </div>
+          <div className="w-full h-[2px] bg-stone-200 relative"><Plane size={14} className="text-stone-300 rotate-90 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-1" /></div>
           <div className="text-xs font-bold text-stone-400 mt-2">{time}</div>
         </div>
         <div className="text-center min-w-[3rem]">
           <div className="text-2xl font-bold text-stone-800 dark:text-stone-100 leading-none mb-1">{to}</div>
           <span className="text-[10px] text-stone-400 font-bold tracking-widest">{toCode}</span>
+          {toTerminal && <span className="block mt-1 text-[9px] text-white bg-stone-400 px-1 rounded">{toTerminal}</span>}
         </div>
       </div>
-      <div className="flex items-center justify-between pt-3 border-t border-stone-100">
+      <div className="flex items-center justify-between pt-3 border-t">
         <span className="text-xs text-stone-500 font-medium">{airline}</span>
-        <a href={`https://www.google.com/search?q=${flightNo}+flight+status`} target="_blank" rel="noreferrer" className="flex items-center gap-1 text-xs font-bold text-blue-500 bg-blue-50 px-3 py-1.5 rounded-full">即時動態 <ArrowRight size={12} /></a>
+        <a href={`https://www.google.com/search?q=${flightNo}+flight+status`} target="_blank" rel="noreferrer" className="text-xs font-bold text-blue-500 bg-blue-50 px-3 py-1.5 rounded-full flex items-center gap-1">即時動態 <ArrowRight size={12} /></a>
       </div>
     </div>
   </div>
 );
 
-const CurrencySection = () => {
-  const [rate, setRate] = useState(4.65); // 預設 1 TWD ≈ 4.65 JPY
+const CurrencySection = ({ isAdmin, isMember }) => {
+  const [rate, setRate] = useState(4.65);
   const [twd, setTwd] = useState('');
   const [jpy, setJpy] = useState('');
+  const [exchanges, setExchanges] = useState([]);
+  const [newExName, setNewExName] = useState('');
+  const [newExNote, setNewExNote] = useState('');
+  const [lastUpdate, setLastUpdate] = useState('');
 
   useEffect(() => {
+    const savedRate = localStorage.getItem('cm_exchange_rate');
+    const savedRateTime = localStorage.getItem('cm_exchange_time');
+    if (savedRate) { setRate(parseFloat(savedRate)); setLastUpdate(savedRateTime + ' (離線)'); }
+
     const fetchRate = async () => {
       try {
         const res = await fetch('https://api.exchangerate-api.com/v4/latest/TWD');
         const data = await res.json();
-        if (data?.rates?.JPY) setRate(data.rates.JPY);
-      } catch (e) { console.log('使用預設日幣匯率'); }
+        if (data?.rates?.JPY) {
+          setRate(data.rates.JPY);
+          const newTime = new Date().toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit' });
+          setLastUpdate(newTime);
+          localStorage.setItem('cm_exchange_rate', data.rates.JPY);
+          localStorage.setItem('cm_exchange_time', newTime);
+        }
+      } catch (e) { console.log('匯率連線異常'); }
     };
     fetchRate();
   }, []);
 
+  useEffect(() => {
+    const exRef = ref(db, 'exchanges');
+    const unsubscribe = onValue(exRef, (snapshot) => {
+      const val = snapshot.val();
+      if (val !== null) { setExchanges(val); } 
+      else {
+        const defaultExchanges = [
+          { name: '佐賀港/長崎站 大黑屋', note: '🔥 在地連鎖老字號換匯所連線', map: '長崎 大黒屋' },
+          { name: '7-11 ATM 提領', note: '👍 外國回饋卡海外提款最無腦便利', map: '長崎駅 セブン-イレブン' }
+        ];
+        set(exRef, defaultExchanges);
+        setExchanges(defaultExchanges);
+      }
+    });
+    return () => unsubscribe();
+  }, []);
+
+  const handleAddEx = () => {
+    if (!newExName.trim()) return;
+    const newList = [...(exchanges || []), { name: newExName, note: newExNote, map: newExName }];
+    set(ref(db, 'exchanges'), newList).then(() => { setNewExName(''); setNewExNote(''); });
+  };
+
   return (
-    <section className="bg-white dark:bg-stone-800 p-6 rounded-2xl shadow-sm border border-stone-100 dark:border-stone-700 mb-6">
-      <h3 className="flex items-center gap-2 font-bold text-stone-800 dark:text-stone-100 mb-4 border-b pb-3">
-        <Wallet size={18} className="text-green-600" /> 2026 日幣即時匯率換算
-      </h3>
-      <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-xl mb-4">
-        <div className="text-[10px] text-green-600 font-bold mb-2">基準：1 TWD ≈ {rate} JPY</div>
+    <section className="bg-white dark:bg-stone-800 p-6 rounded-2xl border border-stone-100 mb-6">
+      <h3 className="flex items-center gap-2 font-bold text-stone-800 dark:text-stone-100 mb-4 border-b pb-3"><Wallet size={18} className="text-green-600" /> 匯率換算與動態換匯系統</h3>
+      <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-xl mb-6">
+        <div className="text-[10px] text-green-600 font-bold mb-2 flex justify-between"><span>即時基準：1 TWD ≈ {rate} JPY</span><span>{lastUpdate}</span></div>
         <div className="flex items-center gap-2">
-          <input type="number" value={twd} onChange={(e) => { setTwd(e.target.value); setJpy(e.target.value ? (parseFloat(e.target.value) * rate).toFixed(0) : ''); }} placeholder="台幣 TWD" className="w-full p-2 rounded-lg border outline-none font-bold" />
+          <input type="number" value={twd} onChange={(e) => { setTwd(e.target.value); setJpy(e.target.value ? (parseFloat(e.target.value) * rate).toFixed(0) : ''); }} placeholder="台幣" className="w-full p-2 rounded-lg border font-bold" />
           <span className="text-stone-400 font-bold">=</span>
-          <input type="number" value={jpy} onChange={(e) => { setJpy(e.target.value); setTwd(e.target.value ? (parseFloat(e.target.value) / rate).toFixed(1) : ''); }} placeholder="日幣 JPY" className="w-full p-2 rounded-lg border outline-none font-bold" />
+          <input type="number" value={jpy} onChange={(e) => { setJpy(e.target.value); setTwd(e.target.value ? (parseFloat(e.target.value) / rate).toFixed(1) : ''); }} placeholder="日幣" className="w-full p-2 rounded-lg border font-bold" />
         </div>
+      </div>
+      <div className="space-y-2">
+        {exchanges?.map((ex, i) => (
+          <div key={i} className="flex justify-between items-center p-3 bg-stone-50 dark:bg-stone-700/50 rounded-xl text-sm">
+            <div><div className="font-bold text-stone-700 dark:text-stone-200">{ex.name}</div><div className="text-[10px] text-stone-500">{ex.note}</div></div>
+            <button onClick={() => window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(ex.map)}`, '_blank')} className="w-8 h-8 bg-white border rounded-full flex items-center justify-center text-stone-400"><Navigation size={14} /></button>
+          </div>
+        ))}
       </div>
     </section>
   );
 };
 
-const GuidePage = ({ isAdmin, noticeText, updateNoticeText }) => {
+const GuidePage = ({ isAdmin, isMember, noticeText, updateNoticeText }) => {
   const [showPickyEater, setShowPickyEater] = useState(false);
+  const [sharedStores, setSharedStores] = useState([]);
+  const [newStoreName, setNewStoreName] = useState('');
+  const [newStoreUrl, setNewStoreUrl] = useState('');
+  const [newStoreNote, setNewStoreNote] = useState('');
+  const [showTaxRefund, setShowTaxRefund] = useState(false);
+  const [adderName, setAdderName] = useState('佑任');
+  const [taxInfo, setTaxInfo] = useState({ threshold: "5,000", luxuryThreshold: "500,000", totalThreshold: "5,000", fee: "0" });
+
+  useEffect(() => {
+    const taxRef = ref(db, 'taxRefund');
+    const unsubscribe = onValue(taxRef, (snapshot) => {
+      const val = snapshot.val();
+      if (val) setTaxInfo(val);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    const unsubscribe = onValue(ref(db, 'sharedStores'), (snapshot) => {
+      if (snapshot.val()) setSharedStores(snapshot.val());
+    });
+    return () => unsubscribe();
+  }, []);
+
+  const handleAddStore = () => {
+    if (!newStoreName.trim()) return;
+    const finalUrl = newStoreUrl.trim() ? newStoreUrl : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(newStoreName)}`;
+    const newList = [...sharedStores, { name: newStoreName, url: finalUrl, note: newStoreNote, adder: adderName }];
+    set(ref(db, 'sharedStores'), newList).then(() => { setNewStoreName(''); setNewStoreUrl(''); setNewStoreNote(''); });
+  };
+
   const pickyItems = [
-    { en: 'No Raw / Raw Fish', th: '生もの・刺身NG', zh: '不吃生食/刺身' },
-    { en: 'No Beef', th: '牛肉NG', zh: '不吃牛肉 (學弟注意)' },
-    { en: 'No Coriander', th: 'パクチーNG', zh: '香菜避雷' },
+    { en: 'No Raw Fish', th: '生魚・刺身NG', zh: '不吃生魚片 / 生食' },
+    { en: 'No Beef', th: '牛肉NG', zh: '不吃牛肉 (夥伴留意)' },
+    { en: 'No Coriander', th: 'パクチーNG', zh: '不加香菜' }
   ];
 
   const guideSections = [
-    { title: '長崎和牛/燒肉地圖', icon: <UtensilsCrossed className="text-red-600" />, desc: 'A5 特選長崎和牛（大阪屋精準卡位戰）。', color: 'bg-red-50 border-red-100' },
-    { title: '大正浪漫/喫茶店', icon: <Coffee className="text-amber-600" />, desc: '珈琲冨士男傳奇雞蛋三明治、松翁軒 Café Sevilla。', color: 'bg-amber-50 border-amber-100' },
-    { title: '免稅血拼購物主戰場', icon: <ShoppingBag className="text-blue-600" />, desc: '觀光通、3COINS plus，5.5小時絕不打斷作戰。', color: 'bg-blue-50 border-blue-100' },
+    { title: '和牛美食地圖', icon: <UtensilsCrossed className="text-red-600"/>, desc: '長崎 A5 特選和牛、長崎強棒麵、在地三瀨雞居酒屋。', color: 'bg-red-50 border-red-100 dark:bg-stone-800' },
+    { title: '老宅浪漫喫茶店', icon: <Coffee className="text-amber-600"/>, desc: '走訪 1946 年創業的珈琲冨士男，品味傳奇雞蛋三明治。', color: 'bg-amber-50 border-amber-100 dark:bg-stone-800' },
+    { title: '購物主戰場免稅', icon: <ShoppingBag className="text-blue-600"/>, desc: '濱町觀光通、3COINS plus、海鷗市場等完美無中斷血拼。', color: 'bg-blue-50 border-blue-100 dark:bg-stone-800' }
   ];
 
   return (
     <div className="p-6 space-y-6 pb-24 animate-fadeIn">
       <section>
         <div className="bg-white dark:bg-stone-800 border border-amber-100 rounded-[2rem] p-5 shadow-sm">
-          <div className="flex items-center gap-2 mb-3 text-amber-600 font-bold text-xs tracking-widest"><Pin size={14} className="rotate-45" /> 2026 九州團重要公佈欄</div>
+          <div className="flex items-center gap-2 mb-3 text-amber-600 font-bold text-xs uppercase tracking-widest"><Pin size={14} className="rotate-45" /> 團隊重要通知公佈欄</div>
           {isAdmin ? (
-            <textarea value={noticeText} onChange={(e) => updateNoticeText(e.target.value)} className="w-full bg-amber-50/50 border-none rounded-2xl p-3 text-sm outline-none" />
+            <textarea value={noticeText} onChange={(e) => updateNoticeText(e.target.value)} className="w-full bg-amber-50/50 rounded-2xl p-3 text-sm min-h-[100px] outline-none" />
           ) : (
-            <div className="text-sm text-stone-600 dark:text-stone-300 whitespace-pre-line italic px-1">{noticeText}</div>
+            <div className="text-sm text-stone-600 dark:text-stone-300 leading-relaxed whitespace-pre-line italic px-1">{noticeText}</div>
           )}
         </div>
       </section>
@@ -1216,9 +1398,7 @@ const GuidePage = ({ isAdmin, noticeText, updateNoticeText }) => {
         <button onClick={() => setShowPickyEater(!showPickyEater)} className="w-full bg-rose-50 dark:bg-rose-950/30 border border-rose-100 rounded-2xl p-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-white rounded-xl text-rose-500"><Ban size={20} /></div>
-            <div className="text-left">
-              <div className="font-bold text-rose-800 dark:text-rose-300 text-sm">挑食避雷針 (日本餐廳溝通卡)</div>
-            </div>
+            <div className="font-bold text-rose-800 dark:text-rose-300 text-sm">挑食避雷救援卡 (日本餐廳出示)</div>
           </div>
           {showPickyEater ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
         </button>
@@ -1227,7 +1407,7 @@ const GuidePage = ({ isAdmin, noticeText, updateNoticeText }) => {
             <div className="divide-y">
               {pickyItems.map((item, i) => (
                 <div key={i} className="px-5 py-4 flex justify-between items-center">
-                  <div className="flex flex-col"><span className="font-bold text-stone-800 dark:text-stone-100">{item.zh}</span></div>
+                  <div className="flex flex-col"><span className="text-[10px] text-stone-400 font-bold">{item.en}</span><span className="font-bold text-stone-800 dark:text-stone-100">{item.zh}</span></div>
                   <div className="text-right"><span className="text-base font-black text-rose-600 font-serif">{item.th}</span></div>
                 </div>
               ))}
@@ -1236,75 +1416,128 @@ const GuidePage = ({ isAdmin, noticeText, updateNoticeText }) => {
         )}
       </section>
 
+      <section>
+        <button onClick={() => setShowTaxRefund(!showTaxRefund)} className="w-full bg-amber-50 dark:bg-amber-950/30 border border-amber-100 rounded-2xl p-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-white rounded-xl text-amber-600"><Banknote size={20} /></div>
+            <div className="font-bold text-amber-800 dark:text-amber-300 text-sm">2026 日本一般免稅規定 (長崎適用)</div>
+          </div>
+          {showTaxRefund ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+        </button>
+        {showTaxRefund && (
+          <div className="mt-3 bg-white dark:bg-stone-800 rounded-3xl border p-5 space-y-3 text-sm">
+            <p>🛍️ <strong>一般物品/消耗品門檻</strong>：單日同店消費滿 5,000 日圓（未稅）以上即可當場辦理免稅退稅。</p>
+            <p>🛑 <strong>注意項</strong>：消耗品會以特殊免稅袋密封，在離開日本前**嚴禁拆封使用**，否則過海關若被抽查會被要求補繳消費稅！</p>
+          </div>
+        )}
+      </section>
+
       <div className="grid grid-cols-1 gap-4">
         {guideSections.map((section, idx) => (
           <div key={idx} className={`p-5 rounded-[2rem] border ${section.color} shadow-sm`}>
-            <div className="flex items-center gap-3 mb-3"><div className="p-2.5 bg-white rounded-2xl shadow-sm">{section.icon}</div><h3 className="text-lg font-bold text-stone-800">{section.title}</h3></div>
-            <p className="text-[11px] text-stone-500 mb-5 leading-relaxed">{section.desc}</p>
+            <div className="flex items-center gap-3 mb-3"><div className="p-2.5 bg-white rounded-2xl shadow-sm">{section.icon}</div><h3 className="text-lg font-bold text-stone-800 dark:text-stone-100">{section.title}</h3></div>
+            <p className="text-[11px] text-stone-500 mb-5">{section.desc}</p>
           </div>
         ))}
       </div>
+
+      <section className="bg-[#FEF3C7] dark:bg-stone-800 p-6 rounded-[2.5rem] border-2 border-amber-300">
+        <div className="flex items-center gap-2 mb-5 text-amber-900 dark:text-amber-400 font-black text-sm tracking-wider"><Sparkles size={16} /> 團員私藏好店許願池</div>
+        <div className="space-y-4 mb-6">
+          {sharedStores.length === 0 && <div className="text-xs text-stone-400 text-center py-4">目前還沒有人新增願望喔！</div>}
+          {sharedStores.map((store, i) => (
+            <div key={i} className="bg-white dark:bg-stone-900 p-4 rounded-2xl border flex justify-between">
+              <div>
+                <div className="font-bold text-base">{store.name}</div>
+                {store.note && <div className="text-xs text-stone-500">💬 {store.note}</div>}
+                <div className="text-[10px] text-amber-700 mt-1">Added by {store.adder}</div>
+              </div>
+              {isAdmin && <button onClick={() => set(ref(db, 'sharedStores'), sharedStores.filter((_, idx) => idx !== i))} className="text-stone-300 hover:text-red-400"><Trash2 size={16}/></button>}
+            </div>
+          ))}
+        </div>
+        {(isAdmin || isMember) && (
+          <div className="space-y-2">
+            <select value={adderName} onChange={(e) => setAdderName(e.target.value)} className="w-full p-2 rounded-xl text-xs font-bold border">
+              {USERS.map(name => <option key={name} value={name}>{name}</option>)}
+            </select>
+            <input value={newStoreName} onChange={(e) => setNewStoreName(e.target.value)} placeholder="店家名稱" className="w-full p-2 border rounded-xl text-sm" />
+            <input value={newStoreNote} onChange={(e) => setNewStoreNote(e.target.value)} placeholder="理由備註" className="w-full p-2 border rounded-xl text-sm" />
+            <button onClick={handleAddStore} className="w-full bg-amber-500 text-white font-bold py-2 rounded-xl text-sm">+</button>
+          </div>
+        )}
+      </section>
     </div>
   );
 };
 
-const UtilsPage = ({ isAdmin, systemInfo, updateSystemInfo }) => {
+const UtilsPage = ({ isAdmin, isMember, systemInfo, updateSystemInfo }) => {
   return (
-    <div className="p-6 space-y-6 pb-24 bg-[#FDFBF7] dark:bg-stone-900 min-h-screen">
-      <h2 className="text-2xl font-serif font-bold text-stone-800 dark:text-stone-100 mb-6">實用工具庫</h2>
-      
+    <div className="p-6 space-y-6 pb-24 bg-[#FDFBF7] dark:bg-stone-900 transition-colors">
+      <h2 className="text-2xl font-serif font-bold text-stone-800 dark:text-stone-100">實用工具及資訊</h2>
       {isAdmin && (
-        <section className="bg-stone-800 p-6 rounded-2xl shadow-lg border text-white mb-6">
-          <h3 className="flex items-center gap-2 font-bold text-amber-400 mb-4 border-b border-stone-600 pb-3"><Settings size={18} /> 管理員核心設定</h3>
-          <input type="text" value={systemInfo || ''} onChange={(e) => updateSystemInfo(e.target.value)} className="w-full bg-stone-900 border border-stone-600 rounded-xl px-3 py-2 text-sm text-emerald-200" />
+        <section className="bg-stone-800 p-6 rounded-2xl text-white">
+          <h3 className="flex items-center gap-2 font-bold text-amber-400 mb-4 border-b border-stone-700 pb-3"><Settings size={18} /> 管理端設定</h3>
+          <input type="text" value={systemInfo || ''} onChange={(e) => updateSystemInfo(e.target.value)} className="w-full bg-stone-900 border rounded-xl px-3 py-2 text-sm text-emerald-200" />
         </section>
       )}
-
       <TippingGuide />
-
-      <section className="bg-white dark:bg-stone-800 p-6 rounded-2xl shadow-sm border border-stone-100 dark:border-stone-700">
-        <h3 className="flex items-center gap-2 font-bold text-stone-800 dark:text-stone-100 mb-4 border-b pb-3"><Plane size={18} className="text-blue-500" /> 航班基本資訊</h3>
+      <section className="bg-white dark:bg-stone-800 p-6 rounded-2xl border">
+        <h3 className="flex items-center gap-2 font-bold text-stone-800 dark:text-stone-100 mb-4 border-b pb-3"><Plane size={18} className="text-blue-500" /> 航班詳細資訊</h3>
         {UTILS_DATA.flights.map((f, i) => <FlightCard key={i} {...f} />)}
       </section>
-
-      <section className="bg-white dark:bg-stone-800 p-6 rounded-2xl shadow-sm border border-stone-100 dark:border-stone-700">
-        <h3 className="flex items-center gap-2 font-bold text-stone-800 dark:text-stone-100 mb-4 border-b pb-3"><Home size={18} className="text-orange-500" /> 每日住宿導航</h3>
+      <section className="bg-white dark:bg-stone-800 p-6 rounded-2xl border">
+        <h3 className="flex items-center gap-2 font-bold text-stone-800 dark:text-stone-100 mb-4 border-b pb-3"><Home size={18} className="text-orange-500" /> 住宿飯店導航</h3>
         <div className="space-y-4">
           {UTILS_DATA.accommodations.map((acc, idx) => (
             <div key={idx} className="bg-stone-50 dark:bg-stone-700/50 rounded-xl p-4 border relative">
               <div className="flex justify-between items-start mb-2">
-                <div>
-                  <span className="text-[10px] font-bold text-stone-400 uppercase">{acc.type}</span>
-                  <h4 className="font-bold text-stone-800 dark:text-stone-100 text-base">{acc.name}</h4>
-                </div>
-                <span className="text-xs font-bold bg-white dark:bg-stone-600 px-2 py-1 rounded border text-stone-500 dark:text-stone-300">{acc.date}</span>
+                <div><span className="text-[10px] text-stone-400 font-bold">{acc.type}</span><h4 className="font-bold text-base">{acc.name}</h4></div>
+                <span className="text-xs font-bold bg-white dark:bg-stone-600 px-2 py-1 rounded border">{acc.date}</span>
               </div>
-              <p className="text-xs text-stone-500 dark:text-stone-400 mb-4 flex items-center gap-1"><MapPin size={10} /> {acc.address}</p>
+              <p className="text-xs text-stone-500 mb-4"><MapPin size={10} className="inline mr-1"/>{acc.address}</p>
               <div className="grid grid-cols-2 gap-2">
-                <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(acc.mapQuery)}`} target="_blank" rel="noreferrer" className="flex items-center justify-center gap-1.5 py-2 bg-stone-800 text-amber-50 rounded-lg text-xs font-bold"><Navigation size={12} /> 導航</a>
-                {acc.phone && <a href={`tel:${acc.phone}`} className="flex items-center justify-center gap-1.5 py-2 bg-white border text-stone-600 rounded-lg text-xs font-bold"><Phone size={12} /> 聯絡</a>}
+                <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(acc.mapQuery)}`} target="_blank" rel="noreferrer" className="flex items-center justify-center gap-1.5 py-2 bg-stone-800 text-amber-50 rounded-lg text-xs font-bold"><Navigation size={12}/>導航</a>
+                <a href={`tel:${acc.phone}`} className="flex items-center justify-center gap-1.5 py-2 bg-white border text-stone-600 rounded-lg text-xs font-bold"><Phone size={12}/>聯絡</a>
               </div>
             </div>
           ))}
         </div>
       </section>
-      <CurrencySection />
+      <CurrencySection isAdmin={isAdmin} isMember={isMember} />
     </div>
   );
 };
 
-const ThaiTips = ({ onTrigger }) => (
+const TippingGuide = () => (
+  <section className="bg-white dark:bg-stone-800 p-6 rounded-2xl border mb-6">
+    <h3 className="flex items-center gap-2 font-bold text-stone-800 dark:text-stone-100 mb-4 border-b pb-3"><Coins size={18} className="text-amber-500" /> 日本支付與分帳提示</h3>
+    <p className="text-xs text-stone-600 dark:text-stone-300 leading-relaxed">日本環境不需要支付任何小費。公帳請大家集中統一記錄，回台或每天結束後再行結算。退稅門檻為當天同店未稅滿 5,000 日圓，記得隨身攜帶護照正本以供海關蓋章查驗。</p>
+  </section>
+);
+
+const KyushuTips = ({ onTrigger }) => (
   <div className="mx-6 mt-6 mb-6">
     <div className="bg-amber-50 dark:bg-stone-800 rounded-2xl border border-amber-100 overflow-hidden shadow-sm">
-      <div className="w-full flex items-center justify-between p-4 bg-amber-100/50 text-amber-900 dark:text-amber-100 font-bold">
-        <div className="flex items-center gap-2"><AlertCircle size={18} className="text-amber-600" /> <span>長崎新三大夜景 × 應變機制備忘</span></div>
-      </div>
+      <button className="w-full flex items-center justify-between p-4 bg-amber-100/50 text-amber-900 dark:text-amber-100 font-bold">
+        <div className="flex items-center gap-2"><AlertCircle size={18} className="text-amber-600" /> <span>2026 九州作戰天候防範禁忌</span></div>
+      </button>
       <div className="p-4 space-y-4 text-sm text-stone-700 dark:text-stone-300 leading-relaxed">
-        <div onClick={onTrigger} className="flex gap-3 bg-white dark:bg-stone-700 p-3 rounded-xl border cursor-pointer">
+        <div className="flex gap-3 bg-white dark:bg-stone-700 p-3 rounded-xl border">
           <div className="min-w-[24px] text-amber-600 font-bold mt-1"><Zap size={18} /></div>
           <div>
-            <strong className="text-stone-900 dark:text-stone-100 block mb-1">稻佐山天候停駛備案</strong>
-            <p className="text-xs">若 Day 3 風大雨大導致空中纜車停駛，立刻改搭計程車直接前往「稻佐山中腹停車場」，轉乘全玻璃座艙的【長崎斜面電車 (Slope Car)】，一樣直達山頂，絕不泡湯！</p>
+            <strong className="text-stone-900 dark:text-stone-100 block mb-1">行動電源攜帶鐵律</strong>
+            <ul className="list-disc pl-4 text-xs text-stone-500">
+              <li>手提行動電源<span className="text-red-600 font-bold">絕對嚴禁託運</span>，必須隨身攜帶。</li>
+              <li>依虎航/大眾航空最新規範，嚴禁放置於頭頂置物櫃，必須放在前方座位下方。</li>
+            </ul>
+          </div>
+        </div>
+        <div className="flex gap-3" onClick={onTrigger}>
+          <div className="min-w-[24px] text-green-600 font-bold cursor-pointer select-none active:scale-95"><AlertTriangle size={18} /></div>
+          <div className="cursor-pointer select-none">
+            <strong className="text-stone-900 dark:text-stone-100 block">軍艦島風浪備對策</strong>
+            <p className="text-xs text-stone-500">若 Day 3 上午因外海浪大導致船隻無法登島，立刻啟動備案改往出島深度慢遊，並彈性調整稻佐山夜景期。當天全團嚴禁吃早餐防劇烈嘔吐！</p>
           </div>
         </div>
       </div>
@@ -1312,79 +1545,115 @@ const ThaiTips = ({ onTrigger }) => (
   </div>
 );
 
-const TippingGuide = () => (
-  <section className="bg-white dark:bg-stone-800 rounded-2xl shadow-sm border p-4 mb-6">
-    <div className="flex items-center gap-2 font-bold text-stone-800 dark:text-stone-100 mb-3"><Coins size={18} className="text-amber-500" /> <span>日本旅遊支付免稅備忘</span></div>
-    <p className="text-xs text-stone-600 dark:text-stone-300 leading-relaxed">
-      日本全面免小費。退稅新制提醒：總額未滿 20,000 泰銖/日幣等值依免蓋章直接入關；高價奢侈品（單件 ≥ 40,000）必須手提入關二次查驗實物。消耗品不可在境內拆封使用。
-    </p>
-  </section>
-);
-
 const PackingPage = ({ isKonamiActive, isAdmin, isMember, onSecretTrigger }) => {
   const [currentUser, setCurrentUser] = useState('佑任');
   const [packingData, setPackingData] = useState({});
   const [newItem, setNewItem] = useState('');
+  const [showToast, setShowToast] = useState(false);
+
+  const CHARACTER_MAP = {
+    佑任: process.env.PUBLIC_URL + '/sanrio/img_rank1.png',
+    軒寶: process.env.PUBLIC_URL + '/sanrio/hellokitty.png',
+    學弟: process.env.PUBLIC_URL + '/sanrio/img_rank2.png',
+    腳慢: process.env.PUBLIC_URL + '/sanrio/mymelody2.png',
+  };
+  const STYLE_MAP = { 佑任: 'w-16 h-16 translate-y-4', 軒寶: 'w-14 h-14 translate-y-1', 學弟: 'w-24 h-24 translate-y-8', 腳慢: 'w-30 h-30 translate-y-7' };
+  const HEADER_ICON_STYLE = { 佑任: 'w-9 h-9', 軒寶: 'w-9 h-9', 學弟: 'w-16 h-16 -my-4 ml-1', 腳慢: 'w-14 h-14 -my-3 ml-1' };
 
   useEffect(() => {
-    const saved = localStorage.getItem('kyushu_packing_list');
+    const saved = localStorage.getItem('cm_packing_list_v2');
     if (saved) { setPackingData(JSON.parse(saved)); } 
     else {
       const initialData = {};
-      USERS.forEach((user) => {
-        initialData[user] = DEFAULT_ITEMS.map((item) => ({ name: item, checked: false }));
-      });
+      USERS.forEach((user) => { initialData[user] = DEFAULT_ITEMS.map((item) => ({ name: item, checked: false })); });
       setPackingData(initialData);
-      localStorage.setItem('kyushu_packing_list', JSON.stringify(initialData));
+      localStorage.setItem('cm_packing_list_v2', JSON.stringify(initialData));
     }
   }, []);
 
-  const saveToStorage = (newData) => { setPackingData(newData); localStorage.setItem('kyushu_packing_list', JSON.stringify(newData)); };
+  const saveToStorage = (newData) => { localStorage.setItem('cm_packing_list_v2', JSON.stringify(newData)); setPackingData(newData); };
+
   const toggleItem = (user, index) => {
+    if (!isAdmin && !isMember) { setShowToast(true); setTimeout(() => setShowToast(false), 3000); return; }
     const newData = { ...packingData };
     newData[user][index].checked = !newData[user][index].checked;
     saveToStorage(newData);
   };
 
   const addItem = () => {
-    if (!newItem.trim()) return;
+    if (!newItem.trim() || !currentUser) return;
     const newData = { ...packingData };
     newData[currentUser] = [{ name: newItem, checked: false }, ...newData[currentUser]];
     saveToStorage(newData);
     setNewItem('');
   };
 
+  const deleteItem = (index) => {
+    if (!window.confirm('確定刪除此項目？')) return;
+    const newData = { ...packingData };
+    newData[currentUser].splice(index, 1);
+    saveToStorage(newData);
+  };
+
+  const getProgress = (user) => {
+    if (!packingData[user]) return 0;
+    const total = packingData[user].length;
+    const checked = packingData[user].filter((i) => i.checked).length;
+    return total === 0 ? 0 : Math.round((checked / total) * 100);
+  };
+
   return (
     <div className="pb-24 min-h-screen bg-[#FDFBF7] dark:bg-stone-900 relative">
-      <ThaiTips onTrigger={onSecretTrigger} />
-      <div className="px-6 mt-2 mb-4">
-        <h2 className="text-2xl font-serif font-bold text-stone-800 dark:text-stone-100 flex items-center gap-2">
-          <span className="w-1.5 h-6 bg-amber-500 rounded-full"></span> 行李防呆清單
-        </h2>
-      </div>
+      <KyushuTips onTrigger={onSecretTrigger} />
+      {showToast && (
+        <div className="fixed bottom-24 left-6 right-6 z-50 animate-bounce">
+          <div className="bg-stone-800 text-white p-4 rounded-2xl border border-stone-700 flex items-center gap-3">
+            <Lock size={20} className="text-amber-400" />
+            <div><div className="font-bold text-sm">訪客唯讀模式 Read Only</div><div className="text-[10px] text-stone-300">請輸入密碼解鎖後編輯項目</div></div>
+          </div>
+        </div>
+      )}
+      <div className="px-6 mt-2 mb-4"><h2 className="text-2xl font-serif font-bold text-stone-800 dark:text-stone-100 flex items-center gap-2"><span className="w-1.5 h-6 bg-amber-500 rounded-full"></span>行李防呆準備清單</h2></div>
       <div className="px-6 mb-6">
         <div className="grid grid-cols-4 gap-2">
           {USERS.map((user) => (
-            <button key={user} onClick={() => setCurrentUser(user)} className={`py-2 rounded-xl border text-xs font-bold transition-all ${currentUser === user ? 'bg-stone-800 text-stone-50 border-amber-400' : 'bg-white text-stone-600'}`}>{user}</button>
+            <button key={user} onClick={() => setCurrentUser(user)} className={`relative flex flex-col items-center justify-end rounded-2xl border py-2 ${currentUser === user ? 'bg-stone-800 text-stone-50' : 'bg-stone-900/50 text-stone-400'}`}>
+              {isKonamiActive ? (
+                <div className="animate-bounce flex flex-col items-center">
+                  <div className="h-[60px] flex items-end"><img src={CHARACTER_MAP[user]} alt={user} className={STYLE_MAP[user]} /></div>
+                  <span className="text-[10px] mt-1">{user}</span>
+                </div>
+              ) : (
+                <div className="h-[60px] flex flex-col justify-end pb-1 text-center"><span>{user}</span><span className="text-[9px]">{getProgress(user)}%</span></div>
+              )}
+            </button>
           ))}
         </div>
       </div>
-      <div className="px-6">
-        <div className="flex gap-2 mb-4">
-          <input type="text" value={newItem} onChange={(e) => setNewItem(e.target.value)} placeholder="新增自訂行李項目..." className="flex-1 p-3 rounded-xl border text-sm bg-white" onKeyPress={(e) => e.key === 'Enter' && addItem()} />
-          <button onClick={addItem} className="bg-stone-800 text-amber-50 px-5 rounded-xl font-bold">+</button>
-        </div>
-        <div className="space-y-3">
-          {packingData[currentUser]?.map((item, index) => (
-            <div key={index} onClick={() => toggleItem(currentUser, index)} className={`flex items-center gap-3 p-4 rounded-xl border cursor-pointer ${item.checked ? 'bg-stone-100 opacity-60' : 'bg-white'}`}>
-              <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${item.checked ? 'bg-green-500 border-green-500' : 'border-stone-300'}`}>
-                {item.checked && <CheckCircle size={12} className="text-white" />}
-              </div>
-              <span className={`text-sm ${item.checked ? 'line-through text-stone-400' : 'text-stone-700'}`}>{item.name}</span>
+      {currentUser && (
+        <div className="px-6 animate-fadeIn">
+          <div className="flex justify-between items-end mb-4">
+            <h2 className="text-2xl font-serif font-bold flex items-center gap-2">{currentUser} 的打包清單 {isKonamiActive && <img src={CHARACTER_MAP[currentUser]} className={HEADER_ICON_STYLE[currentUser]} alt="icon"/>}</h2>
+            <span className="text-xs text-stone-400 font-bold">{packingData[currentUser]?.filter(i=>i.checked).length} / {packingData[currentUser]?.length} 完成</span>
+          </div>
+          <div className="h-1.5 w-full bg-stone-200 rounded-full mb-6 overflow-hidden"><div className="h-full bg-amber-500 transition-all duration-500" style={{ width: `${getProgress(currentUser)}%` }} /></div>
+          {(isAdmin || isMember) && (
+            <div className="mb-6 flex gap-2">
+              <input type="text" value={newItem} onChange={(e)=>setNewItem(e.target.value)} placeholder="自訂行李項目..." className="flex-1 p-3 rounded-xl border bg-white" onKeyPress={(e)=>e.key==='Enter'&&addItem()} />
+              <button onClick={addItem} className="bg-stone-800 text-amber-50 px-5 rounded-xl font-bold">+</button>
             </div>
-          ))}
+          )}
+          <div className="space-y-3">
+            {packingData[currentUser]?.map((item, idx) => (
+              <div key={idx} onClick={()=>toggleItem(currentUser, idx)} className={`flex items-center gap-3 p-4 rounded-xl border ${item.checked ? 'bg-stone-100 opacity-60' : 'bg-white shadow-sm'}`}>
+                <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${item.checked ? 'bg-green-500 border-green-500 text-white' : 'border-stone-300'}`}>{item.checked && <CheckCircle size={14} />}</div>
+                <span className={`flex-1 text-sm ${item.checked ? 'line-through text-stone-400' : 'text-stone-700'}`}>{item.name}</span>
+                {(isAdmin || isMember) && <button onClick={(e)=>{e.stopPropagation(); deleteItem(idx);}} className="text-stone-300 hover:text-red-400">×</button>}
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
@@ -1392,51 +1661,224 @@ const PackingPage = ({ isKonamiActive, isAdmin, isMember, onSecretTrigger }) => 
 const BackToTop = () => {
   const [isVisible, setIsVisible] = useState(false);
   useEffect(() => {
-    const toggleVisibility = () => { if (window.scrollY > 300) { setIsVisible(true); } else { setIsVisible(false); } };
+    const toggleVisibility = () => { if (window.scrollY > 300) setIsVisible(true); else setIsVisible(false); };
     window.addEventListener('scroll', toggleVisibility);
     return () => window.removeEventListener('scroll', toggleVisibility);
   }, []);
   return isVisible ? (
-    <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="fixed bottom-24 right-4 z-40 p-3 bg-stone-800/80 text-amber-400 rounded-full border border-stone-600">
-      <ArrowRight size={20} className="-rotate-90" strokeWidth={3} />
-    </button>
+    <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="fixed bottom-24 right-4 z-40 p-3 bg-stone-800/80 backdrop-blur text-amber-400 rounded-full border border-stone-600"><ArrowRight size={20} className="-rotate-90" strokeWidth={3} /></button>
   ) : null;
 };
 
 // ============================================
-// 🔥 TravelApp 主程式核心控制
+// 🔥 完整保留原汁原味：TravelApp 主核心引擎
 // ============================================
 export default function TravelApp() {
-  const [isLocked, setIsLocked] = useState(false);
-  const [isLoadingData, setIsLoadingData] = useState(false);
+  const [isLocked, setIsLocked] = useState(() => { return localStorage.getItem('isUnlocked') !== 'true'; });
+  const [isUnlocking, setIsUnlocking] = useState(false);
+  const [isFirebaseConnected, setIsFirebaseConnected] = useState(false);
+  const [isLoadingData, setIsLoadingData] = useState(true);
+  const isConnectedRef = useRef(false);
+  const [inputPwd, setInputPwd] = useState('');
+
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [isMember, setIsMember] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
+
+  const [showHelloKitty, setShowHelloKitty] = useState(false);
+  const [shakeCount, setShakeCount] = useState(0);
+  const [showShakeEgg, setShowShakeEgg] = useState(false);
+  const pressTimerRef = useRef(null);
+
   const [activeTab, setActiveTab] = useState('itinerary');
   const [openDay, setOpenDay] = useState(0);
-  const [darkMode, setDarkMode] = useState(false);
+
+  const touchStartRef = useRef({ x: 0, y: 0 });
+  const [konamiSequence, setKonamiSequence] = useState([]);
+  const [isKonamiActive, setIsKonamiActive] = useState(false);
+
+  const JUNGLE_BG = process.env.PUBLIC_URL + '/images/jungle1.jpeg';
 
   const [itinerary, setItinerary] = useState(INITIAL_ITINERARY_DATA);
   const [appVersion, setAppVersion] = useState('V25 終極版');
-  const [systemInfo, setSystemInfo] = useState('2026 九州長崎・佐賀生存戰 🚀');
-  const [noticeText, setNoticeText] = useState('📌 6/18 軍艦島上午09:00登島，當天全團嚴格禁吃早餐以防外海巨浪嘔吐！');
-
-  const [secretClickCount, setSecretClickCount] = useState(0);
-  const [showSecret, setShowSecret] = useState(false);
+  const [systemInfo, setSystemInfo] = useState('System Ver. 1.0 九州生存戰 🚀');
+  const [noticeText, setNoticeText] = useState('載入中...');
+  const [secretClickCount, setSecretClickCount] = useState(0); 
+  const [showSecret, setShowSecret] = useState(false);         
 
   const handleSecretTrigger = () => {
     const newCount = secretClickCount + 1;
     setSecretClickCount(newCount);
-    if (newCount === 5) {
-      setShowSecret(true);
-      alert("😈 禁忌解除！Kuromi Mode 九州隱藏情報開啟！🌿");
-    }
+    if (newCount === 5) { setShowSecret(true); alert("😈 禁忌解除！Kuromi Mode 九州隱藏大麻卡片開啟！🌿"); }
   };
+
+  useEffect(() => {
+    const savedRole = localStorage.getItem('userRole');
+    if (savedRole === 'ODY4Njc3MDg=') { setIsAdmin(true); setIsMember(true); } 
+    else if (savedRole === 'MTMxNDUyMA==') { setIsAdmin(false); setIsMember(true); }
+  }, []);
 
   useEffect(() => {
     const hour = new Date().getHours();
     if (hour >= 18 || hour < 6) { setDarkMode(true); }
   }, []);
 
+  // 🎯 Firebase 長效同步與自動重連核心電路
+  useEffect(() => {
+    const itineraryRef = ref(db, 'itinerary');
+    const connectedRef = ref(db, '.info/connected');
+
+    setIsLoadingData(true);
+    goOnline(db);
+
+    let unsubscribeItinerary = null;
+    let unsubscribeConnected = null;
+
+    get(itineraryRef).then((snapshot) => {
+      if (snapshot.exists()) {
+        setItinerary(snapshot.val());
+        localStorage.setItem('cm_itinerary_backup', JSON.stringify(snapshot.val()));
+      } else {
+        setItinerary(INITIAL_ITINERARY_DATA);
+      }
+    }).catch(() => {
+      const saved = localStorage.getItem('cm_itinerary_backup');
+      if (saved) setItinerary(JSON.parse(saved));
+    }).finally(() => {
+      setTimeout(() => { setIsLoadingData(false); }, 800);
+    });
+
+    unsubscribeConnected = onValue(connectedRef, (snap) => {
+      const connected = snap.val();
+      setIsFirebaseConnected(connected === true);
+      isConnectedRef.current = (connected === true);
+    });
+
+    unsubscribeItinerary = onValue(itineraryRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) { setItinerary(data); localStorage.setItem('cm_itinerary_backup', JSON.stringify(data)); setIsLoadingData(false); }
+    });
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        setTimeout(() => { if (!isConnectedRef.current) { goOffline(db); setTimeout(() => goOnline(db), 300); } }, 500);
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      if (unsubscribeItinerary) unsubscribeItinerary();
+      if (unsubscribeConnected) unsubscribeConnected();
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, []);
+
+  useEffect(() => {
+    onValue(ref(db, 'appVersion'), (snap) => { if (snap.val()) setAppVersion(snap.val()); });
+    onValue(ref(db, 'systemInfo'), (snap) => { if (snap.val()) setSystemInfo(snap.val()); });
+    onValue(ref(db, 'noticeBoard'), (snap) => { if (snap.val() !== null) setNoticeText(snap.val()); else setNoticeText('📌 點擊編輯公佈欄，記錄重要資訊'); });
+  }, []);
+
+  const updateFirebase = (newItinerary) => {
+    setItinerary(newItinerary);
+    set(ref(db, 'itinerary'), newItinerary).catch(() => alert("雲端同步失敗 🛜"));
+  };
+
+  const handleUpdateNotice = (newText) => { setNoticeText(newText); set(ref(db, 'noticeBoard'), newText); };
+  const updateSystemInfo = (newText) => { setSystemInfo(newText); set(ref(db, 'systemInfo'), newText); };
+  const handleUpdateVersion = (newVal) => { setAppVersion(newVal); set(ref(db, 'appVersion'), newVal); };
+
+  const handleContentUpdate = (dayNum, locIndex, field, value) => {
+    const newItinerary = [...itinerary];
+    const dayData = newItinerary.find((d) => d.day === dayNum);
+    if (dayData && dayData.locations[locIndex]) { dayData.locations[locIndex][field] = value; updateFirebase(newItinerary); }
+  };
+
+  const handleTimeUpdate = (dayNum, locIndex, newTime) => {
+    const newItinerary = [...itinerary];
+    const dayData = newItinerary.find((d) => d.day === dayNum);
+    if (dayData && dayData.locations[locIndex]) { dayData.locations[locIndex].time = newTime; updateFirebase(newItinerary); }
+  };
+
+  const handleAddLocation = (dayNum) => {
+    const newItinerary = [...itinerary];
+    const dayData = newItinerary.find((d) => d.day === dayNum);
+    if (dayData) { dayData.locations.push({ imageId: '', type: 'sight', time: '00:00', name: '新行程', note: '請編輯內容', desc: '', nav: '', difficulty: '中' }); updateFirebase(newItinerary); }
+  };
+
+  const handleDeleteLocation = (dayNum, locIndex) => {
+    if (!window.confirm('確定要刪除這個行程嗎？')) return;
+    const newItinerary = [...itinerary];
+    const dayData = newItinerary.find((d) => d.day === dayNum);
+    if (dayData) { dayData.locations.splice(locIndex, 1); updateFirebase(newItinerary); }
+  };
+
+  const handleMoveLocation = (dayNum, locIndex, direction) => {
+    const newItinerary = [...itinerary];
+    const dayData = newItinerary.find((d) => d.day === dayNum);
+    if (dayData) {
+      const newIndex = locIndex + direction;
+      if (newIndex >= 0 && newIndex < dayData.locations.length) {
+        const temp = dayData.locations[locIndex]; dayData.locations[locIndex] = dayData.locations[newIndex]; dayData.locations[newIndex] = temp; updateFirebase(newItinerary);
+      }
+    }
+  };
+
+  useEffect(() => {
+    let lastShakeTime = 0;
+    const handleShake = (e) => {
+      const acc = e.accelerationIncludingGravity || e.acceleration;
+      if (!acc) return;
+      const total = Math.abs(acc.x) + Math.abs(acc.y) + Math.abs(acc.z);
+      if (total > 22) {
+        const now = Date.now();
+        if (now - lastShakeTime > 1500) { setShakeCount(1); lastShakeTime = now; return; }
+        if (now - lastShakeTime < 300) return;
+        lastShakeTime = now;
+        setShakeCount((prev) => {
+          const newCount = prev + 1;
+          if (newCount >= 8) { setShowShakeEgg(true); return 0; }
+          return newCount;
+        });
+      }
+    };
+    window.addEventListener('devicemotion', handleShake);
+    return () => window.removeEventListener('devicemotion', handleShake);
+  }, []);
+
+  useEffect(() => {
+    const handleStart = (clientX, clientY) => { touchStartRef.current = { x: clientX, y: clientY }; };
+    const handleEnd = (clientX, clientY) => {
+      const diffX = clientX - touchStartRef.current.x; const diffY = clientY - touchStartRef.current.y;
+      if (Math.abs(diffX) < 30 && Math.abs(diffY) < 30) return;
+      let direction = Math.abs(diffX) > Math.abs(diffY) ? (diffX > 0 ? 'right' : 'left') : (diffY > 0 ? 'down' : 'up');
+      setKonamiSequence((prev) => [...prev, direction].slice(-4));
+    };
+    const onTouchStart = (e) => handleStart(e.touches[0].clientX, e.touches[0].clientY);
+    const onTouchEnd = (e) => handleEnd(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
+    window.addEventListener('touchstart', onTouchStart); window.addEventListener('touchend', onTouchEnd);
+    return () => { window.removeObserver('touchstart', onTouchStart); window.removeEventListener('touchend', onTouchEnd); };
+  }, []);
+
+  useEffect(() => {
+    if (konamiSequence.join(' ') === 'up down left right') {
+      setIsKonamiActive((prev) => { alert(!prev ? '🌟 隱藏三麗鷗模式啟動！' : '關閉隱藏模式 👋'); return !prev; }); setKonamiSequence([]);
+    }
+  }, [konamiSequence]);
+
+  const handleUnlock = () => {
+    if (typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function') { DeviceMotionEvent.requestPermission().catch(console.error); }
+    const encodedInput = btoa(inputPwd);
+    const validCodes = ['ODY4Njc3MDg=', 'MTMxNDUyMA==', 'ODg4OA=='];
+    if (validCodes.includes(encodedInput)) { localStorage.setItem('isUnlocked', 'true'); localStorage.setItem('userRole', encodedInput); }
+    if (encodedInput === 'ODY4Njc3MDg=') { setIsAdmin(true); setIsMember(true); setIsUnlocking(true); setTimeout(() => setIsLocked(false), 800); }
+    else if (encodedInput === 'MTMxNDUyMA==') { setIsAdmin(false); setIsMember(true); setIsUnlocking(true); setTimeout(() => setIsLocked(false), 800); }
+    else if (encodedInput === 'ODg4OA==') { setIsAdmin(false); setIsMember(false); setIsUnlocking(true); setTimeout(() => setIsLocked(false), 800); }
+    else { alert('密碼錯誤！🔒'); setInputPwd(''); }
+  };
+
   return (
-    <div className={`${darkMode ? 'dark' : ''}`}>
+    <div className={darkMode ? 'dark' : ''}>
       <style>
         {`
           @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Playfair+Display:ital,wght@1,700&display=swap');
@@ -1444,92 +1886,136 @@ export default function TravelApp() {
           .no-scrollbar::-webkit-scrollbar { display: none; }
           @media print {
             #main-app-container { display: none !important; }
-            #print-zone { display: block !important; }
+            #print-zone { display: block !important; background: white !important; }
           }
         `}
       </style>
+      <div className={`min-h-screen font-sans text-stone-800 dark:text-stone-100 max-w-md mx-auto relative overflow-hidden ${isLocked ? 'bg-stone-900' : 'bg-[#FDFBF7] dark:bg-stone-900'}`}>
+        <div className="fixed inset-0 z-[9999] bg-stone-900 text-white flex-col items-center justify-center hidden landscape:flex"><Phone size={48} className="animate-pulse mb-4" /><p className="text-lg font-bold">請將手機轉為直向</p></div>
 
-      <div className="min-h-screen font-sans text-stone-800 dark:text-stone-100 max-w-md mx-auto bg-[#FDFBF7] dark:bg-stone-900">
-        <div id="main-app-container">
-          <WeatherHero
-            isAdmin={true}
-            itinerary={itinerary}
-            setItinerary={setItinerary}
-            versionText={appVersion}
-            updateVersion={(val) => setAppVersion(val)}
-            showSecret={showSecret}
-            onLock={() => alert("系統鎖定")}
-            onHardRefresh={() => window.location.reload()}
-          />
+        {/* 門鎖畫面 */}
+        {isLocked && (
+          <div className="fixed inset-0 z-[100] flex justify-center bg-stone-900 h-screen w-full">
+            <div className="relative w-full max-w-md h-full flex flex-col items-center">
+              <div className={`absolute top-0 left-0 w-1/2 h-full transition-transform duration-1000 ease-in-out ${isUnlocking ? '-translate-x-full' : 'translate-x-0'}`} style={{ backgroundImage: `url(${JUNGLE_BG})`, backgroundSize: '200% 120%', backgroundPosition: 'left center' }}><div className="absolute inset-0 bg-black/20"></div></div>
+              <div className={`absolute top-0 right-0 w-1/2 h-full transition-transform duration-1000 ease-in-out ${isUnlocking ? 'translate-x-full' : 'translate-x-0'}`} style={{ backgroundImage: `url(${JUNGLE_BG})`, backgroundSize: '200% 120%', backgroundPosition: 'right center' }}><div className="absolute inset-0 bg-black/20"></div></div>
+              <div className={`relative z-10 flex flex-col items-center w-full px-8 h-full pt-40 transition-opacity duration-500 ${isUnlocking ? 'opacity-0' : 'opacity-100'}`}>
+                <div onMouseDown={()=>pressTimerRef.current=setTimeout(()=>setShowHelloKitty(true),2000)} onMouseUp={()=>clearTimeout(pressTimerRef.current)} className="bg-white/20 p-6 rounded-full mb-6 shadow-2xl backdrop-blur-md cursor-pointer animate-pulse"><HelpCircle size={40} className="text-white" /></div>
+                <h2 className="text-3xl font-serif font-bold mb-1 text-white">Kyushu 2026</h2>
+                <p className="text-emerald-100 text-sm mb-2 text-center tracking-widest font-bold">佑任・軒寶・學弟・腳慢</p>
+                <p className="text-emerald-200/60 text-[10px] uppercase font-bold text-center mb-6">{systemInfo}</p>
+                <button onClick={()=>window.location.reload()} className="absolute top-12 right-6 p-2 rounded-full bg-white/10 text-white/50"><RefreshCw size={20} /></button>
+                <form className="w-full relative mb-6 mt-auto" onSubmit={(e)=>{e.preventDefault(); handleUnlock();}}>
+                  <div className="relative"><KeyRound size={18} className="absolute left-4 top-4 text-emerald-100" /><input type="password" value={inputPwd} onChange={(e)=>setInputPwd(e.target.value)} placeholder="Passcode" className="w-full bg-white/20 border border-white/30 rounded-2xl pl-12 pr-12 py-3.5 text-lg text-emerald-100 text-center font-bold" /></div>
+                  <button type="submit" className="w-full mt-6 bg-emerald-600 text-white font-bold py-3.5 rounded-2xl shadow-lg shadow-emerald-900/40" style={{ marginBottom: 'calc(60px + env(safe-area-inset-bottom))' }}>Start Journey <ArrowRight size={18} className="inline ml-1"/></button>
+                </form>
+              </div>
+              {showHelloKitty && <div onClick={()=>setShowHelloKitty(false)} className="absolute inset-0 z-50 flex items-center justify-center bg-black/80 animate-fadeIn p-8"><div className="bg-[#FFF0F5] p-6 rounded-3xl text-center"><p className="text-pink-400 font-bold">Surprise! 🎉 系統檢測正常！</p></div></div>}
+            </div>
+          </div>
+        )}
 
-          <main className="pb-28">
-            {activeTab === 'itinerary' && (
-              <div className="pb-4">
-                <OutfitGuide />
-                <div className="p-4 mt-2">
-                  {itinerary.map((day, idx) => (
-                    <DayCard
-                      key={day.day}
-                      dayData={day}
-                      isOpen={openDay === idx}
-                      toggle={() => setOpenDay(openDay === idx ? -1 : idx)}
-                      isAdmin={true}
-                      updateTime={(d, l, t) => console.log(d, l, t)}
-                      updateContent={() => {}}
-                      onAdd={() => {}}
-                      onDelete={() => {}}
-                      onMove={() => {}}
-                    />
-                  ))}
-                </div>
-                <FloatingStatus itinerary={itinerary} />
+        {/* 解鎖主畫面 */}
+        {!isLocked && (
+          <>
+            {isLoadingData ? (
+              <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#FDFBF7] dark:bg-stone-900"><Loader2 size={48} className="text-amber-500 animate-spin mb-4" /><p className="text-stone-500 text-sm font-bold tracking-widest animate-pulse">正在同步獨立雲端行程...</p></div>
+            ) : (
+              <div id="main-app-container" className="bg-[#FDFBF7] dark:bg-stone-900 min-h-screen">
+                <WeatherHero
+                  isAdmin={isAdmin}
+                  itinerary={itinerary}
+                  setItinerary={setItinerary}
+                  versionText={appVersion}
+                  updateVersion={handleUpdateVersion}
+                  showSecret={showSecret}
+                  onLock={() => { setIsLocked(true); setIsUnlocking(false); setInputPwd(''); setIsAdmin(false); setIsMember(false); localStorage.removeItem('isUnlocked'); }}
+                  onHardRefresh={()=>window.location.reload()}
+                />
+                <main className="pb-28">
+                  {activeTab === 'itinerary' && (
+                    <div className="pb-4">
+                      <OutfitGuide />
+                      <div className="p-4 mt-2">
+                        {itinerary.map((day, idx) => (
+                          <DayCard
+                            key={day.day}
+                            dayData={day}
+                            isOpen={openDay === idx}
+                            toggle={() => setOpenDay(openDay === idx ? -1 : idx)}
+                            isAdmin={isAdmin}
+                            updateTime={handleTimeUpdate}
+                            updateContent={handleContentUpdate}
+                            onAdd={() => handleAddLocation(day.day)}
+                            onDelete={(locIdx) => handleDeleteLocation(day.day, locIdx)}
+                            onMove={(locIdx, dir) => handleMoveLocation(day.day, locIdx, dir)}
+                          />
+                        ))}
+                        <div className="text-center text-xs text-stone-400 mt-12 mb-4 font-serif italic">— Journey to Kyushu —</div>
+                        <div className="flex justify-center mb-8"><button onClick={() => window.print()} className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-stone-200 text-[10px] font-bold text-stone-400 shadow-sm"><FileText size={10} /> 匯出 PDF 精裝行程</button></div>
+                      </div>
+                      <FloatingStatus itinerary={itinerary} />
+                    </div>
+                  )}
+
+                  {activeTab === 'packing' && (
+                    <PackingPage isKonamiActive={isKonamiActive} isAdmin={isAdmin} isMember={isMember} onSecretTrigger={handleSecretTrigger} />
+                  )}
+
+                  {activeTab === 'guide' && (
+                    <GuidePage isAdmin={isAdmin} isMember={isMember} noticeText={noticeText} updateNoticeText={handleUpdateNotice} />
+                  )}
+
+                  {activeTab === 'utils' && (
+                    <div>
+                      <div className="px-6 pt-6">
+                        <div className="flex items-center justify-between bg-white dark:bg-stone-800 p-4 rounded-2xl border">
+                          <div className="flex items-center gap-2 font-bold">{darkMode ? <Sun size={18} className="text-amber-400"/> : <CloudRain size={18} className="text-stone-400"/>}<span>{darkMode ? '深色模式 (On)' : '淺色模式 (Off)'}</span></div>
+                          <button onClick={() => setDarkMode(!darkMode)} className={`w-12 h-6 rounded-full p-1 ${darkMode ? 'bg-amber-500' : 'bg-stone-300'}`}><div className={`w-4 h-4 rounded-full bg-white shadow-sm transition-transform ${darkMode ? 'translate-x-6' : 'translate-x-0'}`} /></button>
+                        </div>
+                      </div>
+                      <UtilsPage isAdmin={isAdmin} isMember={isMember} systemInfo={systemInfo} updateSystemInfo={updateSystemInfo} />
+                    </div>
+                  )}
+                </main>
+                <BackToTop />
+                {showShakeEgg && <div onClick={() => setShowShakeEgg(false)} className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-8"><div className="bg-[#FFF0F5] p-6 rounded-3xl text-center"><p className="text-pink-500 font-bold">🍀 搖出驚喜！祝全團九州生存戰大順利！</p></div></div>}
+
+                {/* 底部功能列 */}
+                <nav className="fixed bottom-0 w-full max-w-md bg-white/90 dark:bg-stone-900/90 backdrop-blur-lg border-t flex justify-around py-3 pb-4 z-40 select-none">
+                  <button onClick={() => setActiveTab('itinerary')} className={`flex flex-col items-center gap-1.5 ${activeTab === 'itinerary' ? 'text-stone-800 dark:text-stone-100' : 'text-stone-400'}`}><MapPin size={20} /><span className="text-[10px] font-bold">行程</span></button>
+                  <button onClick={() => setActiveTab('packing')} className={`flex flex-col items-center gap-1.5 ${activeTab === 'packing' ? 'text-stone-800 dark:text-stone-100' : 'text-stone-400'}`}><CheckCircle size={20} /><span className="text-[10px] font-bold">準備</span></button>
+                  <button onClick={() => setActiveTab('guide')} className={`flex flex-col items-center gap-1.5 ${activeTab === 'guide' ? 'text-stone-800 dark:text-stone-100' : 'text-stone-400'}`}><Compass size={20} /><span className="text-[10px] font-bold">指南</span></button>
+                  <button onClick={() => setActiveTab('utils')} className={`flex flex-col items-center gap-1.5 ${activeTab === 'utils' ? 'text-stone-800 dark:text-stone-100' : 'text-stone-400'}`}><Wallet size={20} /><span className="text-[10px] font-bold">工具</span></button>
+                </nav>
               </div>
             )}
 
-            {activeTab === 'packing' && (
-              <PackingPage isKonamiActive={false} isAdmin={true} isMember={true} onSecretTrigger={handleSecretTrigger} />
-            )}
-
-            {activeTab === 'guide' && (
-              <GuidePage isAdmin={true} noticeText={noticeText} updateNoticeText={(txt) => setNoticeText(txt)} />
-            )}
-
-            {activeTab === 'utils' && (
-              <div>
-                <div className="px-6 pt-6">
-                  <div className="flex items-center justify-between bg-white dark:bg-stone-800 p-4 rounded-2xl shadow-sm border border-stone-100">
-                    <span className="font-bold">深色主題界面</span>
-                    <button onClick={() => setDarkMode(!darkMode)} className={`w-12 h-6 rounded-full p-1 transition-colors ${darkMode ? 'bg-amber-500' : 'bg-stone-300'}`}>
-                      <div className={`w-4 h-4 rounded-full bg-white shadow-sm transition-transform ${darkMode ? 'translate-x-6' : 'translate-x-0'}`} />
-                    </button>
-                  </div>
+            {/* 精裝列印專區 */}
+            <div id="print-zone" className="hidden print:block bg-white text-stone-900 p-10">
+              <h1 className="text-3xl font-serif font-bold border-b-2 border-amber-500 pb-4 mb-8 text-center">KYUSHU SURVIVAL 2026<br/><span className="text-sm text-stone-400 font-sans tracking-widest uppercase">Nagasaki & Saga Itinerary</span></h1>
+              {itinerary.map((day) => (
+                <div key={day.day} className="mb-12 page-break-inside-avoid">
+                  <div className="flex items-baseline gap-3 mb-4 border-b pb-1"><span className="text-4xl font-serif font-bold text-amber-600">D{day.day}</span><span className="text-lg font-bold text-stone-800">{day.displayDate} - {day.title}</span></div>
+                  <table className="w-full text-left border-collapse">
+                    <tbody>
+                      {day.locations.map((loc, idx) => (
+                        <tr key={idx} className="align-top border-b border-stone-50">
+                          <td className="py-4 pr-4 font-mono font-bold text-xs text-stone-500 w-16">{loc.time}</td>
+                          <td className="py-4">
+                            <div className="font-bold text-stone-800 text-sm mb-0.5">{loc.name}</div>
+                            <div className="text-[11px] text-amber-700 font-bold mb-1">{loc.note}</div>
+                            <div className="text-[10px] text-stone-500 leading-relaxed">{loc.desc}</div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
-                <UtilsPage isAdmin={true} systemInfo={systemInfo} updateSystemInfo={(txt) => setSystemInfo(txt)} />
-              </div>
-            )}
-          </main>
-
-          <BackToTop />
-
-          <nav className="fixed bottom-0 w-full max-w-md bg-white/90 dark:bg-stone-900/90 backdrop-blur-lg border-t flex justify-around py-3 pb-4 z-40">
-            <button onClick={() => setActiveTab('itinerary')} className={`flex flex-col items-center gap-1.5 ${activeTab === 'itinerary' ? 'text-stone-800 dark:text-stone-100' : 'text-stone-400'}`}>
-              <MapPin size={20} />
-              <span className="text-[10px] font-bold">行程</span>
-            </button>
-            <button onClick={() => setActiveTab('packing')} className={`flex flex-col items-center gap-1.5 ${activeTab === 'packing' ? 'text-stone-800 dark:text-stone-100' : 'text-stone-400'}`}>
-              <CheckCircle size={20} />
-              <span className="text-[10px] font-bold">準備</span>
-            </button>
-            <button onClick={() => setActiveTab('guide')} className={`flex flex-col items-center gap-1.5 ${activeTab === 'guide' ? 'text-stone-800 dark:text-stone-100' : 'text-stone-400'}`}>
-              <Compass size={20} />
-              <span className="text-[10px] font-bold">指南</span>
-            </button>
-            <button onClick={() => setActiveTab('utils')} className={`flex flex-col items-center gap-1.5 ${activeTab === 'utils' ? 'text-stone-800 dark:text-stone-100' : 'text-stone-400'}`}>
-              <Wallet size={20} />
-              <span className="text-[10px] font-bold">工具</span>
-            </button>
-          </nav>
-        </div>
+              ))}
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
