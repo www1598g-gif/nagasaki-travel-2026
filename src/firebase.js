@@ -2,7 +2,7 @@
 import { initializeApp } from "firebase/app";
 import { getDatabase } from "firebase/database";
 
-// 👇 下面這一串要換成你剛剛在 Firebase 網站上申請的喔！
+// 👇 下面這一串要換成你剛剛在 Firebase  網站上申請的喔！
 // Your web app's Firebase configuration
 // Your web app's Firebase configuration
 
