@@ -519,7 +519,7 @@ const INITIAL_ITINERARY_DATA = [
     ],
   },
 ];
-const USERS = ['佑任', '軒寶', '學弟', '腳慢'];
+const USERS = ['佑任', '軒寶', '阿歪', '黃蔓'];
 
 
 const DEFAULT_ITEMS = [
@@ -765,8 +765,10 @@ try {
           setItinerary(updatedItinerary);
         }
 
-        const nowInJp = new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Tokyo" }));
-        const currentHourInJp = nowInJp.getHours();
+        
+        const currentHourInJp = parseInt(
+  new Intl.DateTimeFormat("en-US", { timeZone: "Asia/Tokyo", hour: "numeric", hour12: false }).format(new Date()), 10
+);
         const next3HoursRain = json.hourly.precipitation_probability.slice(currentHourInJp, currentHourInJp + 3);
         const maxRainProb = Math.max(...next3HoursRain);
 
@@ -846,9 +848,10 @@ const getAqiColor = (val) => {
 
   const getNext24Hours = () => {
     if (!data || !data.hourly || !data.hourly.time) return [];
-    const now = new Date();
-    const jpTimeStr = now.toLocaleString("en-US", { timeZone: "Asia/Tokyo" });
-    const currentHourIndex = new Date(jpTimeStr).getHours();
+    
+    const currentHourIndex = parseInt(
+  new Intl.DateTimeFormat("en-US", { timeZone: "Asia/Tokyo", hour: "numeric", hour12: false }).format(new Date()), 10
+);
     const startIndex = currentHourIndex + 1; 
     const endIndex = startIndex + 24;        
 
@@ -894,7 +897,7 @@ const getAqiColor = (val) => {
           <div className="flex-1 min-w-0 mr-4">
             <div className="flex items-center gap-2 mb-2">
               <span className="px-2.5 py-1 bg-amber-100 dark:bg-stone-800 text-amber-900 dark:text-amber-400 text-[10px] font-bold tracking-wider rounded-full whitespace-nowrap">
-                佑任・軒寶・學弟・腳慢
+                佑任・軒寶・阿歪・黃蔓
               </span>
 
               {isAdmin ? (
@@ -1723,11 +1726,11 @@ const PackingPage = ({ isKonamiActive, isAdmin, isMember, onSecretTrigger }) => 
   const CHARACTER_MAP = {
     佑任: process.env.PUBLIC_URL + '/sanrio/img_rank1.png',
     軒寶: process.env.PUBLIC_URL + '/sanrio/hellokitty.png',
-    學弟: process.env.PUBLIC_URL + '/sanrio/img_rank2.png',
-    腳慢: process.env.PUBLIC_URL + '/sanrio/mymelody2.png',
+    阿歪: process.env.PUBLIC_URL + '/sanrio/img_rank2.png',
+    黃蔓: process.env.PUBLIC_URL + '/sanrio/mymelody2.png',
   };
-  const STYLE_MAP = { 佑任: 'w-16 h-16 translate-y-4', 軒寶: 'w-14 h-14 translate-y-1', 學弟: 'w-24 h-24 translate-y-8', 腳慢: 'w-30 h-30 translate-y-7' };
-  const HEADER_ICON_STYLE = { 佑任: 'w-9 h-9', 軒寶: 'w-9 h-9', 學弟: 'w-16 h-16 -my-4 ml-1', 腳慢: 'w-14 h-14 -my-3 ml-1' };
+  const STYLE_MAP = { 佑任: 'w-16 h-16 translate-y-4', 軒寶: 'w-14 h-14 translate-y-1', 阿歪: 'w-24 h-24 translate-y-8', 黃蔓: 'w-30 h-30 translate-y-7' };
+  const HEADER_ICON_STYLE = { 佑任: 'w-9 h-9', 軒寶: 'w-9 h-9', 阿歪: 'w-16 h-16 -my-4 ml-1', 黃蔓: 'w-14 h-14 -my-3 ml-1' };
 
   useEffect(() => {
     const saved = localStorage.getItem('cm_packing_list_v2');
@@ -2086,7 +2089,7 @@ export default function TravelApp() {
               <div className={`relative z-10 flex flex-col items-center w-full px-8 h-full pt-40 transition-opacity duration-500 ${isUnlocking ? 'opacity-0' : 'opacity-100'}`}>
                 <div onMouseDown={()=>pressTimerRef.current=setTimeout(()=>setShowHelloKitty(true),2000)} onMouseUp={()=>clearTimeout(pressTimerRef.current)} className="bg-white/20 p-6 rounded-full mb-6 shadow-2xl backdrop-blur-md cursor-pointer animate-pulse"><HelpCircle size={40} className="text-white" /></div>
                 <h2 className="text-3xl font-serif font-bold mb-1 text-white">Kyushu 2026</h2>
-                <p className="text-emerald-100 text-sm mb-2 text-center tracking-widest font-bold">佑任・軒寶・學弟・腳慢</p>
+                <p className="text-emerald-100 text-sm mb-2 text-center tracking-widest font-bold">佑任・軒寶・阿歪・黃蔓</p>
                 <p className="text-emerald-200/60 text-[10px] uppercase font-bold text-center mb-6">{systemInfo}</p>
                 <button onClick={()=>window.location.reload()} className="absolute top-12 right-6 p-2 rounded-full bg-white/10 text-white/50"><RefreshCw size={20} /></button>
                 <form className="w-full relative mb-6 mt-auto" onSubmit={(e)=>{e.preventDefault(); handleUnlock();}}>
