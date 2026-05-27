@@ -958,7 +958,8 @@ const getAqiColor = (val) => {
         {data && nextHours.length > 0 && (
           <div className="bg-white/80 dark:bg-stone-800/80 backdrop-blur-sm rounded-2xl p-4 border border-stone-100 dark:border-stone-700 shadow-sm">
             <div className="flex items-center">
-              <div className="text-[10px] font-bold text-stone-400 writing-vertical-rl border-l pl-3 mr-3 border-stone-200 h-10 flex items-center justify-center tracking-widest flex-shrink-0">FUTURE 24H</div>
+              <div className="text-[10px] font-bold text-stone-400 writing-vertical-rl border-l pl-3 mr-3 border-stone-200 dark:border-stone-600 h-10 flex items-center justify-center tracking-widest flex-shrink-0"
+>FUTURE 24H</div>
               <div className="flex overflow-x-auto gap-4 pb-2 w-full no-scrollbar" style={{ scrollbarWidth: 'none' }}>
                 {nextHours.map((h, idx) => (
                   <div key={idx} className="flex flex-col items-center gap-1 min-w-[3.5rem] flex-shrink-0">
@@ -1081,15 +1082,15 @@ const OutfitGuide = () => {
         <h3 className="flex items-center gap-2 font-serif font-bold text-amber-900 dark:text-amber-500 text-base mb-3">🦵 爛腳指數說明</h3>
         <div className="grid grid-cols-1 gap-2 text-xs">
           <div className="flex items-center gap-3 bg-white dark:bg-stone-700 p-2 rounded-lg border border-emerald-100">
-            <span className="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded font-bold">低 / 零</span>
+            <span className="bg-emerald-100 dark:bg-emerald-900 text-emerald-700 dark:text-emerald-300 px-2 py-0.5 rounded font-bold whitespace-nowrap">低 / 零</span>
             <span className="text-stone-600 dark:text-stone-300">全程坐車、特急列車、環境舒適。</span>
           </div>
           <div className="flex items-center gap-3 bg-white dark:bg-stone-700 p-2 rounded-lg border border-amber-100">
-            <span className="bg-amber-100 text-amber-800 px-2 py-0.5 rounded font-bold">中</span>
+            <span className="bg-amber-100 dark:bg-amber-900 text-amber-800 dark:text-amber-300 px-2 py-0.5 rounded font-bold whitespace-nowrap">中</span>
             <span className="text-stone-600 dark:text-stone-300">一般步道景點參拜、有微斜坡、出島石板路。</span>
           </div>
           <div className="flex items-center gap-3 bg-white dark:bg-stone-700 p-2 rounded-lg border border-rose-100">
-            <span className="bg-rose-100 text-rose-700 px-2 py-0.5 rounded font-bold">高 / 極高</span>
+            <span className="bg-rose-100 dark:bg-rose-900 text-rose-700 dark:text-rose-300 px-2 py-0.5 rounded font-bold whitespace-nowrap">高 / 極高</span>
             <span className="text-stone-600 dark:text-stone-300">軍艦島廢墟爬坡、5.5小時連續血拼大戰。</span>
           </div>
         </div>
@@ -1189,7 +1190,7 @@ const LocationCard = ({ item, day, index, isAdmin, updateTime, updateContent, on
             </div>
           </div>
 
-          <div className="p-5 bg-stone-50/50 dark:bg-stone-800/50">
+          <div className="p-5 bg-stone-50/50">
             <div className="mb-5">
               <h4 className="text-xs font-bold text-amber-700 mb-2 flex items-center gap-1.5 uppercase tracking-wider"><Info size={12} /> 導遊作戰故事環境</h4>
               {isAdmin ? (
@@ -1198,7 +1199,7 @@ const LocationCard = ({ item, day, index, isAdmin, updateTime, updateContent, on
                   <div className="flex items-center gap-2 bg-white p-2 border rounded-lg"><span className="text-xs font-bold text-stone-400">導航搜尋:</span><input type="text" value={item.nav || ''} onChange={(e) => updateContent('nav', e.target.value)} className="flex-1 text-xs focus:outline-none" placeholder="Google Maps 關鍵字" /></div>
                 </div>
               ) : (
-                <p className="text-sm text-stone-600 dark:text-stone-300 leading-relaxed text-justify whitespace-pre-line font-medium">{item.desc || '暫無詳細介紹，但這裡絕對值得一去！'}</p>
+                <p className="text-sm text-stone-600 leading-relaxed text-justify whitespace-pre-line font-medium">{item.desc || '暫無詳細介紹，但這裡絕對值得一去！'}</p>
               )}
             </div>
 
@@ -1211,7 +1212,7 @@ const LocationCard = ({ item, day, index, isAdmin, updateTime, updateContent, on
               </button>
             </div>
             {isAdmin && (
-              <div className="mt-4 pt-3 border-t flex justify-between items-center">
+              <div className="mt-4 pt-3 border-t border-stone-200 flex justify-between items-center">
                 <div className="flex gap-2">
                   <button onClick={(e) => { e.stopPropagation(); onMoveUp(); }} disabled={isFirst} className="p-2 bg-white border rounded-lg shadow-sm">⬆️</button>
                   <button onClick={(e) => { e.stopPropagation(); onMoveDown(); }} disabled={isLast} className="p-2 bg-white border rounded-lg shadow-sm">⬇️</button>
@@ -1258,13 +1259,13 @@ const DayCard = ({ dayData, isOpen, toggle, isAdmin, updateTime, updateContent, 
     <div ref={cardRef} className="mb-3 px-2">
       <div onClick={toggle} className={`relative flex items-center justify-between p-5 rounded-2xl cursor-pointer transition-all duration-300 ${isOpen ? 'bg-stone-800 text-stone-50 shadow-xl scale-[1.02]' : 'bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 shadow-sm border border-stone-100'}`}>
         <div className="flex items-center gap-4">
-          <div className={`flex flex-col items-center justify-center w-12 h-12 rounded-xl border ${isOpen ? 'bg-stone-700 border-stone-600' : 'bg-stone-50 dark:bg-stone-700'}`}>
+          <div className={`flex flex-col items-center justify-center w-12 h-12 rounded-xl border ${isOpen ? 'bg-stone-700 border-stone-600' : 'bg-stone-50 dark:bg-stone-700 border-stone-200 dark:border-stone-600'}`}>
             <span className="text-[10px] font-bold text-stone-400 uppercase">Day</span>
-            <span className={`text-xl font-serif font-bold ${isOpen ? 'text-amber-400' : 'text-stone-800'}`}>{dayData.day}</span>
+            <span className={`text-xl font-serif font-bold ${isOpen ? 'text-amber-400' : 'text-stone-800 dark:text-amber-400'}`}>{dayData.day}</span>
           </div>
           <div>
             <div className="text-xs font-bold mb-0.5 text-stone-400">{dayData.displayDate}</div>
-            <div className="font-bold text-lg leading-tight truncate max-w-[210px]">{dayData.title}</div>
+            <div className="font-bold text-lg leading-tight">{dayData.title}</div>
           </div>
         </div>
         <div className="text-right">
@@ -1309,37 +1310,61 @@ const DayCard = ({ dayData, isOpen, toggle, isAdmin, updateTime, updateContent, 
   );
 };
 
-const FlightCard = ({ type, date, flightNo, time, airline, from, to, fromCode, toCode, fromTerminal, toTerminal }) => (
-  <div className="bg-white dark:bg-stone-800 rounded-2xl p-4 border border-stone-100 shadow-sm mb-3 relative overflow-hidden">
-    <div className="relative z-10">
-      <div className="flex justify-between items-center mb-4">
-        <span className={`px-2 py-1 rounded text-[10px] font-bold tracking-wider ${type === '去程' ? 'bg-amber-100 text-amber-800' : 'bg-stone-100 text-stone-600'}`}>{type}</span>
-        <span className="text-xs font-bold text-stone-400">{date}</span>
-      </div>
-      <div className="flex justify-between items-center mb-4">
-        <div className="text-center min-w-[3rem]">
-          <div className="text-2xl font-bold text-stone-800 dark:text-stone-100 leading-none mb-1">{from}</div>
-          <span className="text-[10px] text-stone-400 font-bold tracking-widest">{fromCode}</span>
-          {fromTerminal && <span className="block mt-1 text-[9px] text-white bg-amber-500 px-1 rounded">{fromTerminal}</span>}
+const FlightCard = ({ type, date, flightNo, time, airline, from, to, fromCode, toCode, fromTerminal, toTerminal }) => {
+  const searchUrl = `https://www.google.com/search?q=${flightNo}+flight+status`;
+
+  return (
+    <div className="bg-white dark:bg-stone-800 rounded-2xl p-4 border border-stone-100 dark:border-stone-700 shadow-sm mb-3 relative overflow-hidden transition-colors">
+      {/* 右上角裝飾圓圈 */}
+      <div className="absolute top-0 right-0 w-24 h-24 bg-stone-50 dark:bg-stone-700/50 rounded-bl-full -mr-4 -mt-4 z-0"></div>
+
+      <div className="relative z-10">
+        <div className="flex justify-between items-center mb-4">
+          <span className={`px-2 py-1 rounded text-[10px] font-bold tracking-wider ${type === '去程' ? 'bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-200' : 'bg-stone-100 dark:bg-stone-700 text-stone-600 dark:text-stone-300'}`}>{type}</span>
+          <span className="text-xs font-bold text-stone-400">{date}</span>
         </div>
-        <div className="flex-1 px-3 flex flex-col items-center">
-          <div className="text-xs font-bold text-stone-500 mb-2">{flightNo}</div>
-          <div className="w-full h-[2px] bg-stone-200 relative"><Plane size={14} className="text-stone-300 rotate-90 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-1" /></div>
-          <div className="text-xs font-bold text-stone-400 mt-2">{time}</div>
+
+        <div className="flex justify-between items-center mb-4">
+          <div className="text-center min-w-[3rem]">
+            <div className="text-2xl font-bold text-stone-800 dark:text-stone-100 leading-none mb-1">{from}</div>
+            <div className="flex flex-col items-center">
+              <span className="text-[10px] text-stone-400 font-bold tracking-widest">{fromCode}</span>
+              {fromTerminal && <span className="mt-1 text-[10px] font-bold text-white bg-amber-500 px-1.5 py-0.5 rounded shadow-sm">{fromTerminal}</span>}
+            </div>
+          </div>
+
+          <div className="flex-1 px-3 flex flex-col items-center">
+            <div className="text-xs font-bold text-stone-500 dark:text-stone-400 mb-2">{flightNo}</div>
+            <div className="w-full h-[2px] bg-stone-200 dark:bg-stone-600 relative">
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white dark:bg-stone-800 p-1">
+                <Plane size={14} className="text-stone-300 dark:text-stone-500 rotate-90" />
+              </div>
+            </div>
+            <div className="text-xs font-bold text-stone-400 mt-2 whitespace-nowrap">{time}</div>
+          </div>
+
+          <div className="text-center min-w-[3rem]">
+            <div className="text-2xl font-bold text-stone-800 dark:text-stone-100 leading-none mb-1">{to}</div>
+            <div className="flex flex-col items-center">
+              <span className="text-[10px] text-stone-400 font-bold tracking-widest">{toCode}</span>
+              {toTerminal && <span className="mt-1 text-[10px] font-bold text-white bg-stone-400 px-1.5 py-0.5 rounded shadow-sm">{toTerminal}</span>}
+            </div>
+          </div>
         </div>
-        <div className="text-center min-w-[3rem]">
-          <div className="text-2xl font-bold text-stone-800 dark:text-stone-100 leading-none mb-1">{to}</div>
-          <span className="text-[10px] text-stone-400 font-bold tracking-widest">{toCode}</span>
-          {toTerminal && <span className="block mt-1 text-[9px] text-white bg-stone-400 px-1 rounded">{toTerminal}</span>}
+
+        <div className="flex items-center justify-between pt-3 border-t border-stone-100 dark:border-stone-700">
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+            <span className="text-xs text-stone-500 dark:text-stone-400 font-medium">{airline}</span>
+          </div>
+          <a href={searchUrl} target="_blank" rel="noreferrer" className="flex items-center gap-1 text-xs font-bold text-blue-500 hover:text-blue-700 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-3 py-1.5 rounded-full transition-colors">
+            即時動態 <ArrowRight size={12} />
+          </a>
         </div>
-      </div>
-      <div className="flex items-center justify-between pt-3 border-t">
-        <span className="text-xs text-stone-500 font-medium">{airline}</span>
-        <a href={`https://www.google.com/search?q=${flightNo}+flight+status`} target="_blank" rel="noreferrer" className="text-xs font-bold text-blue-500 bg-blue-50 px-3 py-1.5 rounded-full flex items-center gap-1">即時動態 <ArrowRight size={12} /></a>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 const CurrencySection = ({ isAdmin, isMember }) => {
   const [rate, setRate] = useState(4.65);
@@ -1410,9 +1435,9 @@ const CurrencySection = ({ isAdmin, isMember }) => {
       <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-xl mb-6">
         <div className="text-[10px] text-green-600 font-bold mb-2 flex justify-between"><span>即時基準：1 TWD ≈ {rate} JPY</span><span>{lastUpdate}</span></div>
         <div className="flex items-center gap-2">
-          <input type="number" value={twd} onChange={(e) => { setTwd(e.target.value); setJpy(e.target.value ? (parseFloat(e.target.value) * rate).toFixed(0) : ''); }} placeholder="台幣" className="w-full p-2 rounded-lg border font-bold" />
+          <input type="number" value={twd} onChange={(e) => { setTwd(e.target.value); setJpy(e.target.value ? (parseFloat(e.target.value) * rate).toFixed(0) : ''); }} placeholder="台幣" className="w-full p-2 rounded-lg border border-green-200 dark:border-green-800 dark:bg-stone-700 dark:text-white outline-none focus:border-green-500 font-bold text-stone-700" />
           <span className="text-stone-400 font-bold">=</span>
-          <input type="number" value={jpy} onChange={(e) => { setJpy(e.target.value); setTwd(e.target.value ? (parseFloat(e.target.value) / rate).toFixed(1) : ''); }} placeholder="日幣" className="w-full p-2 rounded-lg border font-bold" />
+          <input type="number" value={jpy} onChange={(e) => { setJpy(e.target.value); setTwd(e.target.value ? (parseFloat(e.target.value) / rate).toFixed(1) : ''); }} placeholder="日幣" className="w-full p-2 rounded-lg border border-green-200 dark:border-green-800 dark:bg-stone-700 dark:text-white outline-none focus:border-green-500 font-bold text-stone-700" />
         </div>
       </div>
       <div className="space-y-2">
@@ -1783,15 +1808,26 @@ const PackingPage = ({ isKonamiActive, isAdmin, isMember, onSecretTrigger }) => 
           <div className="h-1.5 w-full bg-stone-200 rounded-full mb-6 overflow-hidden"><div className="h-full bg-amber-500 transition-all duration-500" style={{ width: `${getProgress(currentUser)}%` }} /></div>
           {(isAdmin || isMember) && (
             <div className="mb-6 flex gap-2">
-              <input type="text" value={newItem} onChange={(e)=>setNewItem(e.target.value)} placeholder="自訂行李項目..." className="flex-1 p-3 rounded-xl border bg-white" onKeyPress={(e)=>e.key==='Enter'&&addItem()} />
+              <input type="text" value={newItem} onChange={(e)=>setNewItem(e.target.value)} placeholder="自訂行李項目..." className="flex-1 p-3 rounded-xl border border-stone-200 dark:border-stone-700 focus:outline-none focus:border-amber-500 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-100 shadow-sm placeholder:text-stone-400" onKeyPress={(e)=>e.key==='Enter'&&addItem()} />
               <button onClick={addItem} className="bg-stone-800 text-amber-50 px-5 rounded-xl font-bold">+</button>
             </div>
           )}
           <div className="space-y-3">
             {packingData[currentUser]?.map((item, idx) => (
-              <div key={idx} onClick={()=>toggleItem(currentUser, idx)} className={`flex items-center gap-3 p-4 rounded-xl border ${item.checked ? 'bg-stone-100 opacity-60' : 'bg-white shadow-sm'}`}>
-                <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${item.checked ? 'bg-green-500 border-green-500 text-white' : 'border-stone-300'}`}>{item.checked && <CheckCircle size={14} />}</div>
-                <span className={`flex-1 text-sm ${item.checked ? 'line-through text-stone-400' : 'text-stone-700'}`}>{item.name}</span>
+              <div key={idx} onClick={()=>toggleItem(currentUser, idx)} className={`flex items-center gap-3 p-4 rounded-xl border transition-all cursor-pointer
+  ${item.checked
+    ? 'bg-stone-100 dark:bg-stone-800/50 border-transparent opacity-60'
+    : 'bg-white dark:bg-stone-800 border-stone-100 dark:border-stone-700 shadow-sm hover:shadow-md'
+  }`}>
+                <div className={`w-6 h-6 rounded-full flex items-center justify-center border-2 transition-colors flex-shrink-0
+  ${item.checked
+    ? 'bg-green-500 border-green-500 text-white'
+    : 'border-stone-300 dark:border-stone-600 bg-stone-50 dark:bg-stone-700'
+  }`}>{item.checked && <CheckCircle size={14} />}</div>
+                <span className={`flex-1 font-medium ${item.checked
+  ? 'text-stone-400 dark:text-stone-600 line-through decoration-stone-400'
+  : 'text-stone-700 dark:text-stone-200'
+}`}>{item.name}</span>
                 {(isAdmin || isMember) && <button onClick={(e)=>{e.stopPropagation(); deleteItem(idx);}} className="text-stone-300 hover:text-red-400">×</button>}
               </div>
             ))}
