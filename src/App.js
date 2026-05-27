@@ -690,7 +690,36 @@ const WeatherHero = ({ isAdmin, versionText, updateVersion, onLock, showSecret, 
       const json = await res.json();
 
       let currentAqi = 15;
-      let aqiSource = 'Open-Meteo';
+let aqiSource = 'default';
+
+try {
+  const waqiRes = await fetch(
+    'https://api.waqi.info/feed/nagasaki/?token=6a1feb1b93b9f182f5ace9c2ffc8fdfc0e6e61c2'
+  );
+  const waqiData = await waqiRes.json();
+
+  if (waqiData.status === 'ok' && waqiData.data?.aqi) {
+    currentAqi = waqiData.data.aqi;
+    aqiSource = 'WAQI';
+  } else {
+    throw new Error('WAQI API 回應異常');
+  }
+} catch (waqiError) {
+  console.warn('⚠️ WAQI 失敗，切換到 IQAir 備援...');
+  try {
+    const iqairRes = await fetch(
+      'https://api.airvisual.com/v2/nearest_city?lat=32.7503&lon=129.8777&key=4743d035-1b8f-4a42-9ddf-66dee64f8b8a'
+    );
+    const iqairData = await iqairRes.json();
+    if (iqairData.status === 'success' && iqairData.data?.current?.pollution) {
+      currentAqi = iqairData.data.current.pollution.aqius;
+      aqiSource = 'IQAir';
+    }
+  } catch (iqairError) {
+    console.error('❌ 全部失敗，使用預設值');
+    aqiSource = 'N/A';
+  }
+}
 
       const cacheData = {
         weather: json,
@@ -745,6 +774,9 @@ const WeatherHero = ({ isAdmin, versionText, updateVersion, onLock, showSecret, 
         if (maxRainProb > 40) {
           newAlerts.push({ type: 'rain', msg: `🌧️ 局部降雨機率 ${maxRainProb}%，攜帶雨具較安全！` });
         }
+        if (currentAqi > 100) { // ← 補回這段
+  newAlerts.push({ type: 'aqi', msg: `😷 AQI 數值偏高，戶外請戴口罩。` });
+}
         setAlerts(newAlerts);
       }
     } catch (e) {
@@ -804,10 +836,13 @@ const WeatherHero = ({ isAdmin, versionText, updateVersion, onLock, showSecret, 
     return <CloudSun size={size} className="text-amber-400" strokeWidth={2.5} />;
   };
 
-  const getAqiColor = (val) => {
-    if (val <= 50) return 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900 dark:text-emerald-300';
-    return 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300';
-  };
+  // 修復後（泰國版四段）
+const getAqiColor = (val) => {
+  if (val <= 50)  return 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900 dark:text-emerald-300';
+  if (val <= 100) return 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300';
+  if (val <= 150) return 'bg-orange-100 text-orange-700 dark:bg-orange-900 dark:text-orange-300';
+  return 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300';
+};
 
   const getNext24Hours = () => {
     if (!data || !data.hourly || !data.hourly.time) return [];
@@ -1337,11 +1372,20 @@ const CurrencySection = ({ isAdmin, isMember }) => {
   }, []);
 
   useEffect(() => {
-    const exRef = ref(db, 'exchanges');
-    const unsubscribe = onValue(exRef, (snapshot) => {
-      const val = snapshot.val();
-      if (val !== null) { setExchanges(val); } 
-      else {
+  const exRef = ref(db, 'exchanges');
+  const unsubscribe = onValue(exRef, (snapshot) => {
+    const val = snapshot.val();
+    if (val !== null) {
+      setExchanges(val);
+      localStorage.setItem('cm_exchanges_list', JSON.stringify(val)); // ← 燒錄本地備份
+    } else {
+      // B. 雲端是 null，先查本地有沒有存過
+      const cachedEx = localStorage.getItem('cm_exchanges_list');
+      if (cachedEx) {
+        // 本地有 → 用本地的，不重新初始化（防復活）
+        setExchanges(JSON.parse(cachedEx));
+      } else {
+        // 本地也沒有 → 才真正初始化
         const defaultExchanges = [
           { name: '佐賀港/長崎站 大黑屋', note: '🔥 在地連鎖老字號換匯所連線', map: '長崎 大黒屋' },
           { name: '7-11 ATM 提領', note: '👍 外國回饋卡海外提款最無腦便利', map: '長崎駅 セブン-イレブン' }
@@ -1349,9 +1393,10 @@ const CurrencySection = ({ isAdmin, isMember }) => {
         set(exRef, defaultExchanges);
         setExchanges(defaultExchanges);
       }
-    });
-    return () => unsubscribe();
-  }, []);
+    }
+  });
+  return () => unsubscribe();
+}, []);
 
   const handleAddEx = () => {
     if (!newExName.trim()) return;
@@ -1422,10 +1467,31 @@ const GuidePage = ({ isAdmin, isMember, noticeText, updateNoticeText }) => {
   ];
 
   const guideSections = [
-    { title: '和牛美食地圖', icon: <UtensilsCrossed className="text-red-600"/>, desc: '長崎 A5 特選和牛、長崎強棒麵、在地三瀨雞居酒屋。', color: 'bg-red-50 border-red-100 dark:bg-stone-800' },
-    { title: '老宅浪漫喫茶店', icon: <Coffee className="text-amber-600"/>, desc: '走訪 1946 年創業的珈琲冨士男，品味傳奇雞蛋三明治。', color: 'bg-amber-50 border-amber-100 dark:bg-stone-800' },
-    { title: '購物主戰場免稅', icon: <ShoppingBag className="text-blue-600"/>, desc: '濱町觀光通、3COINS plus、海鷗市場等完美無中斷血拼。', color: 'bg-blue-50 border-blue-100 dark:bg-stone-800' }
-  ];
+  { 
+    title: '和牛美食地圖', 
+    icon: <UtensilsCrossed className="text-red-600"/>, 
+    desc: '長崎 A5 特選和牛、長崎強棒麵、在地三瀨雞居酒屋。', 
+    color: 'bg-red-50 border-red-100 dark:bg-stone-800',
+    mapUrl: 'https://maps.app.goo.gl/nagasaki-food',  // ← 補上你的實際連結
+    aiQuery: '長崎和牛美食推薦2026 以中文回答'
+  },
+  { 
+    title: '老宅浪漫喫茶店', 
+    icon: <Coffee className="text-amber-600"/>, 
+    desc: '走訪 1946 年創業的珈琲冨士男，品味傳奇雞蛋三明治。', 
+    color: 'bg-amber-50 border-amber-100 dark:bg-stone-800',
+    mapUrl: 'https://maps.app.goo.gl/nagasaki-cafe',
+    aiQuery: '長崎老宅喫茶店推薦2026 以中文回答'
+  },
+  { 
+    title: '購物主戰場免稅', 
+    icon: <ShoppingBag className="text-blue-600"/>, 
+    desc: '濱町觀光通、3COINS plus、海鷗市場等完美無中斷血拼。', 
+    color: 'bg-blue-50 border-blue-100 dark:bg-stone-800',
+    mapUrl: 'https://maps.app.goo.gl/nagasaki-shopping',
+    aiQuery: '長崎購物免稅推薦2026 以中文回答'
+  }
+];
 
   return (
     <div className="p-6 space-y-6 pb-24 animate-fadeIn">
@@ -1479,13 +1545,30 @@ const GuidePage = ({ isAdmin, isMember, noticeText, updateNoticeText }) => {
       </section>
 
       <div className="grid grid-cols-1 gap-4">
-        {guideSections.map((section, idx) => (
-          <div key={idx} className={`p-5 rounded-[2rem] border ${section.color} shadow-sm`}>
-            <div className="flex items-center gap-3 mb-3"><div className="p-2.5 bg-white rounded-2xl shadow-sm">{section.icon}</div><h3 className="text-lg font-bold text-stone-800 dark:text-stone-100">{section.title}</h3></div>
-            <p className="text-[11px] text-stone-500 mb-5">{section.desc}</p>
-          </div>
-        ))}
+  {guideSections.map((section, idx) => (
+    <div key={idx} className={`p-5 rounded-[2rem] border ${section.color} shadow-sm`}>
+      <div className="flex items-center gap-3 mb-3">
+        <div className="p-2.5 bg-white rounded-2xl shadow-sm">{section.icon}</div>
+        <h3 className="text-lg font-bold text-stone-800 dark:text-stone-100">{section.title}</h3>
       </div>
+      <p className="text-[11px] text-stone-500 mb-5">{section.desc}</p>
+      <div className="grid grid-cols-2 gap-3">
+        <button
+          onClick={() => window.open(section.mapUrl, '_blank')}
+          className="flex items-center justify-center gap-2 py-2.5 bg-stone-800 text-amber-50 rounded-2xl text-xs font-bold shadow-md active:scale-95"
+        >
+          <MapPin size={14} /> 開啟清單
+        </button>
+        <button
+          onClick={() => window.open(`https://www.perplexity.ai/search?q=${encodeURIComponent('長崎 ' + section.aiQuery)}`, '_blank')}
+          className="flex items-center justify-center gap-2 py-2.5 bg-white border border-stone-200 text-stone-700 rounded-2xl text-xs font-bold shadow-sm active:scale-95"
+        >
+          <Sparkles size={14} className="text-teal-500" /> 問問 AI
+        </button>
+      </div>
+    </div>
+  ))}
+</div>
 
       <section className="bg-[#FEF3C7] dark:bg-stone-800 p-6 rounded-[2.5rem] border-2 border-amber-300">
         <div className="flex items-center gap-2 mb-5 text-amber-900 dark:text-amber-400 font-black text-sm tracking-wider"><Sparkles size={16} /> 團員私藏好店許願池</div>
@@ -1562,37 +1645,52 @@ const TippingGuide = () => (
   </section>
 );
 
-const KyushuTips = ({ onTrigger }) => (
-  <div className="mx-6 mt-6 mb-6">
-    <div className="bg-amber-50 dark:bg-stone-800 rounded-2xl border border-amber-100 overflow-hidden shadow-sm">
-      <button className="w-full flex items-center justify-between p-4 bg-amber-100/50 text-amber-900 dark:text-amber-100 font-bold">
-        <div className="flex items-center gap-2"><AlertCircle size={18} className="text-amber-600" /> <span>2026 九州作戰天候防範禁忌</span></div>
-      </button>
-      <div className="p-4 space-y-4 text-sm text-stone-700 dark:text-stone-300 leading-relaxed">
-        <div className="flex gap-3 bg-white dark:bg-stone-700 p-3 rounded-xl border">
-          <div className="min-w-[24px] text-amber-600 font-bold mt-1"><Zap size={18} /></div>
-          <div>
-            <strong className="text-stone-900 dark:text-stone-100 block mb-1">行動電源攜帶鐵律</strong>
-            <ul className="list-disc pl-4 text-xs text-stone-500">
-              <li>手提行動電源<span className="text-red-600 font-bold">絕對嚴禁託運</span>，必須隨身攜帶。</li>
-              <li>依虎航/大眾航空最新規範，嚴禁放置於頭頂置物櫃，必須放在前方座位下方。</li>
-            </ul>
+const KyushuTips = ({ onTrigger }) => {
+  const [isOpen, setIsOpen] = useState(true); // ← 加回 state
+
+  return (
+    <div className="mx-6 mt-6 mb-6">
+      <div className="bg-amber-50 dark:bg-stone-800 rounded-2xl border border-amber-100 overflow-hidden shadow-sm">
+        <button
+          onClick={() => setIsOpen(!isOpen)} // ← 加回 onClick
+          className="w-full flex items-center justify-between p-4 bg-amber-100/50 text-amber-900 dark:text-amber-100 font-bold hover:bg-amber-100 transition-colors"
+        >
+          <div className="flex items-center gap-2">
+            <AlertCircle size={18} className="text-amber-600" />
+            <span>2026 九州作戰天候防範禁忌</span>
           </div>
-        </div>
-        <div className="flex gap-3" onClick={onTrigger}>
-          <div className="min-w-[24px] text-green-600 font-bold cursor-pointer select-none active:scale-95"><AlertTriangle size={18} /></div>
-          <div className="cursor-pointer select-none">
-            <strong className="text-stone-900 dark:text-stone-100 block">軍艦島風浪備對策</strong>
-            <p className="text-xs text-stone-500">若 Day 3 上午因外海浪大導致船隻無法登島，立刻啟動備案改往出島深度慢遊，並彈性調整稻佐山夜景期。當天全團嚴禁吃早餐防劇烈嘔吐！</p>
+          {isOpen ? <ChevronUp size={18} /> : <ChevronDown size={18} />} {/* ← 加回箭頭 */}
+        </button>
+
+        {isOpen && ( // ← 加回條件渲染
+          <div className="p-4 space-y-4 text-sm text-stone-700 dark:text-stone-300 leading-relaxed bg-amber-50 dark:bg-stone-800 transition-colors">
+            {/* 內容完全不動 */}
+            <div className="flex gap-3 bg-white dark:bg-stone-700 p-3 rounded-xl border">
+              <div className="min-w-[24px] text-amber-600 font-bold mt-1"><Zap size={18} /></div>
+              <div>
+                <strong className="text-stone-900 dark:text-stone-100 block mb-1">行動電源攜帶鐵律</strong>
+                <ul className="list-disc pl-4 text-xs text-stone-500">
+                  <li>手提行動電源<span className="text-red-600 font-bold">絕對嚴禁託運</span>，必須隨身攜帶。</li>
+                  <li>依虎航/大眾航空最新規範，嚴禁放置於頭頂置物櫃，必須放在前方座位下方。</li>
+                </ul>
+              </div>
+            </div>
+            <div className="flex gap-3" onClick={onTrigger}>
+              <div className="min-w-[24px] text-green-600 font-bold cursor-pointer select-none active:scale-95"><AlertTriangle size={18} /></div>
+              <div className="cursor-pointer select-none">
+                <strong className="text-stone-900 dark:text-stone-100 block">軍艦島風浪備對策</strong>
+                <p className="text-xs text-stone-500">若 Day 3 上午因外海浪大導致船隻無法登島，立刻啟動備案改往出島深度慢遊，並彈性調整稻佐山夜景期。當天全團嚴禁吃早餐防劇烈嘔吐！</p>
+              </div>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 const PackingPage = ({ isKonamiActive, isAdmin, isMember, onSecretTrigger }) => {
-  const [currentUser, setCurrentUser] = useState('佑任');
+  const [currentUser, setCurrentUser] = useState(null);
   const [packingData, setPackingData] = useState({});
   const [newItem, setNewItem] = useState('');
   const [showToast, setShowToast] = useState(false);
@@ -1676,7 +1774,7 @@ const PackingPage = ({ isKonamiActive, isAdmin, isMember, onSecretTrigger }) => 
           ))}
         </div>
       </div>
-      {currentUser && (
+      {currentUser ? (
         <div className="px-6 animate-fadeIn">
           <div className="flex justify-between items-end mb-4">
             <h2 className="text-2xl font-serif font-bold flex items-center gap-2">{currentUser} 的打包清單 {isKonamiActive && <img src={CHARACTER_MAP[currentUser]} className={HEADER_ICON_STYLE[currentUser]} alt="icon"/>}</h2>
@@ -1699,7 +1797,11 @@ const PackingPage = ({ isKonamiActive, isAdmin, isMember, onSecretTrigger }) => 
             ))}
           </div>
         </div>
-      )}
+      ) : (
+  <div className="px-10 py-20 text-center text-stone-400 dark:text-stone-600">
+    <p className="text-sm">👆 請先點選上方按鈕<br/>開啟專屬清單<br/>(此處有彩蛋喔~提示:上下左右)</p>
+  </div>
+)}
     </div>
   );
 };
@@ -1975,7 +2077,7 @@ export default function TravelApp() {
                   versionText={appVersion}
                   updateVersion={handleUpdateVersion}
                   showSecret={showSecret}
-                  onLock={() => { setIsLocked(true); setIsUnlocking(false); setInputPwd(''); setIsAdmin(false); setIsMember(false); localStorage.removeItem('isUnlocked'); }}
+                  onLock={() => { setIsLocked(true); setIsUnlocking(false); setInputPwd(''); setIsAdmin(false); setIsMember(false); localStorage.removeItem('isUnlocked');localStorage.removeItem('userRole'); }}
                   onHardRefresh={()=>window.location.reload()}
                 />
                 <main className="pb-28">
