@@ -66,11 +66,11 @@ import { db } from "./firebase"; // ⚠️ 前提：你要先建立 firebase.js 
 const LotusIcon = ({ className }) => (
   <svg
     viewBox="0 0 24 24"
-    fill="none"               
-    stroke="currentColor"     
-    strokeWidth="1.5"         
-    strokeLinecap="round"     
-    strokeLinejoin="round"    
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
     className={className}
   >
     {/* 中央花瓣 */}
@@ -631,7 +631,8 @@ const UTILS_DATA = {
   ],
   emergency: '日本警察通報: 110 \n火災/救護車: 119 \n台北駐日經濟文化代表處(福岡辦事處): +81-92-734-2810',
   notes: '🔥 2月是泰國燒山季，但我們六月在九州！注意防雨防海風。\n🚗 右駕左行，長崎山路多斜坡。',
-  driveUrl: 'https://drive.google.com/open?id=1m7g3a4Ocau6h2zmlYNQgcClBC0lH9nhghg_yV-mhvVA',
+  driveUrl: 'https://drive.google.com/drive/folders/1B7hzB79vrlLWe1-N7gOxVJrVRK9ho87i?usp=sharing',
+
 };
 
 // ============================================
@@ -644,7 +645,7 @@ const WeatherHero = ({ isAdmin, versionText, updateVersion, onLock, showSecret, 
   const [bannerText, setBannerText] = useState('');
   const [lastUpdate, setLastUpdate] = useState('');
   const [alerts, setAlerts] = useState([]);
-  const [isLoading, setIsLoading] = useState(false); 
+  const [isLoading, setIsLoading] = useState(false);
   const [secretLinks, setSecretLinks] = useState([]);
   const [newLinkName, setNewLinkName] = useState('');
   const [newLinkUrl, setNewLinkUrl] = useState('');
@@ -681,7 +682,7 @@ const WeatherHero = ({ isAdmin, versionText, updateVersion, onLock, showSecret, 
   };
 
   const fetchWeather = async () => {
-    setIsLoading(true); 
+    setIsLoading(true);
     try {
       // 🎯 自動切換為日本長崎座標 (緯度 32.7503, 經度 129.8777, 日本東京時區)
       const res = await fetch(
@@ -690,36 +691,36 @@ const WeatherHero = ({ isAdmin, versionText, updateVersion, onLock, showSecret, 
       const json = await res.json();
 
       let currentAqi = 15;
-let aqiSource = 'default';
+      let aqiSource = 'default';
 
-try {
-  const waqiRes = await fetch(
-    'https://api.waqi.info/feed/nagasaki/?token=6a1feb1b93b9f182f5ace9c2ffc8fdfc0e6e61c2'
-  );
-  const waqiData = await waqiRes.json();
+      try {
+        const waqiRes = await fetch(
+          'https://api.waqi.info/feed/nagasaki/?token=6a1feb1b93b9f182f5ace9c2ffc8fdfc0e6e61c2'
+        );
+        const waqiData = await waqiRes.json();
 
-  if (waqiData.status === 'ok' && waqiData.data?.aqi) {
-    currentAqi = waqiData.data.aqi;
-    aqiSource = 'WAQI';
-  } else {
-    throw new Error('WAQI API 回應異常');
-  }
-} catch (waqiError) {
-  console.warn('⚠️ WAQI 失敗，切換到 IQAir 備援...');
-  try {
-    const iqairRes = await fetch(
-      'https://api.airvisual.com/v2/nearest_city?lat=32.7503&lon=129.8777&key=4743d035-1b8f-4a42-9ddf-66dee64f8b8a'
-    );
-    const iqairData = await iqairRes.json();
-    if (iqairData.status === 'success' && iqairData.data?.current?.pollution) {
-      currentAqi = iqairData.data.current.pollution.aqius;
-      aqiSource = 'IQAir';
-    }
-  } catch (iqairError) {
-    console.error('❌ 全部失敗，使用預設值');
-    aqiSource = 'N/A';
-  }
-}
+        if (waqiData.status === 'ok' && waqiData.data?.aqi) {
+          currentAqi = waqiData.data.aqi;
+          aqiSource = 'WAQI';
+        } else {
+          throw new Error('WAQI API 回應異常');
+        }
+      } catch (waqiError) {
+        console.warn('⚠️ WAQI 失敗，切換到 IQAir 備援...');
+        try {
+          const iqairRes = await fetch(
+            'https://api.airvisual.com/v2/nearest_city?lat=32.7503&lon=129.8777&key=4743d035-1b8f-4a42-9ddf-66dee64f8b8a'
+          );
+          const iqairData = await iqairRes.json();
+          if (iqairData.status === 'success' && iqairData.data?.current?.pollution) {
+            currentAqi = iqairData.data.current.pollution.aqius;
+            aqiSource = 'IQAir';
+          }
+        } catch (iqairError) {
+          console.error('❌ 全部失敗，使用預設值');
+          aqiSource = 'N/A';
+        }
+      }
 
       const cacheData = {
         weather: json,
@@ -737,7 +738,7 @@ try {
         if (json.daily && json.daily.time) {
           const forecastDates = json.daily.time;
           const maxTemps = json.daily.temperature_2m_max;
-          const weatherCodes = json.daily.weather_code; 
+          const weatherCodes = json.daily.weather_code;
 
           const updatedItinerary = itinerary.map((day) => {
             const dateIndex = forecastDates.indexOf(day.date);
@@ -747,7 +748,7 @@ try {
               if (code >= 51) {
                 iconStr = 'rainy';
               } else if ((code >= 1 && code <= 3) || code === 45 || code === 48) {
-                iconStr = 'cloudy'; 
+                iconStr = 'cloudy';
               }
 
               return {
@@ -755,7 +756,7 @@ try {
                 weather: {
                   ...day.weather,
                   temp: `${Math.round(maxTemps[dateIndex])}°C`,
-                  icon: iconStr, 
+                  icon: iconStr,
                   realData: true,
                 }
               };
@@ -765,10 +766,10 @@ try {
           setItinerary(updatedItinerary);
         }
 
-        
+
         const currentHourInJp = parseInt(
-  new Intl.DateTimeFormat("en-US", { timeZone: "Asia/Tokyo", hour: "numeric", hour12: false }).format(new Date()), 10
-);
+          new Intl.DateTimeFormat("en-US", { timeZone: "Asia/Tokyo", hour: "numeric", hour12: false }).format(new Date()), 10
+        );
         const next3HoursRain = json.hourly.precipitation_probability.slice(currentHourInJp, currentHourInJp + 3);
         const maxRainProb = Math.max(...next3HoursRain);
 
@@ -777,8 +778,8 @@ try {
           newAlerts.push({ type: 'rain', msg: `🌧️ 局部降雨機率 ${maxRainProb}%，攜帶雨具較安全！` });
         }
         if (currentAqi > 100) { // ← 補回這段
-  newAlerts.push({ type: 'aqi', msg: `😷 AQI 數值偏高，戶外請戴口罩。` });
-}
+          newAlerts.push({ type: 'aqi', msg: `😷 AQI 數值偏高，戶外請戴口罩。` });
+        }
         setAlerts(newAlerts);
       }
     } catch (e) {
@@ -787,10 +788,10 @@ try {
         const cache = JSON.parse(saved);
         setData(cache.weather);
         setAqi(cache.aqi);
-        setLastUpdate(`${cache.time} (Offline)`); 
+        setLastUpdate(`${cache.time} (Offline)`);
       }
     } finally {
-      setIsLoading(false); 
+      setIsLoading(false);
     }
   };
 
@@ -798,7 +799,7 @@ try {
     const calcTime = () => {
       const now = new Date();
       const jpTimeStr = now.toLocaleString("en-US", { timeZone: "Asia/Tokyo" });
-      const nowInJp = new Date(jpTimeStr); 
+      const nowInJp = new Date(jpTimeStr);
 
       const startDate = new Date('2026-06-16T00:00:00'); // 改為 6/16 出發
       const endDate = new Date('2026-06-21T23:59:59');   // 6/21 結束
@@ -822,7 +823,7 @@ try {
     calcTime();
     const timer = setInterval(calcTime, 60000);
     fetchWeather();
-    const weatherTimer = setInterval(fetchWeather, 20 * 60 * 1000); 
+    const weatherTimer = setInterval(fetchWeather, 20 * 60 * 1000);
 
     return () => {
       clearInterval(timer);
@@ -839,21 +840,21 @@ try {
   };
 
   // 修復後（泰國版四段）
-const getAqiColor = (val) => {
-  if (val <= 50)  return 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900 dark:text-emerald-300';
-  if (val <= 100) return 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300';
-  if (val <= 150) return 'bg-orange-100 text-orange-700 dark:bg-orange-900 dark:text-orange-300';
-  return 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300';
-};
+  const getAqiColor = (val) => {
+    if (val <= 50) return 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900 dark:text-emerald-300';
+    if (val <= 100) return 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300';
+    if (val <= 150) return 'bg-orange-100 text-orange-700 dark:bg-orange-900 dark:text-orange-300';
+    return 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300';
+  };
 
   const getNext24Hours = () => {
     if (!data || !data.hourly || !data.hourly.time) return [];
-    
+
     const currentHourIndex = parseInt(
-  new Intl.DateTimeFormat("en-US", { timeZone: "Asia/Tokyo", hour: "numeric", hour12: false }).format(new Date()), 10
-);
-    const startIndex = currentHourIndex + 1; 
-    const endIndex = startIndex + 24;        
+      new Intl.DateTimeFormat("en-US", { timeZone: "Asia/Tokyo", hour: "numeric", hour12: false }).format(new Date()), 10
+    );
+    const startIndex = currentHourIndex + 1;
+    const endIndex = startIndex + 24;
 
     return data.hourly.time.slice(startIndex, endIndex).map((t, i) => ({
       time: t.split('T')[1].slice(0, 5),
@@ -961,8 +962,8 @@ const getAqiColor = (val) => {
         {data && nextHours.length > 0 && (
           <div className="bg-white/80 dark:bg-stone-800/80 backdrop-blur-sm rounded-2xl p-4 border border-stone-100 dark:border-stone-700 shadow-sm">
             <div className="flex items-center">
-              <div className="text-[10px] font-bold text-stone-400 writing-vertical-rl border-l pl-3 mr-3 border-stone-200 dark:border-stone-600 h-10 flex items-center justify-center tracking-widest flex-shrink-0"
->FUTURE 24H</div>
+              <div className="text-[10px] font-bold text-stone-400 writing-vertical-rl border-l pl-3 mr-3 border-stone-200 dark:border-stone-700 dark:border-stone-600 h-10 flex items-center justify-center tracking-widest flex-shrink-0"
+              >FUTURE 24H</div>
               <div className="flex overflow-x-auto gap-4 pb-2 w-full no-scrollbar" style={{ scrollbarWidth: 'none' }}>
                 {nextHours.map((h, idx) => (
                   <div key={idx} className="flex flex-col items-center gap-1 min-w-[3.5rem] flex-shrink-0">
@@ -978,7 +979,7 @@ const getAqiColor = (val) => {
         )}
         <button
           onClick={() => window.open(`https://www.perplexity.ai/search?q=${encodeURIComponent('長崎 佐賀 2026 6月中旬 必吃美食與私房景點 歷史文化深度介紹 也請納入日本在地Tabelog與小紅書評價 以中文回答')}`, '_blank')}
-          className="w-full mt-3 py-3 bg-white/90 dark:bg-stone-800/90 backdrop-blur-md border border-stone-200 rounded-2xl flex items-center justify-center gap-2 text-sm font-bold text-stone-600 dark:text-stone-200 active:scale-95 shadow-sm group"
+          className="w-full mt-3 py-3 bg-white/90 dark:bg-stone-800/90 backdrop-blur-md border border-stone-200 dark:border-stone-700 rounded-2xl flex items-center justify-center gap-2 text-sm font-bold text-stone-600 dark:text-stone-200 active:scale-95 shadow-sm group"
         >
           <Sparkles size={16} className="text-teal-500 group-hover:rotate-12 transition-transform" /> Ask AI (Perplexity 深度探索)
         </button>
@@ -996,7 +997,7 @@ const FloatingStatus = ({ itinerary }) => {
       const allStops = [];
 
       itinerary.forEach((day) => {
-        const dateStr = day.date; 
+        const dateStr = day.date;
         day.locations.forEach((loc) => {
           const timeMatch = loc.time.match(/(\d{1,2}):(\d{2})/);
           let stopTimeStr = `${dateStr}T23:59:00+09:00`; // 🎯 修正為日本時區 (+09:00)
@@ -1137,7 +1138,7 @@ const LocationCard = ({ item, day, index, isAdmin, updateTime, updateContent, on
   return (
     <div onClick={() => setIsExpanded(!isExpanded)} className={`bg-white dark:bg-stone-800 rounded-2xl border border-stone-100 dark:border-stone-700 mb-4 overflow-hidden transition-all duration-300 cursor-pointer ${isExpanded ? 'ring-2 ring-amber-100 shadow-md' : ''}`}>
       <div className="p-4 flex items-start gap-4">
-        <div className="mt-1 flex-shrink-0 w-8 h-8 rounded-full bg-stone-50 flex items-center justify-center border border-stone-100">{getIcon()}</div>
+        <div className="mt-1 flex-shrink-0 w-8 h-8 rounded-full bg-stone-50 flex items-center justify-center borderborder-stone-100 dark:border-stone-700">{getIcon()}</div>
         <div className="flex-1 min-w-0">
           <div className="flex flex-wrap items-center gap-2 mb-1.5">
             {isAdmin ? (
@@ -1187,7 +1188,7 @@ const LocationCard = ({ item, day, index, isAdmin, updateTime, updateContent, on
               {isAdmin && (
                 <div className="flex flex-col gap-1 bg-black/40 p-2 rounded-lg" onClick={(e) => e.stopPropagation()}>
                   <input className="bg-white/90 text-stone-800 text-[10px] w-full px-2 py-1 rounded" value={item.imageId || ''} onChange={(e) => updateContent('imageId', e.target.value)} placeholder="貼上網址..." />
-                  <label className="bg-amber-500 text-white text-[9px] px-2 py-1 rounded cursor-pointer w-max"><Upload size={10} className="inline mr-1"/>上傳照片<input type="file" accept="image/*" className="hidden" onChange={handleFileUpload} /></label>
+                  <label className="bg-amber-500 text-white text-[9px] px-2 py-1 rounded cursor-pointer w-max"><Upload size={10} className="inline mr-1" />上傳照片<input type="file" accept="image/*" className="hidden" onChange={handleFileUpload} /></label>
                 </div>
               )}
             </div>
@@ -1215,7 +1216,7 @@ const LocationCard = ({ item, day, index, isAdmin, updateTime, updateContent, on
               </button>
             </div>
             {isAdmin && (
-              <div className="mt-4 pt-3 border-t border-stone-200 flex justify-between items-center">
+              <div className="mt-4 pt-3 border-t border-stone-200 dark:border-stone-700 flex justify-between items-center">
                 <div className="flex gap-2">
                   <button onClick={(e) => { e.stopPropagation(); onMoveUp(); }} disabled={isFirst} className="p-2 bg-white border rounded-lg shadow-sm">⬆️</button>
                   <button onClick={(e) => { e.stopPropagation(); onMoveDown(); }} disabled={isLast} className="p-2 bg-white border rounded-lg shadow-sm">⬇️</button>
@@ -1260,7 +1261,7 @@ const DayCard = ({ dayData, isOpen, toggle, isAdmin, updateTime, updateContent, 
 
   return (
     <div ref={cardRef} className="mb-3 px-2">
-      <div onClick={toggle} className={`relative flex items-center justify-between p-5 rounded-2xl cursor-pointer transition-all duration-300 ${isOpen ? 'bg-stone-800 text-stone-50 shadow-xl scale-[1.02]' : 'bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 shadow-sm border border-stone-100'}`}>
+      <div onClick={toggle} className={`relative flex items-center justify-between p-5 rounded-2xl cursor-pointer transition-all duration-300 ${isOpen ? 'bg-stone-800 text-stone-50 shadow-xl scale-[1.02]' : 'bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 shadow-sm borderborder-stone-100 dark:border-stone-700'}`}>
         <div className="flex items-center gap-4">
           <div className={`flex flex-col items-center justify-center w-12 h-12 rounded-xl border ${isOpen ? 'bg-stone-700 border-stone-600' : 'bg-stone-50 dark:bg-stone-700 border-stone-200 dark:border-stone-600'}`}>
             <span className="text-[10px] font-bold text-stone-400 uppercase">Day</span>
@@ -1400,31 +1401,31 @@ const CurrencySection = ({ isAdmin, isMember }) => {
   }, []);
 
   useEffect(() => {
-  const exRef = ref(db, 'exchanges');
-  const unsubscribe = onValue(exRef, (snapshot) => {
-    const val = snapshot.val();
-    if (val !== null) {
-      setExchanges(val);
-      localStorage.setItem('cm_exchanges_list', JSON.stringify(val)); // ← 燒錄本地備份
-    } else {
-      // B. 雲端是 null，先查本地有沒有存過
-      const cachedEx = localStorage.getItem('cm_exchanges_list');
-      if (cachedEx) {
-        // 本地有 → 用本地的，不重新初始化（防復活）
-        setExchanges(JSON.parse(cachedEx));
+    const exRef = ref(db, 'exchanges');
+    const unsubscribe = onValue(exRef, (snapshot) => {
+      const val = snapshot.val();
+      if (val !== null) {
+        setExchanges(val);
+        localStorage.setItem('cm_exchanges_list', JSON.stringify(val)); // ← 燒錄本地備份
       } else {
-        // 本地也沒有 → 才真正初始化
-        const defaultExchanges = [
-          { name: '佐賀港/長崎站 大黑屋', note: '🔥 在地連鎖老字號換匯所連線', map: '長崎 大黒屋' },
-          { name: '7-11 ATM 提領', note: '👍 外國回饋卡海外提款最無腦便利', map: '長崎駅 セブン-イレブン' }
-        ];
-        set(exRef, defaultExchanges);
-        setExchanges(defaultExchanges);
+        // B. 雲端是 null，先查本地有沒有存過
+        const cachedEx = localStorage.getItem('cm_exchanges_list');
+        if (cachedEx) {
+          // 本地有 → 用本地的，不重新初始化（防復活）
+          setExchanges(JSON.parse(cachedEx));
+        } else {
+          // 本地也沒有 → 才真正初始化
+          const defaultExchanges = [
+            { name: '佐賀港/長崎站 大黑屋', note: '🔥 在地連鎖老字號換匯所連線', map: '長崎 大黒屋' },
+            { name: '7-11 ATM 提領', note: '👍 外國回饋卡海外提款最無腦便利', map: '長崎駅 セブン-イレブン' }
+          ];
+          set(exRef, defaultExchanges);
+          setExchanges(defaultExchanges);
+        }
       }
-    }
-  });
-  return () => unsubscribe();
-}, []);
+    });
+    return () => unsubscribe();
+  }, []);
 
   const handleAddEx = () => {
     if (!newExName.trim()) return;
@@ -1433,7 +1434,7 @@ const CurrencySection = ({ isAdmin, isMember }) => {
   };
 
   return (
-    <section className="bg-white dark:bg-stone-800 p-6 rounded-2xl border border-stone-100 mb-6">
+    <section className="bg-white dark:bg-stone-800 p-6 rounded-2xl borderborder-stone-100 dark:border-stone-700 mb-6">
       <h3 className="flex items-center gap-2 font-bold text-stone-800 dark:text-stone-100 mb-4 border-b pb-3"><Wallet size={18} className="text-green-600" /> 匯率換算與動態換匯系統</h3>
       <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-xl mb-6">
         <div className="text-[10px] text-green-600 font-bold mb-2 flex justify-between"><span>即時基準：1 TWD ≈ {rate} JPY</span><span>{lastUpdate}</span></div>
@@ -1495,30 +1496,46 @@ const GuidePage = ({ isAdmin, isMember, noticeText, updateNoticeText }) => {
   ];
 
   const guideSections = [
-  { 
-    title: '和牛美食地圖', 
-    icon: <UtensilsCrossed className="text-red-600"/>, 
-    desc: '長崎 A5 特選和牛、長崎強棒麵、在地三瀨雞居酒屋。', 
-    color: 'bg-red-50 border-red-100 dark:bg-stone-800',
-    mapUrl: 'https://maps.app.goo.gl/nagasaki-food',  // ← 補上你的實際連結
-    aiQuery: '長崎和牛美食推薦2026 以中文回答'
-  },
-  { 
-    title: '老宅浪漫喫茶店', 
-    icon: <Coffee className="text-amber-600"/>, 
-    desc: '走訪 1946 年創業的珈琲冨士男，品味傳奇雞蛋三明治。', 
-    color: 'bg-amber-50 border-amber-100 dark:bg-stone-800',
+    {
+    title: '喫茶店地圖',
+    icon: <Coffee className="text-amber-600" />,
+    desc: '1946年創業珈琲冨士男、長崎老宅復古喫茶文化巡禮。',
+    color: 'bg-amber-50 border-amber-100 dark:bg-amber-900/20 dark:border-amber-800',
     mapUrl: 'https://maps.app.goo.gl/nagasaki-cafe',
     aiQuery: '長崎老宅喫茶店推薦2026 以中文回答'
   },
-  { 
-    title: '購物主戰場免稅', 
-    icon: <ShoppingBag className="text-blue-600"/>, 
-    desc: '濱町觀光通、3COINS plus、海鷗市場等完美無中斷血拼。', 
-    color: 'bg-blue-50 border-blue-100 dark:bg-stone-800',
+  {
+    title: '必吃清單',
+    icon: <UtensilsCrossed className="text-red-600" />,
+    desc: '長崎強棒麵、角煮饅頭、A5和牛燒肉，沒吃到不算來過長崎。',
+    color: 'bg-red-50 border-red-100 dark:bg-red-900/20 dark:border-red-800',
+    mapUrl: 'https://maps.app.goo.gl/nagasaki-food',
+    aiQuery: '長崎必吃美食推薦2026 以中文回答'
+  },
+  {
+    title: '甜點清單',
+    icon: <IceCream className="text-pink-600" />,
+    desc: '金箔五三燒長崎蛋糕、各式和菓子老鋪與網美咖啡甜點。',
+    color: 'bg-pink-50 border-pink-100 dark:bg-pink-900/20 dark:border-pink-800',
+    mapUrl: 'https://maps.app.goo.gl/nagasaki-sweets',
+    aiQuery: '長崎甜點推薦2026 以中文回答'
+  },
+  {
+    title: '微醺音樂酒吧',
+    icon: <Beer className="text-purple-600" />,
+    desc: '思案橋不夜城、出島 Wharf 海景居酒屋，長崎夜晚的靈魂。',
+    color: 'bg-purple-50 border-purple-100 dark:bg-purple-900/20 dark:border-purple-800',
+    mapUrl: 'https://maps.app.goo.gl/nagasaki-bar',
+    aiQuery: '長崎居酒屋酒吧推薦2026 以中文回答'
+  },
+  {
+    title: '購物商舖',
+    icon: <ShoppingBag className="text-blue-600" />,
+    desc: '濱町觀光通、3COINS plus、海鷗市場免稅血拼完全攻略。',
+    color: 'bg-blue-50 border-blue-100 dark:bg-blue-900/20 dark:border-blue-800',
     mapUrl: 'https://maps.app.goo.gl/nagasaki-shopping',
     aiQuery: '長崎購物免稅推薦2026 以中文回答'
-  }
+  },
 ];
 
   return (
@@ -1573,30 +1590,30 @@ const GuidePage = ({ isAdmin, isMember, noticeText, updateNoticeText }) => {
       </section>
 
       <div className="grid grid-cols-1 gap-4">
-  {guideSections.map((section, idx) => (
-    <div key={idx} className={`p-5 rounded-[2rem] border ${section.color} shadow-sm`}>
-      <div className="flex items-center gap-3 mb-3">
-        <div className="p-2.5 bg-white rounded-2xl shadow-sm">{section.icon}</div>
-        <h3 className="text-lg font-bold text-stone-800 dark:text-stone-100">{section.title}</h3>
+        {guideSections.map((section, idx) => (
+          <div key={idx} className={`p-5 rounded-[2rem] border ${section.color} shadow-sm`}>
+            <div className="flex items-center gap-3 mb-3">
+              <div className="p-2.5 bg-white rounded-2xl shadow-sm">{section.icon}</div>
+              <h3 className="text-lg font-bold text-stone-800 dark:text-stone-100">{section.title}</h3>
+            </div>
+            <p className="text-[11px] text-stone-500 mb-5">{section.desc}</p>
+            <div className="grid grid-cols-2 gap-3">
+              <button
+                onClick={() => window.open(section.mapUrl, '_blank')}
+                className="flex items-center justify-center gap-2 py-2.5 bg-stone-800 text-amber-50 rounded-2xl text-xs font-bold shadow-md active:scale-95"
+              >
+                <MapPin size={14} /> 開啟清單
+              </button>
+              <button
+                onClick={() => window.open(`https://www.perplexity.ai/search?q=${encodeURIComponent('長崎 ' + section.aiQuery)}`, '_blank')}
+                className="flex items-center justify-center gap-2 py-2.5 bg-white border border-stone-200 dark:border-stone-700 text-stone-700 rounded-2xl text-xs font-bold shadow-sm active:scale-95"
+              >
+                <Sparkles size={14} className="text-teal-500" /> 問問 AI
+              </button>
+            </div>
+          </div>
+        ))}
       </div>
-      <p className="text-[11px] text-stone-500 mb-5">{section.desc}</p>
-      <div className="grid grid-cols-2 gap-3">
-        <button
-          onClick={() => window.open(section.mapUrl, '_blank')}
-          className="flex items-center justify-center gap-2 py-2.5 bg-stone-800 text-amber-50 rounded-2xl text-xs font-bold shadow-md active:scale-95"
-        >
-          <MapPin size={14} /> 開啟清單
-        </button>
-        <button
-          onClick={() => window.open(`https://www.perplexity.ai/search?q=${encodeURIComponent('長崎 ' + section.aiQuery)}`, '_blank')}
-          className="flex items-center justify-center gap-2 py-2.5 bg-white border border-stone-200 text-stone-700 rounded-2xl text-xs font-bold shadow-sm active:scale-95"
-        >
-          <Sparkles size={14} className="text-teal-500" /> 問問 AI
-        </button>
-      </div>
-    </div>
-  ))}
-</div>
 
       <section className="bg-[#FEF3C7] dark:bg-stone-800 p-6 rounded-[2.5rem] border-2 border-amber-300">
         <div className="flex items-center gap-2 mb-5 text-amber-900 dark:text-amber-400 font-black text-sm tracking-wider"><Sparkles size={16} /> 團員私藏好店許願池</div>
@@ -1609,7 +1626,7 @@ const GuidePage = ({ isAdmin, isMember, noticeText, updateNoticeText }) => {
                 {store.note && <div className="text-xs text-stone-500">💬 {store.note}</div>}
                 <div className="text-[10px] text-amber-700 mt-1">Added by {store.adder}</div>
               </div>
-              {isAdmin && <button onClick={() => set(ref(db, 'sharedStores'), sharedStores.filter((_, idx) => idx !== i))} className="text-stone-300 hover:text-red-400"><Trash2 size={16}/></button>}
+              {isAdmin && <button onClick={() => set(ref(db, 'sharedStores'), sharedStores.filter((_, idx) => idx !== i))} className="text-stone-300 hover:text-red-400"><Trash2 size={16} /></button>}
             </div>
           ))}
         </div>
@@ -1629,6 +1646,23 @@ const GuidePage = ({ isAdmin, isMember, noticeText, updateNoticeText }) => {
 };
 
 const UtilsPage = ({ isAdmin, isMember, systemInfo, updateSystemInfo }) => {
+
+const handleAppDownload = () => {
+  const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+  if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+    window.open('https://itunes.apple.com/eg/app/safety-tips/id858357174?mt=8', '_blank');
+  } else {
+    window.open('https://play.google.com/store/apps/details?id=jp.co.rcsc.safetyTips.android&hl=en', '_blank');
+  }
+};
+
+
+
+
+
+
+
+
   return (
     <div className="p-6 space-y-6 pb-24 bg-[#FDFBF7] dark:bg-stone-900 transition-colors">
       <h2 className="text-2xl font-serif font-bold text-stone-800 dark:text-stone-100">實用工具及資訊</h2>
@@ -1638,10 +1672,40 @@ const UtilsPage = ({ isAdmin, isMember, systemInfo, updateSystemInfo }) => {
           <input type="text" value={systemInfo || ''} onChange={(e) => updateSystemInfo(e.target.value)} className="w-full bg-stone-900 border rounded-xl px-3 py-2 text-sm text-emerald-200" />
         </section>
       )}
+{isMember && (
+  <section className="bg-[#06C755] p-6 rounded-2xl shadow-lg text-white relative overflow-hidden">
+    <div className="absolute -right-6 -top-6 w-32 h-32 bg-white/20 rounded-full blur-2xl"></div>
+    <h3 className="flex items-center gap-2 font-bold text-white mb-2 relative z-10">
+      <Wallet size={18} /> 公款記帳與分帳
+    </h3>
+    <p className="text-green-50 text-sm mb-6 relative z-10 font-medium">
+      所有公費支出請統一記錄在此，系統會自動結算每個人該付多少錢。
+    </p>
+    <a href="https://liff.line.me/1655320992-Y8GowEpw/g/t6Tf4q8GCMHz2D3YgoWyMX"
+      target="_blank" rel="noreferrer"
+      className="flex items-center justify-center gap-2 w-full bg-white text-[#06C755] py-3.5 rounded-xl font-bold active:scale-95 transition-all relative z-10"
+    >
+      開啟 Lightsplit 分帳群組 <ArrowRight size={16} />
+    </a>
+  </section>
+)}
+
+
+
+
       <TippingGuide />
       <section className="bg-white dark:bg-stone-800 p-6 rounded-2xl border">
         <h3 className="flex items-center gap-2 font-bold text-stone-800 dark:text-stone-100 mb-4 border-b pb-3"><Plane size={18} className="text-blue-500" /> 航班詳細資訊</h3>
         {UTILS_DATA.flights.map((f, i) => <FlightCard key={i} {...f} />)}
+        {isMember && (
+          <a href={UTILS_DATA.driveUrl} target="_blank" rel="noreferrer"
+            className="flex items-center justify-center gap-2 w-full py-3 mt-4 rounded-xl bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 font-bold active:scale-95 transition-all"
+          >
+            <Info size={16} /> 開啟電子機票 / 各種憑證
+          </a>
+        )}
+
+
       </section>
       <section className="bg-white dark:bg-stone-800 p-6 rounded-2xl border">
         <h3 className="flex items-center gap-2 font-bold text-stone-800 dark:text-stone-100 mb-4 border-b pb-3"><Home size={18} className="text-orange-500" /> 住宿飯店導航</h3>
@@ -1650,17 +1714,138 @@ const UtilsPage = ({ isAdmin, isMember, systemInfo, updateSystemInfo }) => {
             <div key={idx} className="bg-stone-50 dark:bg-stone-700/50 rounded-xl p-4 border relative">
               <div className="flex justify-between items-start mb-2">
                 <div><span className="text-[10px] text-stone-400 font-bold">{acc.type}</span><h4 className="font-bold text-base">{acc.name}</h4></div>
-                <span className="text-xs font-bold bg-white dark:bg-stone-600 px-2 py-1 rounded border">{acc.date}</span>
+                <span className="text-xs font-bold bg-white dark:bg-stone-600 px-2 py-1 rounded border whitespace-nowrap">{acc.date}</span>
               </div>
-              <p className="text-xs text-stone-500 mb-4"><MapPin size={10} className="inline mr-1"/>{acc.address}</p>
+              <p className="text-xs text-stone-500 mb-4"><MapPin size={10} className="inline mr-1" />{acc.address}</p>
               <div className="grid grid-cols-2 gap-2">
-                <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(acc.mapQuery)}`} target="_blank" rel="noreferrer" className="flex items-center justify-center gap-1.5 py-2 bg-stone-800 text-amber-50 rounded-lg text-xs font-bold"><Navigation size={12}/>導航</a>
-                <a href={`tel:${acc.phone}`} className="flex items-center justify-center gap-1.5 py-2 bg-white border text-stone-600 rounded-lg text-xs font-bold"><Phone size={12}/>聯絡</a>
+                <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(acc.mapQuery)}`} target="_blank" rel="noreferrer" className="flex items-center justify-center gap-1.5 py-2 bg-stone-800 text-amber-50 rounded-lg text-xs font-bold"><Navigation size={12} />導航</a>
+                <a href={`tel:${acc.phone}`} className="flex items-center justify-center gap-1.5 py-2 bg-white border text-stone-600 rounded-lg text-xs font-bold"><Phone size={12} />聯絡</a>
               </div>
             </div>
           ))}
         </div>
+        {(isAdmin || isMember) && (
+    <a href={UTILS_DATA.driveUrl} target="_blank" rel="noreferrer"
+      className="flex items-center justify-center gap-2 w-full py-3 mt-4 rounded-xl bg-orange-50 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 font-bold active:scale-95 transition-all"
+    >
+      <Info size={16} /> 查看住宿憑證
+    </a>
+  )}
       </section>
+
+
+
+
+      <section className="bg-white dark:bg-stone-800 p-6 rounded-2xl border border-stone-100 dark:border-stone-700 mb-6">
+  <h3 className="flex items-center gap-2 font-bold text-stone-800 dark:text-stone-100 mb-4 border-b dark:border-stone-700 pb-3">
+    <Smartphone size={18} className="text-purple-500" /> 旅行必備 App
+  </h3>
+  <div className="space-y-3">
+    <a href="https://studio--studio-9206745680-de144.us-central1.hosted.app"
+      target="_blank" rel="noreferrer"
+      className="flex items-center justify-between p-3 bg-stone-50 dark:bg-stone-700/50 rounded-xl border border-stone-100 dark:border-stone-600 active:scale-95 transition-all"
+    >
+      <div>
+        <div className="font-bold text-stone-800 dark:text-stone-100 text-sm">DIGEST 菜單翻譯</div>
+        <div className="text-[10px] text-stone-500">拍照即時翻譯日文菜單</div>
+      </div>
+      <ArrowRight size={16} className="text-stone-400" />
+    </a>
+
+    <div className="flex items-center justify-between p-3 bg-stone-50 dark:bg-stone-700/50 rounded-xl border border-stone-100 dark:border-stone-600">
+      <div>
+        <div className="font-bold text-stone-800 dark:text-stone-100 text-sm">ecbo cloak 行李寄放</div>
+        <div className="text-[10px] text-stone-500">找附近寄放行李的店家</div>
+      </div>
+      <div className="flex gap-2">
+        <a href="https://apps.apple.com/app/ecbo-cloak/id1207035251" target="_blank" rel="noreferrer"
+          className="text-[10px] font-bold bg-stone-800 text-white px-2 py-1 rounded-lg">iOS</a>
+        <a href="https://play.google.com/store/apps/details?id=jp.ecbo.cloak" target="_blank" rel="noreferrer"
+          className="text-[10px] font-bold bg-stone-800 text-white px-2 py-1 rounded-lg">Android</a>
+      </div>
+    </div>
+  </div>
+</section>
+<section className="bg-white dark:bg-stone-800 p-6 rounded-2xl border border-stone-100 dark:border-stone-700 mb-6">
+  <h3 className="flex items-center gap-2 font-bold text-red-700 dark:text-red-400 mb-4 border-b border-stone-100 dark:border-stone-700 pb-3">
+    <AlertCircle size={18} className="text-red-600" /> 緊急救援中心
+  </h3>
+  <div className="space-y-6">
+    <div className="grid grid-cols-2 gap-3">
+      <a href="tel:110" className="bg-red-50 dark:bg-red-900/20 p-3 rounded-xl flex flex-col items-center border border-red-100 dark:border-red-900/50">
+        <span className="text-2xl font-black text-red-600 dark:text-red-400">110</span>
+        <span className="text-xs font-bold text-red-800 dark:text-red-300">警察報案</span>
+      </a>
+      <a href="tel:119" className="bg-red-50 dark:bg-red-900/20 p-3 rounded-xl flex flex-col items-center border border-red-100 dark:border-red-900/50">
+        <span className="text-2xl font-black text-red-600 dark:text-red-400">119</span>
+        <span className="text-xs font-bold text-red-800 dark:text-red-300">救護車／火災</span>
+      </a>
+    </div>
+
+    <div className="bg-stone-800 dark:bg-stone-950 rounded-xl p-4 text-stone-300 text-sm space-y-4">
+      <div onClick={handleAppDownload} className="bg-amber-500/10 border border-amber-500/30 rounded-lg p-3 flex items-center gap-3 cursor-pointer active:scale-95 transition-all hover:bg-amber-500/20 group">
+        <div className="p-2 bg-amber-500 rounded-full text-stone-900 flex-shrink-0">
+          <Smartphone size={16} strokeWidth={2.5} />
+        </div>
+        <div className="flex-1">
+          <div className="flex justify-between items-center">
+            <div className="text-[10px] font-black text-amber-500 uppercase tracking-tighter">必備救命工具</div>
+            <div className="text-[9px] text-amber-500/60 font-bold bg-amber-500/10 px-1.5 py-0.5 rounded">點擊跳轉商店</div>
+          </div>
+          <div className="text-xs font-bold text-stone-100">下載 Japan Safety Tips</div>
+          <div className="text-[9px] text-stone-400 mt-0.5">地震海嘯警報・多國語言緊急通知</div>
+        </div>
+        <ArrowRight size={14} className="text-stone-600 group-hover:text-amber-500" />
+      </div>
+
+      <a href="https://static.japan.travel.navitime.com/web/walk/contents/html/boot/market.html?utm_source=safetytips&utm_medium=web&utm_campaign=safetytips"
+        target="_blank" rel="noreferrer"
+        className="flex items-center justify-between p-3 bg-stone-800/50 rounded-xl border border-stone-700 mt-3 block"
+      >
+        <div>
+          <div className="text-xs font-bold text-stone-100">Japan Travel by Navitime</div>
+          <div className="text-[9px] text-stone-400">離線地圖・交通路線・景點導覽</div>
+        </div>
+        <ArrowRight size={14} className="text-stone-600" />
+      </a>
+
+      <div className="space-y-3">
+        <div className="flex justify-between items-center border-b border-stone-700 pb-2">
+          <span>🇹🇼 駐日辦事處 (福岡・一般)</span>
+          <a href="tel:+81927342810" className="text-stone-300 font-bold">+81-92-734-2810</a>
+        </div>
+        <div className="flex justify-between items-center border-b border-stone-700 pb-2">
+          <span>🇹🇼 駐日辦事處 (急難)</span>
+          <a href="tel:+81927342810" className="text-amber-400 font-bold">+81-92-734-2810</a>
+        </div>
+        <div className="flex justify-between items-center border-b border-stone-700 pb-2">
+          <span>👮 當地報案 (Police)</span>
+          <a href="tel:110" className="text-white font-bold">110</a>
+        </div>
+        <div className="flex justify-between items-center border-b border-stone-700 pb-2">
+          <span>🚑 救護車／火災</span>
+          <a href="tel:119" className="text-white font-bold">119</a>
+        </div>
+        <div className="flex justify-between items-center border-b border-stone-700 pb-2">
+          <span>💳 Visa 全球掛失</span>
+          <a href="tel:00531110001" className="text-stone-400 text-xs">0053-111-0001</a>
+        </div>
+        <div className="flex justify-between items-center border-b border-stone-700 pb-2">
+          <span>💳 JCB 掛失</span>
+          <a href="tel:00531110011" className="text-stone-400 text-xs">0053-111-0011</a>
+        </div>
+        <div className="flex justify-between items-center pt-1">
+          <span>💳 Mastercard 掛失</span>
+          <a href="tel:00531110086" className="text-stone-400 text-xs">0053-111-0086</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
       <CurrencySection isAdmin={isAdmin} isMember={isMember} />
     </div>
   );
@@ -1734,7 +1919,7 @@ const PackingPage = ({ isKonamiActive, isAdmin, isMember, onSecretTrigger }) => 
 
   useEffect(() => {
     const saved = localStorage.getItem('cm_packing_list_v2');
-    if (saved) { setPackingData(JSON.parse(saved)); } 
+    if (saved) { setPackingData(JSON.parse(saved)); }
     else {
       const initialData = {};
       USERS.forEach((user) => { initialData[user] = DEFAULT_ITEMS.map((item) => ({ name: item, checked: false })); });
@@ -1777,6 +1962,13 @@ const PackingPage = ({ isKonamiActive, isAdmin, isMember, onSecretTrigger }) => 
   return (
     <div className="pb-24 min-h-screen bg-[#FDFBF7] dark:bg-stone-900 relative">
       <KyushuTips onTrigger={onSecretTrigger} />
+      <div className="mx-6 mt-6">
+  <a href="https://vjw-lp.digital.go.jp/zh-hant/" target="_blank" rel="noreferrer"
+    className="bg-white dark:bg-stone-800 shadow-sm border border-stone-100 dark:border-stone-700 py-3 px-4 rounded-xl text-xs font-bold flex items-center justify-center gap-2 text-stone-600 dark:text-stone-300 w-full active:scale-95 transition-transform"
+  >
+    <FileText size={14} className="text-blue-500" /> Visit Japan Web 入境／簽證申報
+  </a>
+</div>
       {showToast && (
         <div className="fixed bottom-24 left-6 right-6 z-50 animate-bounce">
           <div className="bg-stone-800 text-white p-4 rounded-2xl border border-stone-700 flex items-center gap-3">
@@ -1805,42 +1997,42 @@ const PackingPage = ({ isKonamiActive, isAdmin, isMember, onSecretTrigger }) => 
       {currentUser ? (
         <div className="px-6 animate-fadeIn">
           <div className="flex justify-between items-end mb-4">
-            <h2 className="text-2xl font-serif font-bold flex items-center gap-2">{currentUser} 的打包清單 {isKonamiActive && <img src={CHARACTER_MAP[currentUser]} className={HEADER_ICON_STYLE[currentUser]} alt="icon"/>}</h2>
-            <span className="text-xs text-stone-400 font-bold">{packingData[currentUser]?.filter(i=>i.checked).length} / {packingData[currentUser]?.length} 完成</span>
+            <h2 className="text-2xl font-serif font-bold flex items-center gap-2">{currentUser} 的打包清單 {isKonamiActive && <img src={CHARACTER_MAP[currentUser]} className={HEADER_ICON_STYLE[currentUser]} alt="icon" />}</h2>
+            <span className="text-xs text-stone-400 font-bold">{packingData[currentUser]?.filter(i => i.checked).length} / {packingData[currentUser]?.length} 完成</span>
           </div>
           <div className="h-1.5 w-full bg-stone-200 rounded-full mb-6 overflow-hidden"><div className="h-full bg-amber-500 transition-all duration-500" style={{ width: `${getProgress(currentUser)}%` }} /></div>
           {(isAdmin || isMember) && (
             <div className="mb-6 flex gap-2">
-              <input type="text" value={newItem} onChange={(e)=>setNewItem(e.target.value)} placeholder="自訂行李項目..." className="flex-1 p-3 rounded-xl border border-stone-200 dark:border-stone-700 focus:outline-none focus:border-amber-500 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-100 shadow-sm placeholder:text-stone-400" onKeyPress={(e)=>e.key==='Enter'&&addItem()} />
+              <input type="text" value={newItem} onChange={(e) => setNewItem(e.target.value)} placeholder="自訂行李項目..." className="flex-1 p-3 rounded-xl border border-stone-200 dark:border-stone-700 focus:outline-none focus:border-amber-500 bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-100 shadow-sm placeholder:text-stone-400" onKeyPress={(e) => e.key === 'Enter' && addItem()} />
               <button onClick={addItem} className="bg-stone-800 text-amber-50 px-5 rounded-xl font-bold">+</button>
             </div>
           )}
           <div className="space-y-3">
             {packingData[currentUser]?.map((item, idx) => (
-              <div key={idx} onClick={()=>toggleItem(currentUser, idx)} className={`flex items-center gap-3 p-4 rounded-xl border transition-all cursor-pointer
+              <div key={idx} onClick={() => toggleItem(currentUser, idx)} className={`flex items-center gap-3 p-4 rounded-xl border transition-all cursor-pointer
   ${item.checked
-    ? 'bg-stone-100 dark:bg-stone-800/50 border-transparent opacity-60'
-    : 'bg-white dark:bg-stone-800 border-stone-100 dark:border-stone-700 shadow-sm hover:shadow-md'
-  }`}>
+                  ? 'bg-stone-100 dark:bg-stone-800/50 border-transparent opacity-60'
+                  : 'bg-white dark:bg-stone-800 border-stone-100 dark:border-stone-700 shadow-sm hover:shadow-md'
+                }`}>
                 <div className={`w-6 h-6 rounded-full flex items-center justify-center border-2 transition-colors flex-shrink-0
   ${item.checked
-    ? 'bg-green-500 border-green-500 text-white'
-    : 'border-stone-300 dark:border-stone-600 bg-stone-50 dark:bg-stone-700'
-  }`}>{item.checked && <CheckCircle size={14} />}</div>
+                    ? 'bg-green-500 border-green-500 text-white'
+                    : 'border-stone-300 dark:border-stone-600 bg-stone-50 dark:bg-stone-700'
+                  }`}>{item.checked && <CheckCircle size={14} />}</div>
                 <span className={`flex-1 font-medium ${item.checked
-  ? 'text-stone-400 dark:text-stone-600 line-through decoration-stone-400'
-  : 'text-stone-700 dark:text-stone-200'
-}`}>{item.name}</span>
-                {(isAdmin || isMember) && <button onClick={(e)=>{e.stopPropagation(); deleteItem(idx);}} className="text-stone-300 hover:text-red-400">×</button>}
+                  ? 'text-stone-400 dark:text-stone-600 line-through decoration-stone-400'
+                  : 'text-stone-700 dark:text-stone-200'
+                  }`}>{item.name}</span>
+                {(isAdmin || isMember) && <button onClick={(e) => { e.stopPropagation(); deleteItem(idx); }} className="text-stone-300 hover:text-red-400">×</button>}
               </div>
             ))}
           </div>
         </div>
       ) : (
-  <div className="px-10 py-20 text-center text-stone-400 dark:text-stone-600">
-    <p className="text-sm">👆 請先點選上方按鈕<br/>開啟專屬清單<br/>(此處有彩蛋喔~提示:上下左右)</p>
-  </div>
-)}
+        <div className="px-10 py-20 text-center text-stone-400 dark:text-stone-600">
+          <p className="text-sm">👆 請先點選上方按鈕<br />開啟專屬清單<br />(此處有彩蛋喔~提示:上下左右)</p>
+        </div>
+      )}
     </div>
   );
 };
@@ -1890,8 +2082,8 @@ export default function TravelApp() {
   const [appVersion, setAppVersion] = useState('V25 終極版');
   const [systemInfo, setSystemInfo] = useState('System Ver. 1.0 九州生存戰 🚀');
   const [noticeText, setNoticeText] = useState('載入中...');
-  const [secretClickCount, setSecretClickCount] = useState(0); 
-  const [showSecret, setShowSecret] = useState(false);         
+  const [secretClickCount, setSecretClickCount] = useState(0);
+  const [showSecret, setShowSecret] = useState(false);
 
   const handleSecretTrigger = () => {
     const newCount = secretClickCount + 1;
@@ -1901,7 +2093,7 @@ export default function TravelApp() {
 
   useEffect(() => {
     const savedRole = localStorage.getItem('userRole');
-    if (savedRole === 'ODY4Njc3MDg=') { setIsAdmin(true); setIsMember(true); } 
+    if (savedRole === 'ODY4Njc3MDg=') { setIsAdmin(true); setIsMember(true); }
     else if (savedRole === 'MTMxNDUyMA==') { setIsAdmin(false); setIsMember(true); }
   }, []);
 
@@ -2087,17 +2279,17 @@ export default function TravelApp() {
               <div className={`absolute top-0 left-0 w-1/2 h-full transition-transform duration-1000 ease-in-out ${isUnlocking ? '-translate-x-full' : 'translate-x-0'}`} style={{ backgroundImage: `url(${JUNGLE_BG})`, backgroundSize: '200% 120%', backgroundPosition: 'left center' }}><div className="absolute inset-0 bg-black/20"></div></div>
               <div className={`absolute top-0 right-0 w-1/2 h-full transition-transform duration-1000 ease-in-out ${isUnlocking ? 'translate-x-full' : 'translate-x-0'}`} style={{ backgroundImage: `url(${JUNGLE_BG})`, backgroundSize: '200% 120%', backgroundPosition: 'right center' }}><div className="absolute inset-0 bg-black/20"></div></div>
               <div className={`relative z-10 flex flex-col items-center w-full px-8 h-full pt-40 transition-opacity duration-500 ${isUnlocking ? 'opacity-0' : 'opacity-100'}`}>
-                <div onMouseDown={()=>pressTimerRef.current=setTimeout(()=>setShowHelloKitty(true),2000)} onMouseUp={()=>clearTimeout(pressTimerRef.current)} className="bg-white/20 p-6 rounded-full mb-6 shadow-2xl backdrop-blur-md cursor-pointer animate-pulse"><HelpCircle size={40} className="text-white" /></div>
+                <div onMouseDown={() => pressTimerRef.current = setTimeout(() => setShowHelloKitty(true), 2000)} onMouseUp={() => clearTimeout(pressTimerRef.current)} className="bg-white/20 p-6 rounded-full mb-6 shadow-2xl backdrop-blur-md cursor-pointer animate-pulse"><HelpCircle size={40} className="text-white" /></div>
                 <h2 className="text-3xl font-serif font-bold mb-1 text-white">Kyushu 2026</h2>
                 <p className="text-emerald-100 text-sm mb-2 text-center tracking-widest font-bold">佑任・軒寶・阿歪・黃蔓</p>
                 <p className="text-emerald-200/60 text-[10px] uppercase font-bold text-center mb-6">{systemInfo}</p>
-                <button onClick={()=>window.location.reload()} className="absolute top-12 right-6 p-2 rounded-full bg-white/10 text-white/50"><RefreshCw size={20} /></button>
-                <form className="w-full relative mb-6 mt-auto" onSubmit={(e)=>{e.preventDefault(); handleUnlock();}}>
-                  <div className="relative"><KeyRound size={18} className="absolute left-4 top-4 text-emerald-100" /><input type="password" value={inputPwd} onChange={(e)=>setInputPwd(e.target.value)} placeholder="Passcode" className="w-full bg-white/20 border border-white/30 rounded-2xl pl-12 pr-12 py-3.5 text-lg text-emerald-100 text-center font-bold" /></div>
-                  <button type="submit" className="w-full mt-6 bg-emerald-600 text-white font-bold py-3.5 rounded-2xl shadow-lg shadow-emerald-900/40" style={{ marginBottom: 'calc(60px + env(safe-area-inset-bottom))' }}>Start Journey <ArrowRight size={18} className="inline ml-1"/></button>
+                <button onClick={() => window.location.reload()} className="absolute top-12 right-6 p-2 rounded-full bg-white/10 text-white/50"><RefreshCw size={20} /></button>
+                <form className="w-full relative mb-6 mt-auto" onSubmit={(e) => { e.preventDefault(); handleUnlock(); }}>
+                  <div className="relative"><KeyRound size={18} className="absolute left-4 top-4 text-emerald-100" /><input type="password" value={inputPwd} onChange={(e) => setInputPwd(e.target.value)} placeholder="Passcode" className="w-full bg-white/20 border border-white/30 rounded-2xl pl-12 pr-12 py-3.5 text-lg text-emerald-100 text-center font-bold" /></div>
+                  <button type="submit" className="w-full mt-6 bg-emerald-600 text-white font-bold py-3.5 rounded-2xl shadow-lg shadow-emerald-900/40" style={{ marginBottom: 'calc(60px + env(safe-area-inset-bottom))' }}>Start Journey <ArrowRight size={18} className="inline ml-1" /></button>
                 </form>
               </div>
-              {showHelloKitty && <div onClick={()=>setShowHelloKitty(false)} className="absolute inset-0 z-50 flex items-center justify-center bg-black/80 animate-fadeIn p-8"><div className="bg-[#FFF0F5] p-6 rounded-3xl text-center"><p className="text-pink-400 font-bold">Surprise! 🎉 系統檢測正常！</p></div></div>}
+              {showHelloKitty && <div onClick={() => setShowHelloKitty(false)} className="absolute inset-0 z-50 flex items-center justify-center bg-black/80 animate-fadeIn p-8"><div className="bg-[#FFF0F5] p-6 rounded-3xl text-center"><p className="text-pink-400 font-bold">Surprise! 🎉 系統檢測正常！</p></div></div>}
             </div>
           </div>
         )}
@@ -2116,8 +2308,8 @@ export default function TravelApp() {
                   versionText={appVersion}
                   updateVersion={handleUpdateVersion}
                   showSecret={showSecret}
-                  onLock={() => { setIsLocked(true); setIsUnlocking(false); setInputPwd(''); setIsAdmin(false); setIsMember(false); localStorage.removeItem('isUnlocked');localStorage.removeItem('userRole'); }}
-                  onHardRefresh={()=>window.location.reload()}
+                  onLock={() => { setIsLocked(true); setIsUnlocking(false); setInputPwd(''); setIsAdmin(false); setIsMember(false); localStorage.removeItem('isUnlocked'); localStorage.removeItem('userRole'); }}
+                  onHardRefresh={() => window.location.reload()}
                 />
                 <main className="pb-28">
                   {activeTab === 'itinerary' && (
@@ -2157,7 +2349,7 @@ export default function TravelApp() {
                     <div>
                       <div className="px-6 pt-6">
                         <div className="flex items-center justify-between bg-white dark:bg-stone-800 p-4 rounded-2xl border">
-                          <div className="flex items-center gap-2 font-bold">{darkMode ? <Sun size={18} className="text-amber-400"/> : <CloudRain size={18} className="text-stone-400"/>}<span>{darkMode ? '深色模式 (On)' : '淺色模式 (Off)'}</span></div>
+                          <div className="flex items-center gap-2 font-bold">{darkMode ? <Sun size={18} className="text-amber-400" /> : <CloudRain size={18} className="text-stone-400" />}<span>{darkMode ? '深色模式 (On)' : '淺色模式 (Off)'}</span></div>
                           <button onClick={() => setDarkMode(!darkMode)} className={`w-12 h-6 rounded-full p-1 ${darkMode ? 'bg-amber-500' : 'bg-stone-300'}`}><div className={`w-4 h-4 rounded-full bg-white shadow-sm transition-transform ${darkMode ? 'translate-x-6' : 'translate-x-0'}`} /></button>
                         </div>
                       </div>
@@ -2180,7 +2372,7 @@ export default function TravelApp() {
 
             {/* 精裝列印專區 */}
             <div id="print-zone" className="hidden print:block bg-white text-stone-900 p-10">
-              <h1 className="text-3xl font-serif font-bold border-b-2 border-amber-500 pb-4 mb-8 text-center">KYUSHU SURVIVAL 2026<br/><span className="text-sm text-stone-400 font-sans tracking-widest uppercase">Nagasaki & Saga Itinerary</span></h1>
+              <h1 className="text-3xl font-serif font-bold border-b-2 border-amber-500 pb-4 mb-8 text-center">KYUSHU SURVIVAL 2026<br /><span className="text-sm text-stone-400 font-sans tracking-widest uppercase">Nagasaki & Saga Itinerary</span></h1>
               {itinerary.map((day) => (
                 <div key={day.day} className="mb-12 page-break-inside-avoid">
                   <div className="flex items-baseline gap-3 mb-4 border-b pb-1"><span className="text-4xl font-serif font-bold text-amber-600">D{day.day}</span><span className="text-lg font-bold text-stone-800">{day.displayDate} - {day.title}</span></div>
