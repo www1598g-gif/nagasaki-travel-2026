@@ -1694,7 +1694,7 @@ const handleAppDownload = () => {
 
 
       <TippingGuide />
-      <section className="bg-white dark:bg-stone-800 p-6 rounded-2xl border">
+      <section className="bg-white dark:bg-stone-800 p-6 rounded-2xl border border-stone-100 dark:border-stone-700">
         <h3 className="flex items-center gap-2 font-bold text-stone-800 dark:text-stone-100 mb-4 border-b pb-3"><Plane size={18} className="text-blue-500" /> 航班詳細資訊</h3>
         {UTILS_DATA.flights.map((f, i) => <FlightCard key={i} {...f} />)}
         {isMember && (
@@ -1707,7 +1707,7 @@ const handleAppDownload = () => {
 
 
       </section>
-      <section className="bg-white dark:bg-stone-800 p-6 rounded-2xl border">
+      <section className="bg-white dark:bg-stone-800 p-6 rounded-2xl border border-stone-100 dark:border-stone-700">
         <h3 className="flex items-center gap-2 font-bold text-stone-800 dark:text-stone-100 mb-4 border-b pb-3"><Home size={18} className="text-orange-500" /> 住宿飯店導航</h3>
         <div className="space-y-4">
           {UTILS_DATA.accommodations.map((acc, idx) => (
@@ -1758,9 +1758,9 @@ const handleAppDownload = () => {
         <div className="text-[10px] text-stone-500">找附近寄放行李的店家</div>
       </div>
       <div className="flex gap-2">
-        <a href="https://apps.apple.com/app/ecbo-cloak/id1207035251" target="_blank" rel="noreferrer"
+        <a href="https://apps.apple.com/tw/app/ecbo-cloak-%E6%97%A5%E6%9C%AC%E5%AF%84%E7%89%A9%E6%9C%8D%E5%8B%99/id1443707795" target="_blank" rel="noreferrer"
           className="text-[10px] font-bold bg-stone-800 text-white px-2 py-1 rounded-lg">iOS</a>
-        <a href="https://play.google.com/store/apps/details?id=jp.ecbo.cloak" target="_blank" rel="noreferrer"
+        <a href="https://play.google.com/store/apps/details?id=io.ecbo.cloak&pcampaignid=web_share" target="_blank" rel="noreferrer"
           className="text-[10px] font-bold bg-stone-800 text-white px-2 py-1 rounded-lg">Android</a>
       </div>
     </div>
@@ -1851,12 +1851,12 @@ const handleAppDownload = () => {
   );
 };
 
-const TippingGuide = () => (
+/*const TippingGuide = () => (
   <section className="bg-white dark:bg-stone-800 p-6 rounded-2xl border mb-6">
     <h3 className="flex items-center gap-2 font-bold text-stone-800 dark:text-stone-100 mb-4 border-b pb-3"><Coins size={18} className="text-amber-500" /> 日本支付與分帳提示</h3>
     <p className="text-xs text-stone-600 dark:text-stone-300 leading-relaxed">日本環境不需要支付任何小費。公帳請大家集中統一記錄，回台或每天結束後再行結算。退稅門檻為當天同店未稅滿 5,000 日圓，記得隨身攜帶護照正本以供海關蓋章查驗。</p>
   </section>
-);
+);*/
 
 const KyushuTips = ({ onTrigger }) => {
   const [isOpen, setIsOpen] = useState(true); // ← 加回 state
@@ -1866,7 +1866,7 @@ const KyushuTips = ({ onTrigger }) => {
       <div className="bg-amber-50 dark:bg-stone-800 rounded-2xl border border-amber-100 overflow-hidden shadow-sm">
         <button
           onClick={() => setIsOpen(!isOpen)} // ← 加回 onClick
-          className="w-full flex items-center justify-between p-4 bg-amber-100/50 text-amber-900 dark:text-amber-100 font-bold hover:bg-amber-100 transition-colors"
+          className="w-full flex items-center justify-between p-4 bg-amber-100/50 dark:bg-stone-800 text-amber-900 dark:text-amber-300 font-bold hover:bg-amber-100 dark:hover:bg-stone-700 transition-colors"
         >
           <div className="flex items-center gap-2">
             <AlertCircle size={18} className="text-amber-600" />
@@ -1962,13 +1962,27 @@ const PackingPage = ({ isKonamiActive, isAdmin, isMember, onSecretTrigger }) => 
   return (
     <div className="pb-24 min-h-screen bg-[#FDFBF7] dark:bg-stone-900 relative">
       <KyushuTips onTrigger={onSecretTrigger} />
+      
+      
+      
       <div className="mx-6 mt-6">
   <a href="https://vjw-lp.digital.go.jp/zh-hant/" target="_blank" rel="noreferrer"
-    className="bg-white dark:bg-stone-800 shadow-sm border border-stone-100 dark:border-stone-700 py-3 px-4 rounded-xl text-xs font-bold flex items-center justify-center gap-2 text-stone-600 dark:text-stone-300 w-full active:scale-95 transition-transform"
+    className="bg-white dark:bg-stone-800 shadow-sm border border-stone-100 dark:border-stone-700 py-4 px-4 rounded-2xl flex items-center justify-between gap-2 text-stone-600 dark:text-stone-300 w-full active:scale-95 transition-transform"
   >
-    <FileText size={14} className="text-blue-500" /> Visit Japan Web 入境／簽證申報
+    <div className="flex items-center gap-3">
+      <div className="p-2 bg-blue-50 dark:bg-blue-900/30 rounded-xl">
+        <FileText size={20} className="text-blue-500" />
+      </div>
+      <div>
+        <div className="font-bold text-sm text-stone-800 dark:text-stone-100">Visit Japan Web</div>
+        <div className="text-[10px] text-stone-400 mt-0.5">入境申報 / 免稅 / 簽證</div>
+      </div>
+    </div>
+    <ArrowRight size={16} className="text-stone-400" />
   </a>
 </div>
+
+
       {showToast && (
         <div className="fixed bottom-24 left-6 right-6 z-50 animate-bounce">
           <div className="bg-stone-800 text-white p-4 rounded-2xl border border-stone-700 flex items-center gap-3">
