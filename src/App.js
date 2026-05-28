@@ -1851,12 +1851,12 @@ const handleAppDownload = () => {
   );
 };
 
-/*const TippingGuide = () => (
+const TippingGuide = () => (
   <section className="bg-white dark:bg-stone-800 p-6 rounded-2xl border mb-6">
     <h3 className="flex items-center gap-2 font-bold text-stone-800 dark:text-stone-100 mb-4 border-b pb-3"><Coins size={18} className="text-amber-500" /> 日本支付與分帳提示</h3>
     <p className="text-xs text-stone-600 dark:text-stone-300 leading-relaxed">日本環境不需要支付任何小費。公帳請大家集中統一記錄，回台或每天結束後再行結算。退稅門檻為當天同店未稅滿 5,000 日圓，記得隨身攜帶護照正本以供海關蓋章查驗。</p>
   </section>
-);*/
+);
 
 const KyushuTips = ({ onTrigger }) => {
   const [isOpen, setIsOpen] = useState(true); // ← 加回 state
