@@ -1138,7 +1138,7 @@ const LocationCard = ({ item, day, index, isAdmin, updateTime, updateContent, on
   return (
     <div onClick={() => setIsExpanded(!isExpanded)} className={`bg-white dark:bg-stone-800 rounded-2xl border border-stone-100 dark:border-stone-700 mb-4 overflow-hidden transition-all duration-300 cursor-pointer ${isExpanded ? 'ring-2 ring-amber-100 shadow-md' : ''}`}>
       <div className="p-4 flex items-start gap-4">
-        <div className="mt-1 flex-shrink-0 w-8 h-8 rounded-full bg-stone-50 flex items-center justify-center borderborder-stone-100 dark:border-stone-700">{getIcon()}</div>
+        <div className="mt-1 flex-shrink-0 w-8 h-8 rounded-full bg-stone-50 flex items-center justify-center border border-stone-100 dark:border-stone-700">{getIcon()}</div>
         <div className="flex-1 min-w-0">
           <div className="flex flex-wrap items-center gap-2 mb-1.5">
             {isAdmin ? (
@@ -1261,7 +1261,7 @@ const DayCard = ({ dayData, isOpen, toggle, isAdmin, updateTime, updateContent, 
 
   return (
     <div ref={cardRef} className="mb-3 px-2">
-      <div onClick={toggle} className={`relative flex items-center justify-between p-5 rounded-2xl cursor-pointer transition-all duration-300 ${isOpen ? 'bg-stone-800 text-stone-50 shadow-xl scale-[1.02]' : 'bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 shadow-sm borderborder-stone-100 dark:border-stone-700'}`}>
+      <div onClick={toggle} className={`relative flex items-center justify-between p-5 rounded-2xl cursor-pointer transition-all duration-300 ${isOpen ? 'bg-stone-800 text-stone-50 shadow-xl scale-[1.02]' : 'bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 shadow-sm border border-stone-100 dark:border-stone-700'}`}>
         <div className="flex items-center gap-4">
           <div className={`flex flex-col items-center justify-center w-12 h-12 rounded-xl border ${isOpen ? 'bg-stone-700 border-stone-600' : 'bg-stone-50 dark:bg-stone-700 border-stone-200 dark:border-stone-600'}`}>
             <span className="text-[10px] font-bold text-stone-400 uppercase">Day</span>
@@ -1434,7 +1434,7 @@ const CurrencySection = ({ isAdmin, isMember }) => {
   };
 
   return (
-    <section className="bg-white dark:bg-stone-800 p-6 rounded-2xl borderborder-stone-100 dark:border-stone-700 mb-6">
+    <section className="bg-white dark:bg-stone-800 p-6 rounded-2xl border border-stone-100 dark:border-stone-700 mb-6">
       <h3 className="flex items-center gap-2 font-bold text-stone-800 dark:text-stone-100 mb-4 border-b pb-3"><Wallet size={18} className="text-green-600" /> 匯率換算與動態換匯系統</h3>
       <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-xl mb-6">
         <div className="text-[10px] text-green-600 font-bold mb-2 flex justify-between"><span>即時基準：1 TWD ≈ {rate} JPY</span><span>{lastUpdate}</span></div>
@@ -1444,14 +1444,7 @@ const CurrencySection = ({ isAdmin, isMember }) => {
           <input type="number" value={jpy} onChange={(e) => { setJpy(e.target.value); setTwd(e.target.value ? (parseFloat(e.target.value) / rate).toFixed(1) : ''); }} placeholder="日幣" className="w-full p-2 rounded-lg border border-green-200 dark:border-green-800 dark:bg-stone-700 dark:text-white outline-none focus:border-green-500 font-bold text-stone-700" />
         </div>
       </div>
-      <div className="space-y-2">
-        {exchanges?.map((ex, i) => (
-          <div key={i} className="flex justify-between items-center p-3 bg-stone-50 dark:bg-stone-700/50 rounded-xl text-sm">
-            <div><div className="font-bold text-stone-700 dark:text-stone-200">{ex.name}</div><div className="text-[10px] text-stone-500">{ex.note}</div></div>
-            <button onClick={() => window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(ex.map)}`, '_blank')} className="w-8 h-8 bg-white border rounded-full flex items-center justify-center text-stone-400"><Navigation size={14} /></button>
-          </div>
-        ))}
-      </div>
+      
     </section>
   );
 };
@@ -1490,10 +1483,17 @@ const GuidePage = ({ isAdmin, isMember, noticeText, updateNoticeText }) => {
   };
 
   const pickyItems = [
-    { en: 'No Raw Fish', th: '生魚・刺身NG', zh: '不吃生魚片 / 生食' },
-    { en: 'No Beef', th: '牛肉NG', zh: '不吃牛肉 (夥伴留意)' },
-    { en: 'No Coriander', th: 'パクチーNG', zh: '不加香菜' }
-  ];
+  { en: 'No Raw Fish / Sashimi', th: '生魚・刺身NG', zh: '不吃生魚片 / 生食' },
+  { en: 'No Beef', th: '牛肉NG', zh: '不吃牛肉' },
+  { en: 'No Coriander', th: 'パクチーNG', zh: '不加香菜' },
+  { en: 'No Green Onion / Scallion', th: 'ネギNG', zh: '不加蔥' },
+  { en: 'No Ginger', th: '生姜NG', zh: '不加薑' },
+  { en: 'No Garlic', th: 'ニンニクNG', zh: '不加蒜' },
+  { en: 'No Cinnamon', th: 'シナモンNG', zh: '不加肉桂' },
+  { en: 'No Chinese Chive', th: 'ニラNG', zh: '不加韭菜' },
+  { en: 'No Star Anise', th: '八角NG', zh: '不加八角' },
+  { en: 'No Celery', th: 'セロリNG', zh: '不加芹菜' },
+];
 
   const guideSections = [
     {
@@ -1541,7 +1541,8 @@ const GuidePage = ({ isAdmin, isMember, noticeText, updateNoticeText }) => {
   return (
     <div className="p-6 space-y-6 pb-24 animate-fadeIn">
       <section>
-        <div className="bg-white dark:bg-stone-800 border border-amber-100 rounded-[2rem] p-5 shadow-sm">
+        <div className="bg-white dark:bg-stone-800 border border-amber-200 dark:border-amber-900/50 rounded-[2rem] p-5 shadow-sm">
+
           <div className="flex items-center gap-2 mb-3 text-amber-600 font-bold text-xs uppercase tracking-widest"><Pin size={14} className="rotate-45" /> 團隊重要通知公佈欄</div>
           {isAdmin ? (
             <textarea value={noticeText} onChange={(e) => updateNoticeText(e.target.value)} className="w-full bg-amber-50/50 rounded-2xl p-3 text-sm min-h-[100px] outline-none" />
@@ -1552,7 +1553,7 @@ const GuidePage = ({ isAdmin, isMember, noticeText, updateNoticeText }) => {
       </section>
 
       <section>
-        <button onClick={() => setShowPickyEater(!showPickyEater)} className="w-full bg-rose-50 dark:bg-rose-950/30 border border-rose-100 rounded-2xl p-4 flex items-center justify-between">
+        <button onClick={() => setShowPickyEater(!showPickyEater)} className="w-full bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-900/50 rounded-2xl p-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-white rounded-xl text-rose-500"><Ban size={20} /></div>
             <div className="font-bold text-rose-800 dark:text-rose-300 text-sm">挑食避雷救援卡 (日本餐廳出示)</div>
@@ -1574,7 +1575,7 @@ const GuidePage = ({ isAdmin, isMember, noticeText, updateNoticeText }) => {
       </section>
 
       <section>
-        <button onClick={() => setShowTaxRefund(!showTaxRefund)} className="w-full bg-amber-50 dark:bg-amber-950/30 border border-amber-100 rounded-2xl p-4 flex items-center justify-between">
+        <button onClick={() => setShowTaxRefund(!showTaxRefund)} className="w-full bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/50 rounded-2xl p-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-white rounded-xl text-amber-600"><Banknote size={20} /></div>
             <div className="font-bold text-amber-800 dark:text-amber-300 text-sm">2026 日本一般免稅規定 (長崎適用)</div>
@@ -1582,7 +1583,8 @@ const GuidePage = ({ isAdmin, isMember, noticeText, updateNoticeText }) => {
           {showTaxRefund ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
         </button>
         {showTaxRefund && (
-          <div className="mt-3 bg-white dark:bg-stone-800 rounded-3xl border p-5 space-y-3 text-sm">
+          <div className="mt-3 bg-white dark:bg-stone-800 rounded-3xl border border-amber-200 dark:border-amber-900/50 p-5 space-y-3 text-sm">
+
             <p>🛍️ <strong>一般物品/消耗品門檻</strong>：單日同店消費滿 5,000 日圓（未稅）以上即可當場辦理免稅退稅。</p>
             <p>🛑 <strong>注意項</strong>：消耗品會以特殊免稅袋密封，在離開日本前**嚴禁拆封使用**，否則過海關若被抽查會被要求補繳消費稅！</p>
           </div>
@@ -1632,7 +1634,7 @@ const GuidePage = ({ isAdmin, isMember, noticeText, updateNoticeText }) => {
         </div>
         {(isAdmin || isMember) && (
           <div className="space-y-2">
-            <select value={adderName} onChange={(e) => setAdderName(e.target.value)} className="w-full p-2 rounded-xl text-xs font-bold border">
+            <select value={adderName} onChange={(e) => setAdderName(e.target.value)} className="w-full p-2 rounded-xl text-xs font-bold border border-amber-200 dark:border-stone-600 bg-white dark:bg-stone-900 text-stone-800 dark:text-stone-100">
               {USERS.map(name => <option key={name} value={name}>{name}</option>)}
             </select>
             <input value={newStoreName} onChange={(e) => setNewStoreName(e.target.value)} placeholder="店家名稱" className="w-full p-2 border rounded-xl text-sm" />
@@ -1711,15 +1713,18 @@ const handleAppDownload = () => {
         <h3 className="flex items-center gap-2 font-bold text-stone-800 dark:text-stone-100 mb-4 border-b pb-3"><Home size={18} className="text-orange-500" /> 住宿飯店導航</h3>
         <div className="space-y-4">
           {UTILS_DATA.accommodations.map((acc, idx) => (
-            <div key={idx} className="bg-stone-50 dark:bg-stone-700/50 rounded-xl p-4 border relative">
+            <div key={idx} className="bg-stone-50 dark:bg-stone-700/50 rounded-xl p-4 border border-stone-100 dark:border-stone-600 relative">
+
               <div className="flex justify-between items-start mb-2">
                 <div><span className="text-[10px] text-stone-400 font-bold">{acc.type}</span><h4 className="font-bold text-base">{acc.name}</h4></div>
-                <span className="text-xs font-bold bg-white dark:bg-stone-600 px-2 py-1 rounded border whitespace-nowrap">{acc.date}</span>
+                <span className="text-xs font-bold bg-white dark:bg-stone-600 px-2 py-1 rounded border border-stone-200 dark:border-stone-500 whitespace-nowrap">
+{acc.date}</span>
               </div>
               <p className="text-xs text-stone-500 mb-4"><MapPin size={10} className="inline mr-1" />{acc.address}</p>
               <div className="grid grid-cols-2 gap-2">
                 <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(acc.mapQuery)}`} target="_blank" rel="noreferrer" className="flex items-center justify-center gap-1.5 py-2 bg-stone-800 text-amber-50 rounded-lg text-xs font-bold"><Navigation size={12} />導航</a>
-                <a href={`tel:${acc.phone}`} className="flex items-center justify-center gap-1.5 py-2 bg-white border text-stone-600 rounded-lg text-xs font-bold"><Phone size={12} />聯絡</a>
+                <a href={`tel:${acc.phone}`} className="flex items-center justify-center gap-1.5 py-2 bg-white dark:bg-stone-600 border border-stone-200 dark:border-stone-500 text-stone-600 dark:text-stone-200 rounded-lg text-xs font-bold">
+<Phone size={12} />聯絡</a>
               </div>
             </div>
           ))}
@@ -1737,6 +1742,7 @@ const handleAppDownload = () => {
 
 
       <section className="bg-white dark:bg-stone-800 p-6 rounded-2xl border border-stone-100 dark:border-stone-700 mb-6">
+
   <h3 className="flex items-center gap-2 font-bold text-stone-800 dark:text-stone-100 mb-4 border-b dark:border-stone-700 pb-3">
     <Smartphone size={18} className="text-purple-500" /> 旅行必備 App
   </h3>
@@ -1878,23 +1884,28 @@ const KyushuTips = ({ onTrigger }) => {
         {isOpen && ( // ← 加回條件渲染
           <div className="p-4 space-y-4 text-sm text-stone-700 dark:text-stone-300 leading-relaxed bg-amber-50 dark:bg-stone-800 transition-colors">
             {/* 內容完全不動 */}
-            <div className="flex gap-3 bg-white dark:bg-stone-700 p-3 rounded-xl border">
-              <div className="min-w-[24px] text-amber-600 font-bold mt-1"><Zap size={18} /></div>
-              <div>
-                <strong className="text-stone-900 dark:text-stone-100 block mb-1">行動電源攜帶鐵律</strong>
-                <ul className="list-disc pl-4 text-xs text-stone-500">
-                  <li>手提行動電源<span className="text-red-600 font-bold">絕對嚴禁託運</span>，必須隨身攜帶。</li>
-                  <li>依虎航/大眾航空最新規範，嚴禁放置於頭頂置物櫃，必須放在前方座位下方。</li>
-                </ul>
-              </div>
-            </div>
-            <div className="flex gap-3" onClick={onTrigger}>
-              <div className="min-w-[24px] text-green-600 font-bold cursor-pointer select-none active:scale-95"><AlertTriangle size={18} /></div>
-              <div className="cursor-pointer select-none">
-                <strong className="text-stone-900 dark:text-stone-100 block">軍艦島風浪備對策</strong>
-                <p className="text-xs text-stone-500">若 Day 3 上午因外海浪大導致船隻無法登島，立刻啟動備案改往出島深度慢遊，並彈性調整稻佐山夜景期。當天全團嚴禁吃早餐防劇烈嘔吐！</p>
-              </div>
-            </div>
+
+            <div className="flex gap-3">
+  <div className="min-w-[24px] text-amber-600 font-bold mt-1"><Zap size={18} /></div>
+  <div>
+    <strong className="text-stone-900 dark:text-stone-100 block mb-1">行動電源攜帶鐵律</strong>
+    <ul className="list-disc pl-4 text-xs text-stone-500 dark:text-stone-400 space-y-1">
+      <li>手提行動電源<span className="text-red-600 font-bold">絕對嚴禁託運</span>，必須隨身攜帶。</li>
+      <li>依虎航最新規範，嚴禁放置於頭頂置物櫃，必須放在前方座位下方。</li>
+    </ul>
+  </div>
+</div>
+<div className="flex gap-3 mt-3" onClick={onTrigger}>
+  <div className="min-w-[24px] text-green-600 font-bold cursor-pointer select-none active:scale-95"><AlertTriangle size={18} /></div>
+  <div className="cursor-pointer select-none">
+    <strong className="text-stone-900 dark:text-stone-100 block">軍艦島風浪備對策</strong>
+    <p className="text-xs text-stone-500 dark:text-stone-400">若 Day 3 上午因外海浪大導致船隻無法登島，立刻啟動備案改往出島深度慢遊，並彈性調整稻佐山夜景期。當天全團嚴禁吃早餐防劇烈嘔吐！</p>
+  </div>
+</div>
+
+
+
+
           </div>
         )}
       </div>
