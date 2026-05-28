@@ -2285,13 +2285,1316 @@ export default function TravelApp() {
     <div className={darkMode ? 'dark' : ''}>
       <style>
         {`
-          @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Playfair+Display:ital,wght@1,700&display=swap');
+          @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Space+Mono:wght@400;700&display=swap');
           svg, img { user-select: none; pointer-events: none; }
           .no-scrollbar::-webkit-scrollbar { display: none; }
           @media print {
             #main-app-container { display: none !important; }
             #print-zone { display: block !important; background: white !important; }
           }
+
+
+/* ============================================================
+   KYUSHU 2026 — 豪斯登堡 × 米飛 × 長崎 Design System
+   Drop-in CSS theme — paste into your <style> tag
+   Replaces all visual styles; zero logic changes required.
+   ============================================================ */
+
+
+/* --- Design Tokens --- */
+:root {
+  /* Core palette */
+  --tulip:         #E8334A;   /* Dutch tulip red */
+  --windmill:      #162B52;   /* Deep Dutch navy */
+  --canal:         #3A7CA5;   /* Canal water blue */
+  --delft:         #1B4B8A;   /* Delft tile blue */
+  --cream:         #FDF8EE;   /* Aged paper cream */
+  --biscuit:       #F5E6C8;   /* Stroopwafel warm */
+  --miffy-white:   #FAFAF7;   /* Miffy's clean white */
+  --nagasaki-gold: #C9973A;   /* Nagasaki lantern gold */
+  --dejima-rust:   #C4603A;   /* Dejima warehouse rust */
+  --tatami:        #D4C5A0;   /* Tatami mat beige */
+  --border:        #D6C8A8;   /* Parchment border */
+  --ink:           #1A1510;   /* Dense ink black */
+  --faded:         #8A7E68;   /* Faded manuscript */
+
+  /* Semantic aliases */
+  --bg-page:       var(--cream);
+  --bg-card:       var(--miffy-white);
+  --bg-surface:    var(--biscuit);
+  --text-primary:  var(--ink);
+  --text-muted:    var(--faded);
+  --text-accent:   var(--windmill);
+  --accent-hero:   var(--tulip);
+  --border-color:  var(--border);
+
+  /* Typography */
+  --font-display:  'DM Serif Display', 'Playfair Display', Georgia, serif;
+  --font-body:     'Libre Baskerville', 'Georgia', serif;
+  --font-mono:     'Space Mono', 'Courier New', monospace;
+
+  /* Radius */
+  --r-sm:  10px;
+  --r-md:  16px;
+  --r-lg:  22px;
+  --r-xl:  30px;
+
+  /* Transitions */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* --- Dark Mode Overrides --- */
+.dark {
+  --bg-page:       #14100A;
+  --bg-card:       #1E1A12;
+  --bg-surface:    #261F14;
+  --text-primary:  #F0E8D5;
+  --text-muted:    #8A7E68;
+  --text-accent:   #A8C4E0;
+  --border-color:  #3A3020;
+  --cream:         #14100A;
+  --biscuit:       #261F14;
+  --miffy-white:   #1E1A12;
+  --ink:           #F0E8D5;
+  --faded:         #8A7E68;
+  --windmill:      #A8C4E0;
+  --nagasaki-gold: #D4A84A;
+}
+
+/* ============================================================
+   BASE RESET & TYPOGRAPHY
+   ============================================================ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body, #root {
+  font-family: var(--font-body);
+  background-color: var(--bg-page);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Scrollbar hide */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { scrollbar-width: none; }
+
+/* SVG/img no-select */
+svg, img { user-select: none; pointer-events: none; }
+
+/* Print */
+@media print {
+  #main-app-container { display: none !important; }
+  #print-zone { display: block !important; background: white !important; }
+}
+
+/* ============================================================
+   LOCK SCREEN
+   ============================================================ */
+
+/* The lock-screen already uses JUNGLE_BG as background image.
+   We just enhance the overlay and input styling. */
+
+/* Password input on lock screen */
+input[type="password"] {
+  font-family: var(--font-mono) !important;
+  letter-spacing: 4px;
+}
+
+/* Lock screen submit button */
+button[type="submit"] {
+  font-family: var(--font-mono) !important;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  font-size: 12px !important;
+}
+
+/* ============================================================
+   WEATHER HERO SECTION
+   ============================================================ */
+
+/* Main hero container */
+.relative.bg-\[#FDFBF7\],
+.relative.bg-stone-900 {
+  background-color: var(--bg-page) !important;
+}
+
+/* "Japan" decorative text in hero */
+.absolute.top-\[-20px\].right-\[-20px\] {
+  font-family: var(--font-display) !important;
+  color: transparent !important;
+  background: linear-gradient(135deg, var(--biscuit) 0%, var(--tatami) 100%) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  opacity: 0.35 !important;
+}
+
+/* Hero title */
+h1.text-4xl.font-serif {
+  font-family: var(--font-display) !important;
+  color: var(--windmill) !important;
+  letter-spacing: -1px;
+}
+
+.dark h1.text-4xl.font-serif {
+  color: var(--text-accent) !important;
+}
+
+/* "生存戰" accent */
+h1.text-4xl span.text-amber-600 {
+  color: var(--tulip) !important;
+  font-style: italic;
+}
+
+.dark h1.text-4xl span.text-amber-500 {
+  color: var(--tulip) !important;
+}
+
+/* "Nagasaki Now" label */
+.text-\[10px\].font-bold.text-stone-400.uppercase.tracking-widest.cursor-pointer {
+  font-family: var(--font-mono) !important;
+  letter-spacing: 3px !important;
+  color: var(--faded) !important;
+}
+
+/* Temperature number */
+.text-5xl.font-serif.font-medium {
+  font-family: var(--font-display) !important;
+  color: var(--windmill) !important;
+}
+
+.dark .text-5xl.font-serif.font-medium {
+  color: var(--text-accent) !important;
+}
+
+/* AQI pill */
+.text-\[10px\].font-bold.px-2.py-0\.5.rounded-full {
+  font-family: var(--font-mono) !important;
+  border-radius: 20px !important;
+}
+
+/* Version text — "V25 終極版" golden gradient */
+.text-2xl.font-bold.text-transparent {
+  font-family: var(--font-display) !important;
+  background: linear-gradient(
+    135deg,
+    #F3E5AB 0%,
+    var(--nagasaki-gold) 40%,
+    #996515 100%
+  ) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+}
+
+/* Countdown banner */
+.absolute.top-0.left-0.right-0.py-1\.5 {
+  font-family: var(--font-mono) !important;
+  letter-spacing: 1.5px !important;
+  font-size: 9px !important;
+  background-color: var(--windmill) !important;
+  color: white !important;
+}
+
+.dark .absolute.top-0.left-0.right-0.py-1\.5 {
+  background-color: var(--windmill) !important;
+  color: rgba(255,255,255,0.9) !important;
+}
+
+/* Rain/alert banner */
+.p-3.rounded-xl.flex.items-center.gap-2.text-xs {
+  border-radius: var(--r-sm) !important;
+  font-family: var(--font-mono) !important;
+}
+
+/* 24h forecast strip */
+.bg-white\/80,
+.dark .bg-stone-800\/80 {
+  background: rgba(253, 248, 238, 0.9) !important;
+  border: 1.5px solid var(--border-color) !important;
+  border-radius: var(--r-md) !important;
+  backdrop-filter: blur(8px);
+}
+
+.dark .bg-white\/80 {
+  background: rgba(30, 26, 18, 0.9) !important;
+}
+
+/* FUTURE 24H label in forecast strip */
+.text-\[10px\].font-bold.text-stone-400.writing-vertical-rl {
+  font-family: var(--font-mono) !important;
+  color: var(--faded) !important;
+  letter-spacing: 3px !important;
+}
+
+/* Hour labels in forecast */
+.text-\[10px\].text-stone-400.font-bold.whitespace-nowrap {
+  font-family: var(--font-mono) !important;
+}
+
+/* Forecast temp numbers */
+.text-sm.font-bold.text-stone-700 {
+  font-family: var(--font-display) !important;
+}
+
+/* Perplexity AI button */
+.w-full.mt-3.py-3.bg-white\/90 {
+  background: var(--bg-card) !important;
+  border: 1.5px solid var(--border-color) !important;
+  border-radius: var(--r-md) !important;
+  font-family: var(--font-mono) !important;
+  font-size: 10px !important;
+  letter-spacing: 1px !important;
+  color: var(--windmill) !important;
+  text-transform: uppercase !important;
+}
+
+/* Member name pill */
+.px-2\.5.py-1.bg-amber-100 {
+  background-color: var(--biscuit) !important;
+  color: var(--windmill) !important;
+  border-radius: 20px !important;
+  font-family: var(--font-mono) !important;
+  font-size: 9px !important;
+  letter-spacing: 1px !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+/* ============================================================
+   OUTFIT GUIDE / INFO DRAWER
+   ============================================================ */
+
+.bg-\[#FFFBF0\],
+.dark .bg-stone-800 {
+  background-color: var(--bg-surface) !important;
+  border: 1.5px solid var(--border-color) !important;
+  border-radius: var(--r-lg) !important;
+}
+
+/* Section headers in outfit guide */
+h3.flex.items-center.gap-2.font-serif.font-bold {
+  font-family: var(--font-display) !important;
+  color: var(--windmill) !important;
+}
+
+.dark h3.flex.items-center.gap-2.font-serif.font-bold {
+  color: var(--nagasaki-gold) !important;
+}
+
+/* Difficulty badge — low */
+.bg-emerald-50.text-emerald-700,
+.dark .bg-emerald-900.text-emerald-300 {
+  background-color: #EAF3DE !important;
+  color: #3B6D11 !important;
+  border-radius: 20px !important;
+  font-family: var(--font-mono) !important;
+  font-size: 8px !important;
+}
+
+/* Difficulty badge — mid */
+.bg-amber-50.text-amber-700,
+.dark .bg-amber-900.text-amber-300 {
+  background-color: #FDF5E8 !important;
+  color: var(--dejima-rust) !important;
+  border-radius: 20px !important;
+  font-family: var(--font-mono) !important;
+  font-size: 8px !important;
+}
+
+/* Difficulty badge — high */
+.bg-rose-50.text-rose-700,
+.dark .bg-rose-900.text-rose-300 {
+  background-color: #FDF0F2 !important;
+  color: var(--tulip) !important;
+  border-radius: 20px !important;
+  font-family: var(--font-mono) !important;
+  font-size: 8px !important;
+}
+
+/* ============================================================
+   DAY CARDS
+   ============================================================ */
+
+/* Day card container */
+.mb-3.px-2 { }
+
+/* Day card header — closed state */
+.relative.flex.items-center.justify-between.p-5.rounded-2xl.cursor-pointer {
+  border-radius: var(--r-md) !important;
+  transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease) !important;
+}
+
+/* Closed card */
+.relative.flex.items-center.justify-between.p-5.rounded-2xl.cursor-pointer.bg-white {
+  background-color: var(--bg-card) !important;
+  border: 1.5px solid var(--border-color) !important;
+  box-shadow: 0 1px 4px rgba(22, 43, 82, 0.06) !important;
+}
+
+.dark .relative.flex.items-center.justify-between.p-5.rounded-2xl.cursor-pointer.bg-white {
+  background-color: var(--bg-card) !important;
+  border-color: var(--border-color) !important;
+}
+
+/* Open/active card */
+.relative.flex.items-center.justify-between.p-5.rounded-2xl.cursor-pointer.bg-stone-800 {
+  background-color: var(--windmill) !important;
+  box-shadow: 0 4px 20px rgba(22, 43, 82, 0.25) !important;
+}
+
+/* Day number box — closed */
+.flex.flex-col.items-center.justify-center.w-12.h-12.rounded-xl.border.bg-stone-50 {
+  background-color: var(--bg-surface) !important;
+  border: 1.5px solid var(--border-color) !important;
+  border-radius: var(--r-sm) !important;
+}
+
+.dark .flex.flex-col.items-center.justify-center.w-12.h-12.rounded-xl.border {
+  background-color: var(--bg-surface) !important;
+  border-color: var(--border-color) !important;
+}
+
+/* Day number box — open */
+.flex.flex-col.items-center.justify-center.w-12.h-12.rounded-xl.border.bg-stone-700 {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  border: 1.5px solid rgba(255,255,255,0.2) !important;
+  border-radius: var(--r-sm) !important;
+}
+
+/* "Day" label inside box */
+.text-\[10px\].font-bold.text-stone-400.uppercase {
+  font-family: var(--font-mono) !important;
+  color: var(--faded) !important;
+  letter-spacing: 1px !important;
+}
+
+/* Day number inside box — closed */
+.text-xl.font-serif.font-bold.text-stone-800 {
+  font-family: var(--font-display) !important;
+  color: var(--windmill) !important;
+}
+
+/* Day number inside box — open */
+.text-xl.font-serif.font-bold.text-amber-400 {
+  font-family: var(--font-display) !important;
+  color: var(--nagasaki-gold) !important;
+}
+
+/* Date label above day title */
+.text-xs.font-bold.mb-0\.5.text-stone-400 {
+  font-family: var(--font-mono) !important;
+  font-size: 9px !important;
+  letter-spacing: 1px !important;
+}
+
+/* Day title text */
+.font-bold.text-lg.leading-tight {
+  font-family: var(--font-display) !important;
+  font-size: 15px !important;
+  line-height: 1.3 !important;
+}
+
+/* ============================================================
+   LOCATION CARDS
+   ============================================================ */
+
+/* Card wrapper */
+.bg-white.dark\:bg-stone-800.rounded-2xl.border.border-stone-100.mb-4 {
+  background-color: var(--bg-card) !important;
+  border: 1.5px solid var(--border-color) !important;
+  border-radius: var(--r-md) !important;
+  overflow: hidden;
+  transition: box-shadow 0.2s var(--ease) !important;
+}
+
+.dark .bg-white.dark\:bg-stone-800.rounded-2xl {
+  background-color: var(--bg-card) !important;
+  border-color: var(--border-color) !important;
+}
+
+/* Card focused/expanded ring */
+.ring-2.ring-amber-100 {
+  box-shadow: 0 0 0 2px var(--biscuit), 0 6px 24px rgba(22, 43, 82, 0.1) !important;
+  border-color: var(--nagasaki-gold) !important;
+}
+
+/* Icon circle in card */
+.mt-1.flex-shrink-0.w-8.h-8.rounded-full.bg-stone-50 {
+  background-color: var(--bg-surface) !important;
+  border: 1.5px solid var(--border-color) !important;
+}
+
+/* Time label */
+.text-\[10px\].font-bold.text-stone-400.font-mono.uppercase.tracking-wide {
+  font-family: var(--font-mono) !important;
+  color: var(--faded) !important;
+  letter-spacing: 2px !important;
+}
+
+/* Highlight badge "★ xxx" */
+.text-\[9px\].px-1\.5.py-0\.5.rounded-md.border.border-amber-100.bg-amber-50.text-amber-700 {
+  background-color: var(--biscuit) !important;
+  color: var(--windmill) !important;
+  border-color: var(--nagasaki-gold) !important;
+  border-radius: 20px !important;
+  font-family: var(--font-mono) !important;
+}
+
+/* Card title */
+h3.font-bold.text-stone-800.text-lg {
+  font-family: var(--font-display) !important;
+  color: var(--windmill) !important;
+  font-size: 16px !important;
+  line-height: 1.3 !important;
+}
+
+.dark h3.font-bold.text-stone-800.text-lg,
+.dark h3.font-bold.text-stone-200.text-lg {
+  color: var(--text-accent) !important;
+}
+
+/* Card note/subtitle */
+p.text-xs.text-stone-500.font-medium.leading-relaxed {
+  font-family: var(--font-body) !important;
+  font-style: italic !important;
+  color: var(--faded) !important;
+}
+
+/* Expanded area — detail section */
+.p-5.bg-stone-50\/50 {
+  background-color: var(--bg-surface) !important;
+}
+
+.dark .p-5.bg-stone-50\/50 {
+  background-color: var(--bg-surface) !important;
+}
+
+/* Detail section heading "導遊作戰..." */
+h4.text-xs.font-bold.text-amber-700 {
+  font-family: var(--font-mono) !important;
+  color: var(--windmill) !important;
+  letter-spacing: 2px !important;
+  font-size: 8.5px !important;
+  text-transform: uppercase !important;
+}
+
+.dark h4.text-xs.font-bold.text-amber-700 {
+  color: var(--nagasaki-gold) !important;
+}
+
+/* Description paragraph */
+p.text-sm.text-stone-600.leading-relaxed {
+  font-family: var(--font-body) !important;
+  font-size: 13px !important;
+  line-height: 1.8 !important;
+  color: var(--text-primary) !important;
+}
+
+/* Navigation button (dark) */
+button.flex.items-center.justify-center.gap-2.py-3.bg-stone-800.text-amber-50.rounded-xl {
+  background-color: var(--windmill) !important;
+  color: var(--biscuit) !important;
+  border-radius: var(--r-sm) !important;
+  font-family: var(--font-mono) !important;
+  font-size: 10px !important;
+  letter-spacing: 1.5px !important;
+  text-transform: uppercase !important;
+  transition: background 0.15s !important;
+}
+
+button.flex.items-center.justify-center.gap-2.py-3.bg-stone-800.text-amber-50.rounded-xl:active {
+  background-color: var(--canal) !important;
+}
+
+/* AI button (light) */
+button.flex.items-center.justify-center.gap-2.py-3.bg-white.border.text-stone-600.rounded-xl {
+  background-color: var(--bg-card) !important;
+  border: 1.5px solid var(--border-color) !important;
+  color: var(--windmill) !important;
+  border-radius: var(--r-sm) !important;
+  font-family: var(--font-mono) !important;
+  font-size: 10px !important;
+  letter-spacing: 1px !important;
+  text-transform: uppercase !important;
+}
+
+/* ============================================================
+   FLOATING NEXT-STOP STATUS
+   ============================================================ */
+
+.fixed.bottom-20.left-4.right-4.z-30 > div {
+  background-color: rgba(22, 43, 82, 0.97) !important;
+  backdrop-filter: blur(16px) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: var(--r-md) !important;
+}
+
+/* COMING UP label */
+.text-\[10px\].text-stone-400.uppercase.tracking-wider.font-bold {
+  font-family: var(--font-mono) !important;
+  letter-spacing: 2px !important;
+}
+
+/* Location name in floating bar */
+.font-bold.text-sm.truncate.text-white {
+  font-family: var(--font-display) !important;
+  font-size: 14px !important;
+}
+
+/* Pulsing indicator dot */
+.w-10.h-10.rounded-full.bg-amber-500.animate-pulse {
+  background-color: var(--tulip) !important;
+}
+
+.w-10.h-10.rounded-full.bg-green-500 {
+  background-color: #3B6D11 !important;
+}
+
+/* Arrow navigate button */
+.bg-stone-800.p-2.rounded-full.text-stone-400 {
+  background-color: rgba(255,255,255,0.1) !important;
+  border-radius: 50% !important;
+}
+
+/* ============================================================
+   BOTTOM NAVIGATION BAR
+   ============================================================ */
+
+nav.fixed.bottom-0 {
+  background: rgba(253, 248, 238, 0.96) !important;
+  backdrop-filter: blur(20px) saturate(1.5) !important;
+  border-top: 1.5px solid var(--border-color) !important;
+}
+
+.dark nav.fixed.bottom-0 {
+  background: rgba(20, 16, 10, 0.97) !important;
+  border-top-color: var(--border-color) !important;
+}
+
+/* Nav items */
+nav button {
+  font-family: var(--font-mono) !important;
+  font-size: 8.5px !important;
+  letter-spacing: 1px !important;
+  text-transform: uppercase !important;
+  transition: color 0.15s !important;
+}
+
+/* Active nav item */
+nav button.text-stone-800,
+nav button.dark\:text-stone-100 {
+  color: var(--windmill) !important;
+}
+
+.dark nav button.dark\:text-stone-100 {
+  color: var(--nagasaki-gold) !important;
+}
+
+/* Inactive nav item */
+nav button.text-stone-400 {
+  color: var(--tatami) !important;
+}
+
+/* ============================================================
+   PACKING PAGE
+   ============================================================ */
+
+/* Page heading */
+h2.text-2xl.font-serif.font-bold {
+  font-family: var(--font-display) !important;
+  color: var(--windmill) !important;
+}
+
+.dark h2.text-2xl.font-serif.font-bold {
+  color: var(--text-accent) !important;
+}
+
+/* Vertical accent bar */
+.w-1\.5.h-6.bg-amber-500.rounded-full {
+  background-color: var(--tulip) !important;
+}
+
+/* User selector buttons — inactive */
+button.relative.flex.flex-col.items-center.justify-end.rounded-2xl.border.bg-stone-900\/50 {
+  background-color: var(--bg-surface) !important;
+  border: 1.5px solid var(--border-color) !important;
+  border-radius: var(--r-md) !important;
+  color: var(--faded) !important;
+}
+
+/* User selector — active */
+button.relative.flex.flex-col.items-center.justify-end.rounded-2xl.border.bg-stone-800 {
+  background-color: var(--windmill) !important;
+  border-color: var(--windmill) !important;
+  border-radius: var(--r-md) !important;
+  color: white !important;
+}
+
+/* Progress bar */
+.h-1\.5.w-full.bg-stone-200.rounded-full {
+  background-color: var(--biscuit) !important;
+}
+
+.h-full.bg-amber-500.transition-all {
+  background: linear-gradient(90deg, var(--canal) 0%, var(--windmill) 100%) !important;
+}
+
+/* Packing item — unchecked */
+.flex.items-center.gap-3.p-4.rounded-xl.border.bg-white.border-stone-100.shadow-sm {
+  background-color: var(--bg-card) !important;
+  border: 1.5px solid var(--border-color) !important;
+  border-radius: var(--r-sm) !important;
+  box-shadow: 0 1px 3px rgba(22,43,82,0.05) !important;
+  transition: box-shadow 0.15s !important;
+}
+
+.dark .flex.items-center.gap-3.p-4.rounded-xl.border.bg-white {
+  background-color: var(--bg-card) !important;
+  border-color: var(--border-color) !important;
+}
+
+/* Packing item — checked */
+.flex.items-center.gap-3.p-4.rounded-xl.border.bg-stone-100 {
+  background-color: var(--bg-surface) !important;
+  border-color: transparent !important;
+  border-radius: var(--r-sm) !important;
+}
+
+/* Checkbox circle — unchecked */
+.w-6.h-6.rounded-full.border-2.border-stone-300 {
+  border-color: var(--border-color) !important;
+  background-color: var(--bg-surface) !important;
+}
+
+/* Checkbox circle — checked */
+.w-6.h-6.rounded-full.bg-green-500.border-green-500 {
+  background-color: var(--windmill) !important;
+  border-color: var(--windmill) !important;
+}
+
+/* Item text */
+span.flex-1.font-medium.text-stone-700 {
+  font-family: var(--font-body) !important;
+  font-size: 13px !important;
+}
+
+.dark span.flex-1.font-medium.text-stone-200 {
+  color: var(--text-primary) !important;
+}
+
+span.flex-1.font-medium.text-stone-400.line-through {
+  color: var(--tatami) !important;
+}
+
+/* Add item input */
+.flex-1.p-3.rounded-xl.border.border-stone-200 {
+  background-color: var(--bg-card) !important;
+  border: 1.5px solid var(--border-color) !important;
+  border-radius: var(--r-sm) !important;
+  font-family: var(--font-body) !important;
+  color: var(--text-primary) !important;
+}
+
+.flex-1.p-3.rounded-xl.border.border-stone-200:focus {
+  border-color: var(--windmill) !important;
+  outline: none !important;
+}
+
+/* Add button */
+.bg-stone-800.text-amber-50.px-5.rounded-xl.font-bold {
+  background-color: var(--windmill) !important;
+  color: var(--biscuit) !important;
+  border-radius: var(--r-sm) !important;
+  font-family: var(--font-mono) !important;
+  letter-spacing: 1px !important;
+}
+
+/* KyushuTips container */
+.bg-amber-50.rounded-2xl.border.border-amber-100.overflow-hidden {
+  background-color: var(--bg-surface) !important;
+  border: 1.5px solid var(--border-color) !important;
+  border-radius: var(--r-md) !important;
+}
+
+/* KyushuTips header button */
+button.w-full.flex.items-center.justify-between.p-4.bg-amber-100\/50 {
+  background-color: rgba(22, 43, 82, 0.06) !important;
+  color: var(--windmill) !important;
+  font-family: var(--font-mono) !important;
+  font-size: 10px !important;
+  letter-spacing: 1px !important;
+}
+
+.dark button.w-full.flex.items-center.justify-between.p-4 {
+  background-color: rgba(255,255,255,0.04) !important;
+  color: var(--nagasaki-gold) !important;
+}
+
+/* Visit Japan Web link */
+.bg-white.shadow-sm.border.border-stone-100.rounded-2xl.flex.items-center.justify-between {
+  background-color: var(--bg-card) !important;
+  border: 1.5px solid var(--border-color) !important;
+  border-radius: var(--r-md) !important;
+}
+
+/* ============================================================
+   GUIDE PAGE
+   ============================================================ */
+
+/* Notice board */
+.bg-white.border.border-amber-200.rounded-\[2rem\].p-5 {
+  background-color: var(--bg-card) !important;
+  border: 1.5px solid var(--nagasaki-gold) !important;
+  border-radius: var(--r-lg) !important;
+  position: relative;
+}
+
+.bg-white.border.border-amber-200.rounded-\[2rem\].p-5::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--windmill) 0px, var(--windmill) 8px,
+    var(--canal) 8px, var(--canal) 16px,
+    var(--cream) 16px, var(--cream) 24px,
+    var(--canal) 24px, var(--canal) 32px
+  );
+  border-radius: var(--r-lg) var(--r-lg) 0 0;
+  opacity: 0.5;
+}
+
+/* Notice board label "PIN" */
+.flex.items-center.gap-2.mb-3.text-amber-600.font-bold.text-xs.uppercase.tracking-widest {
+  font-family: var(--font-mono) !important;
+  color: var(--windmill) !important;
+  letter-spacing: 3px !important;
+}
+
+/* Picky eater section */
+.bg-rose-50.border.border-rose-200.rounded-2xl.p-4 {
+  background-color: #FDF5F0 !important;
+  border: 1.5px solid var(--dejima-rust) !important;
+  border-radius: var(--r-md) !important;
+}
+
+.dark .bg-rose-950\/30 {
+  background-color: rgba(30,16,10,0.5) !important;
+}
+
+/* Picky eater header icon wrapper */
+.p-2.bg-white.rounded-xl.text-rose-500 {
+  background-color: var(--bg-card) !important;
+  border-radius: var(--r-sm) !important;
+}
+
+/* Picky eater toggle heading */
+.font-bold.text-rose-800 {
+  font-family: var(--font-mono) !important;
+  color: var(--dejima-rust) !important;
+  font-size: 11px !important;
+  letter-spacing: 0.5px !important;
+}
+
+.dark .font-bold.text-rose-300 {
+  color: var(--dejima-rust) !important;
+}
+
+/* Picky eater item rows */
+.divide-y .px-5.py-4 {
+  background-color: var(--bg-card) !important;
+}
+
+/* Japanese text in picky eater */
+.text-base.font-black.text-rose-600.font-serif {
+  font-family: var(--font-display) !important;
+  color: var(--tulip) !important;
+  font-size: 16px !important;
+}
+
+/* Tax refund section */
+.bg-amber-50.border.border-amber-200.rounded-2xl.p-4 {
+  background-color: var(--bg-surface) !important;
+  border: 1.5px solid var(--nagasaki-gold) !important;
+  border-radius: var(--r-md) !important;
+}
+
+/* Guide section cards */
+.p-5.rounded-\[2rem\].border.shadow-sm {
+  border-radius: var(--r-lg) !important;
+  border-width: 1.5px !important;
+  background-color: var(--bg-card) !important;
+  border-color: var(--border-color) !important;
+  box-shadow: 0 1px 4px rgba(22,43,82,0.06) !important;
+}
+
+/* Guide section title */
+h3.text-lg.font-bold.text-stone-800 {
+  font-family: var(--font-display) !important;
+  color: var(--windmill) !important;
+}
+
+.dark h3.text-lg.font-bold.text-stone-100 {
+  color: var(--text-accent) !important;
+}
+
+/* Guide section icon wrapper */
+.p-2\.5.bg-white.rounded-2xl.shadow-sm {
+  background-color: var(--bg-surface) !important;
+  border-radius: var(--r-sm) !important;
+  border: 1.5px solid var(--border-color) !important;
+}
+
+/* Guide "Open List" button */
+button.flex.items-center.justify-center.gap-2.py-2\.5.bg-stone-800.text-amber-50.rounded-2xl {
+  background-color: var(--windmill) !important;
+  color: var(--biscuit) !important;
+  border-radius: var(--r-sm) !important;
+  font-family: var(--font-mono) !important;
+  font-size: 9px !important;
+  letter-spacing: 1.5px !important;
+  text-transform: uppercase !important;
+}
+
+/* Wish pool section */
+.bg-\[#FEF3C7\].p-6.rounded-\[2\.5rem\].border-2.border-amber-300 {
+  background-color: var(--biscuit) !important;
+  border: 2px solid var(--nagasaki-gold) !important;
+  border-radius: var(--r-xl) !important;
+}
+
+.dark .bg-stone-800 {
+  background-color: var(--bg-card) !important;
+}
+
+/* Wish pool heading */
+.flex.items-center.gap-2.mb-5.text-amber-900.font-black.text-sm.tracking-wider {
+  font-family: var(--font-mono) !important;
+  color: var(--windmill) !important;
+  letter-spacing: 2px !important;
+  text-transform: uppercase !important;
+}
+
+/* Wish items */
+.bg-white.dark\:bg-stone-900.p-4.rounded-2xl.border.flex.justify-between {
+  background-color: var(--bg-card) !important;
+  border: 1.5px solid var(--border-color) !important;
+  border-radius: var(--r-md) !important;
+}
+
+.font-bold.text-base {
+  font-family: var(--font-display) !important;
+}
+
+/* ============================================================
+   UTILS PAGE
+   ============================================================ */
+
+/* Page heading */
+h2.text-2xl.font-serif.font-bold.text-stone-800 {
+  font-family: var(--font-display) !important;
+  color: var(--windmill) !important;
+}
+
+/* Dark mode toggle */
+.bg-white.border.border-stone-100.rounded-2xl.p-4.flex.items-center.justify-between {
+  background-color: var(--bg-card) !important;
+  border: 1.5px solid var(--border-color) !important;
+  border-radius: var(--r-md) !important;
+}
+
+/* Toggle track */
+.w-12.h-6.rounded-full.p-1.bg-amber-500 {
+  background-color: var(--windmill) !important;
+}
+
+.w-12.h-6.rounded-full.p-1.bg-stone-300 {
+  background-color: var(--tatami) !important;
+}
+
+/* Lightsplit LINE Pay button */
+.bg-\[#06C755\].p-6.rounded-2xl {
+  background-color: var(--windmill) !important;
+  border-radius: var(--r-lg) !important;
+}
+
+.bg-\[#06C755\] a.bg-white {
+  background-color: var(--biscuit) !important;
+  color: var(--windmill) !important;
+  font-family: var(--font-mono) !important;
+  font-size: 10px !important;
+  letter-spacing: 1px !important;
+  text-transform: uppercase !important;
+  border-radius: var(--r-sm) !important;
+}
+
+/* Flight section */
+.bg-white.dark\:bg-stone-800.p-6.rounded-2xl.border.border-stone-100 {
+  background-color: var(--bg-card) !important;
+  border: 1.5px solid var(--border-color) !important;
+  border-radius: var(--r-lg) !important;
+}
+
+.dark .bg-white.dark\:bg-stone-800.p-6.rounded-2xl {
+  background-color: var(--bg-card) !important;
+  border-color: var(--border-color) !important;
+}
+
+/* Section subheadings */
+h3.flex.items-center.gap-2.font-bold.text-stone-800.mb-4.border-b.pb-3 {
+  font-family: var(--font-display) !important;
+  color: var(--windmill) !important;
+  border-bottom-color: var(--border-color) !important;
+  font-size: 15px !important;
+}
+
+.dark h3.flex.items-center.gap-2.font-bold.text-stone-100 {
+  color: var(--text-accent) !important;
+}
+
+/* Flight card */
+.bg-white.dark\:bg-stone-800.rounded-2xl.p-4.border.border-stone-100.shadow-sm.mb-3 {
+  background-color: var(--bg-card) !important;
+  border: 1.5px solid var(--border-color) !important;
+  border-radius: var(--r-md) !important;
+}
+
+/* Flight decorative circle */
+.absolute.top-0.right-0.w-24.h-24.bg-stone-50.rounded-bl-full {
+  background-color: var(--bg-surface) !important;
+}
+
+/* Flight type badge — outbound */
+.px-2.py-1.rounded.bg-amber-100.text-amber-800 {
+  background-color: var(--biscuit) !important;
+  color: var(--windmill) !important;
+  font-family: var(--font-mono) !important;
+  font-size: 9px !important;
+  letter-spacing: 1px !important;
+  text-transform: uppercase !important;
+  border-radius: 6px !important;
+}
+
+/* Flight type badge — return */
+.px-2.py-1.rounded.bg-stone-100.text-stone-600 {
+  background-color: var(--bg-surface) !important;
+  color: var(--faded) !important;
+  font-family: var(--font-mono) !important;
+  font-size: 9px !important;
+  letter-spacing: 1px !important;
+  border-radius: 6px !important;
+}
+
+/* Airport codes */
+.text-2xl.font-bold.text-stone-800 {
+  font-family: var(--font-display) !important;
+  color: var(--windmill) !important;
+}
+
+.dark .text-2xl.font-bold.text-stone-100 {
+  color: var(--text-accent) !important;
+}
+
+/* Terminal badge */
+.text-\[10px\].font-bold.text-white.bg-amber-500 {
+  background-color: var(--tulip) !important;
+  font-family: var(--font-mono) !important;
+  border-radius: 4px !important;
+}
+
+/* Flight number */
+.text-xs.font-bold.text-stone-500 {
+  font-family: var(--font-mono) !important;
+  color: var(--faded) !important;
+  letter-spacing: 2px !important;
+}
+
+/* Flight time */
+.text-xs.font-bold.text-stone-400.whitespace-nowrap {
+  font-family: var(--font-mono) !important;
+  color: var(--faded) !important;
+}
+
+/* Live status dot */
+.w-2.h-2.rounded-full.bg-green-500.animate-pulse {
+  background-color: var(--canal) !important;
+}
+
+/* "即時動態" button */
+a.flex.items-center.gap-1.text-xs.font-bold.text-blue-500.bg-blue-50 {
+  background-color: var(--biscuit) !important;
+  color: var(--windmill) !important;
+  border-radius: 20px !important;
+  font-family: var(--font-mono) !important;
+  font-size: 9px !important;
+  letter-spacing: 1px !important;
+  text-transform: uppercase !important;
+}
+
+/* Accommodation cards */
+.bg-stone-50.rounded-xl.p-4.border.border-stone-100 {
+  background-color: var(--bg-surface) !important;
+  border: 1.5px solid var(--border-color) !important;
+  border-radius: var(--r-sm) !important;
+}
+
+.dark .bg-stone-700\/50 {
+  background-color: var(--bg-surface) !important;
+}
+
+/* Acc hotel type label */
+.text-\[10px\].text-stone-400.font-bold {
+  font-family: var(--font-mono) !important;
+  color: var(--faded) !important;
+  letter-spacing: 1.5px !important;
+  text-transform: uppercase !important;
+}
+
+/* Date badge on acc */
+.text-xs.font-bold.bg-white.px-2.py-1.rounded.border.border-stone-200.whitespace-nowrap {
+  background-color: var(--biscuit) !important;
+  color: var(--windmill) !important;
+  border-color: var(--border-color) !important;
+  font-family: var(--font-mono) !important;
+  border-radius: 6px !important;
+}
+
+/* Nav button in acc */
+a.flex.items-center.justify-center.gap-1\.5.py-2.bg-stone-800.text-amber-50.rounded-lg {
+  background-color: var(--windmill) !important;
+  color: var(--biscuit) !important;
+  font-family: var(--font-mono) !important;
+  font-size: 9.5px !important;
+  letter-spacing: 1px !important;
+  border-radius: var(--r-sm) !important;
+  text-transform: uppercase !important;
+}
+
+/* Phone button in acc */
+a.flex.items-center.justify-center.gap-1\.5.py-2.bg-white.border.border-stone-200 {
+  background-color: var(--bg-card) !important;
+  border: 1.5px solid var(--border-color) !important;
+  color: var(--windmill) !important;
+  font-family: var(--font-mono) !important;
+  font-size: 9.5px !important;
+  letter-spacing: 1px !important;
+  border-radius: var(--r-sm) !important;
+}
+
+/* Emergency section */
+.bg-red-50.rounded-xl.flex.flex-col.items-center.border.border-red-100 {
+  background-color: #FDF0F2 !important;
+  border: 1.5px solid var(--tulip) !important;
+  border-radius: var(--r-sm) !important;
+}
+
+.text-2xl.font-black.text-red-600 {
+  font-family: var(--font-display) !important;
+  color: var(--tulip) !important;
+}
+
+.text-xs.font-bold.text-red-800 {
+  font-family: var(--font-mono) !important;
+  color: var(--tulip) !important;
+  font-size: 9px !important;
+  letter-spacing: 1px !important;
+}
+
+/* Safety Tips dark box */
+.bg-stone-800.rounded-xl.p-4.text-stone-300.text-sm {
+  background-color: var(--windmill) !important;
+  border-radius: var(--r-sm) !important;
+}
+
+/* Japan Safety Tips feature row */
+.bg-amber-500\/10.border.border-amber-500\/30.rounded-lg.p-3 {
+  background-color: rgba(201,151,58,0.12) !important;
+  border-color: var(--nagasaki-gold) !important;
+  border-radius: var(--r-sm) !important;
+}
+
+.text-\[10px\].font-black.text-amber-500.uppercase.tracking-tighter {
+  color: var(--nagasaki-gold) !important;
+  font-family: var(--font-mono) !important;
+}
+
+/* Currency section */
+.bg-green-50.p-4.rounded-xl.mb-6 {
+  background-color: var(--bg-surface) !important;
+  border: 1.5px solid var(--border-color) !important;
+  border-radius: var(--r-sm) !important;
+}
+
+.text-\[10px\].text-green-600.font-bold.mb-2 {
+  font-family: var(--font-mono) !important;
+  color: var(--windmill) !important;
+  letter-spacing: 1px !important;
+}
+
+/* Currency inputs */
+.w-full.p-2.rounded-lg.border.border-green-200 {
+  background-color: var(--bg-card) !important;
+  border: 1.5px solid var(--border-color) !important;
+  border-radius: var(--r-sm) !important;
+  font-family: var(--font-mono) !important;
+  color: var(--text-primary) !important;
+}
+
+.w-full.p-2.rounded-lg.border.border-green-200:focus {
+  border-color: var(--windmill) !important;
+  outline: none !important;
+}
+
+/* ============================================================
+   LOADING SCREEN
+   ============================================================ */
+
+.fixed.inset-0.z-50.flex.flex-col.items-center.justify-center {
+  background-color: var(--bg-page) !important;
+}
+
+.text-stone-500.text-sm.font-bold.tracking-widest.animate-pulse {
+  font-family: var(--font-mono) !important;
+  color: var(--faded) !important;
+  letter-spacing: 3px !important;
+  font-size: 10px !important;
+  text-transform: uppercase !important;
+}
+
+/* Loader spinner */
+.text-amber-500.animate-spin {
+  color: var(--windmill) !important;
+}
+
+/* ============================================================
+   MISC SHARED ELEMENTS
+   ============================================================ */
+
+/* "Journey to Kyushu" footer text */
+.text-center.text-xs.text-stone-400.mt-12.mb-4.font-serif.italic {
+  font-family: var(--font-display) !important;
+  color: var(--tatami) !important;
+  font-style: italic !important;
+}
+
+/* Print button */
+button.flex.items-center.gap-1\.5.px-3.py-1\.5.rounded-full.border.border-stone-200 {
+  font-family: var(--font-mono) !important;
+  font-size: 9px !important;
+  color: var(--faded) !important;
+  border-color: var(--border-color) !important;
+  border-radius: 20px !important;
+  letter-spacing: 1px !important;
+}
+
+/* Chevrons / arrows */
+.text-stone-300 {
+  color: var(--tatami) !important;
+}
+
+.text-stone-500.ml-auto {
+  color: var(--faded) !important;
+}
+
+/* All section borders */
+.border-b.pb-3 {
+  border-bottom-color: var(--border-color) !important;
+}
+
+.border-t.pt-3 {
+  border-top-color: var(--border-color) !important;
+}
+
+/* Generic link-style buttons (green tinted ones) */
+a.flex.items-center.justify-center.gap-2.w-full.py-3.mt-4.rounded-xl.bg-blue-50,
+a.flex.items-center.justify-center.gap-2.w-full.py-3.mt-4.rounded-xl.bg-orange-50 {
+  background-color: var(--bg-surface) !important;
+  color: var(--windmill) !important;
+  border: 1.5px solid var(--border-color) !important;
+  border-radius: var(--r-sm) !important;
+  font-family: var(--font-mono) !important;
+  font-size: 10px !important;
+  letter-spacing: 1px !important;
+  text-transform: uppercase !important;
+}
+
+/* App row items */
+.flex.items-center.justify-between.p-3.bg-stone-50.rounded-xl.border.border-stone-100 {
+  background-color: var(--bg-surface) !important;
+  border: 1.5px solid var(--border-color) !important;
+  border-radius: var(--r-sm) !important;
+}
+
+.dark .flex.items-center.justify-between.p-3.dark\:bg-stone-700\/50 {
+  background-color: var(--bg-surface) !important;
+}
+
+.font-bold.text-stone-800.text-sm {
+  font-family: var(--font-body) !important;
+  color: var(--windmill) !important;
+}
+
+.dark .font-bold.text-stone-100.text-sm {
+  color: var(--text-accent) !important;
+}
+
+.text-\[10px\].text-stone-500 {
+  font-family: var(--font-mono) !important;
+  color: var(--faded) !important;
+  letter-spacing: 0.5px !important;
+}
+
+/* iOS/Android badges */
+.text-\[10px\].font-bold.bg-stone-800.text-white.px-2.py-1.rounded-lg {
+  background-color: var(--windmill) !important;
+  font-family: var(--font-mono) !important;
+  letter-spacing: 0.5px !important;
+  border-radius: 6px !important;
+}
+
+/* Back to top button */
+button.fixed.bottom-24.right-4.z-40 {
+  background-color: rgba(22, 43, 82, 0.85) !important;
+  backdrop-filter: blur(8px) !important;
+  border: 1.5px solid rgba(255,255,255,0.15) !important;
+  border-radius: 50% !important;
+  color: var(--nagasaki-gold) !important;
+}
+
+/* ============================================================
+   DELFT TILE ACCENT LINE
+   — Add this class to any horizontal divider for Dutch flair
+   ============================================================ */
+.delft-accent {
+  height: 4px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--windmill) 0px, var(--windmill) 6px,
+    var(--canal)    6px, var(--canal)    12px,
+    var(--cream)    12px, var(--cream)   18px,
+    var(--canal)    18px, var(--canal)   24px
+  );
+  opacity: 0.4;
+  border-radius: 2px;
+  margin: 8px 0;
+}
+
+/* ============================================================
+   ANIMATION KEYFRAMES (kept from original)
+   ============================================================ */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-fadeIn {
+  animation: fadeIn 0.35s var(--ease) forwards;
+}
+
+
+
+
+
         `}
       </style>
       <div className={`min-h-screen font-sans text-stone-800 dark:text-stone-100 max-w-md mx-auto relative overflow-hidden ${isLocked ? 'bg-stone-900' : 'bg-[#FDFBF7] dark:bg-stone-900'}`}>
