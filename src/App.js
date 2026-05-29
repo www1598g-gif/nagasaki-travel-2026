@@ -3918,6 +3918,57 @@ button.fixed.bottom-24.right-4.z-40 {
   color: var(--miffy-yellow) !important;
 }
  
+/* ============================================================
+   v2.4 PATCH — 深色模式所有 section 標題強制亮色（精準版）
+   ============================================================ */
+ 
+/* 核心修正：深色模式下，白底卡片裡的 h3 標題全部變黃 */
+.dark h3 {
+  color: var(--miffy-yellow) !important;
+}
+ 
+/* 深色模式下所有 font-bold 的標題文字 */
+.dark .font-bold.text-stone-800,
+.dark .font-bold.text-stone-700,
+.dark .font-bold.text-stone-600,
+.dark .font-bold.text-stone-100 {
+  color: var(--miffy-yellow) !important;
+}
+ 
+/* 深色模式下一般內文 */
+.dark .text-stone-800,
+.dark .text-stone-700,
+.dark .text-stone-600 {
+  color: var(--text-main) !important;
+}
+ 
+/* 深色模式下 muted 文字 */
+.dark .text-stone-500,
+.dark .text-stone-400,
+.dark .text-stone-300 {
+  color: var(--text-muted) !important;
+}
+ 
+/* 例外：緊急電話深色區塊裡面不要改（已經是白字） */
+.dark .bg-stone-800 .text-stone-800,
+.dark .bg-stone-800 .font-bold.text-stone-800 {
+  color: rgba(255,255,255,0.85) !important;
+}
+ 
+/* 深色模式 — 許願池標題 Sparkles 旁文字 */
+.dark .text-amber-900 {
+  color: var(--miffy-yellow) !important;
+}
+ 
+/* 深色模式 — 所有卡片內 p 標籤 */
+.dark p {
+  color: var(--text-main) !important;
+}
+ 
+/* 深色模式 — 所有 span 文字 */
+.dark span {
+  color: inherit !important;
+}
 
         `}
       </style>
