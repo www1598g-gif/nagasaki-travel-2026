@@ -2285,7 +2285,7 @@ export default function TravelApp() {
     <div className={darkMode ? 'dark' : ''}>
       <style>
   {`
-    @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Space+Mono:wght@400;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Space+Mono:wght@400;700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap');
     svg, img { user-select: none; pointer-events: none; }
     .no-scrollbar::-webkit-scrollbar { display: none; }
     @media print {
@@ -2294,56 +2294,49 @@ export default function TravelApp() {
     }
 
 /* ============================================================
-   KYUSHU 2026 — Dick Bruna Miffy  豪斯登堡  長崎
-   Drop-in CSS theme
+   KYUSHU 2026 — Dick Bruna Miffy  Huis Ten Bosch  Nagasaki
+   v2 — Bug fixes
    ============================================================ */
+
 
 
 /* ── Dick Bruna 原版色票 ── */
 :root {
-  --miffy-yellow:  #F7E84E;   /* 米飛黃底 — 全頁背景 */
-  --miffy-orange:  #F4831F;   /* 米飛橘   — 食物/暖調卡片 */
-  --miffy-blue:    #4BACD6;   /* 米飛藍   — 天氣/交通卡片 */
-  --miffy-green:   #5BB56A;   /* 米飛綠   — 景點/OK標籤 */
-  --tulip-red:     #E8334A;   /* 鬱金香紅 — 警示/強調/banner */
-  --ink:           #1A1510;   /* 輪廓墨黑 — 所有邊框線條 */
-  --card-white:    #FFFFFF;   /* 卡片純白 — 內容區背景 */
-  --faded:         #888880;   /* 褪色灰   — muted 文字 */
-  --ear-pink:      #F4C5C5;   /* 耳朵粉   — 米飛耳朵內側 */
-  --nose-orange:   #F4831F;   /* 鼻子橘   — 米飛X鼻 */
+  --miffy-yellow:  #F7E84E;
+  --miffy-orange:  #F4831F;
+  --miffy-blue:    #4BACD6;
+  --miffy-green:   #5BB56A;
+  --tulip-red:     #E8334A;
+  --ink:           #1A1510;
+  --card-white:    #FFFFFF;
+  --faded:         #666660;
+  --ear-pink:      #F4C5C5;
 
-  /* 語義 alias */
   --bg-page:    var(--miffy-yellow);
   --bg-card:    var(--card-white);
   --border:     var(--ink);
   --text-main:  var(--ink);
   --text-muted: var(--faded);
 
-  /* 字型 */
   --font-display: 'DM Serif Display', Georgia, serif;
   --font-body:    'Libre Baskerville', Georgia, serif;
   --font-mono:    'Space Mono', 'Courier New', monospace;
 
-  /* 圓角 */
   --r-sm: 10px;
   --r-md: 16px;
   --r-lg: 20px;
   --r-xl: 28px;
-
-  /* 邊框粗細 — Bruna 風格用粗邊 */
-  --bw: 2px;
+  --bw:    2px;
   --bw-lg: 2.5px;
 }
 
 /* ── Dark Mode ── */
 .dark {
-  --bg-page:   #1A1510;
-  --bg-card:   #28221A;
+  --bg-page:   #2A2010;
+  --bg-card:   #33291A;
+  --text-main: #F5EDD5;
+  --text-muted:#A09070;
   --border:    #F7E84E;
-  --text-main: #F7E84E;
-  --text-muted:#A09880;
-  --miffy-yellow: #28221A;
-  --card-white:   #28221A;
 }
 
 /* ============================================================
@@ -2374,17 +2367,17 @@ svg, img { user-select: none; pointer-events: none; }
 }
 
 /* ============================================================
-   PAGE BACKGROUND — 全頁鵝黃底
+   PAGE BACKGROUND
    ============================================================ */
 .bg-\[#FDFBF7\],
-.bg-\[#FDFBF7\].dark\:bg-stone-900,
 .min-h-screen.bg-\[#FDFBF7\],
-.bg-\[#FDFBF7\].dark\:bg-stone-900.transition-colors {
+.bg-\[#FDFBF7\].dark\:bg-stone-900 {
   background-color: var(--miffy-yellow) !important;
 }
 .dark .bg-\[#FDFBF7\],
 .dark.bg-stone-900,
-.dark .min-h-screen {
+.dark .min-h-screen,
+.dark .bg-\[#FDFBF7\].dark\:bg-stone-900 {
   background-color: var(--bg-page) !important;
 }
 
@@ -2409,14 +2402,16 @@ svg, img { user-select: none; pointer-events: none; }
   border-bottom: var(--bw-lg) solid var(--ink) !important;
   border-radius: 0 !important;
 }
+.dark .relative.bg-\[#FDFBF7\].dark\:bg-stone-900.pt-0.pb-8.px-6 {
+  background-color: var(--bg-page) !important;
+  border-bottom-color: var(--miffy-yellow) !important;
+}
 
-/* 背景裝飾大字 "Japan" */
 .absolute.top-\[-20px\].right-\[-20px\] {
   color: rgba(26, 21, 16, 0.06) !important;
   font-family: var(--font-display) !important;
 }
 
-/* 成員名稱 pill */
 .px-2\.5.py-1.bg-amber-100 {
   background-color: var(--card-white) !important;
   color: var(--ink) !important;
@@ -2426,8 +2421,12 @@ svg, img { user-select: none; pointer-events: none; }
   font-size: 8px !important;
   letter-spacing: 1px !important;
 }
+.dark .px-2\.5.py-1.dark\:bg-stone-800 {
+  background-color: rgba(255,255,255,0.1) !important;
+  color: var(--miffy-yellow) !important;
+  border-color: var(--miffy-yellow) !important;
+}
 
-/* 版本號金字 */
 .text-2xl.font-bold.text-transparent {
   font-family: var(--font-display) !important;
   background: linear-gradient(135deg, var(--miffy-orange) 0%, #C9600A 100%) !important;
@@ -2435,41 +2434,44 @@ svg, img { user-select: none; pointer-events: none; }
   background-clip: text !important;
 }
 
-/* 標題 "九州" */
 h1.text-4xl.font-serif {
   font-family: var(--font-display) !important;
   color: var(--ink) !important;
   letter-spacing: -1px !important;
 }
+.dark h1.text-4xl.font-serif {
+  color: var(--miffy-yellow) !important;
+}
 
-/* "生存戰" 橘色斜體 */
 h1.text-4xl span.text-amber-600,
 h1.text-4xl span.text-amber-500 {
   color: var(--miffy-orange) !important;
   font-style: italic !important;
 }
 
-/* "Nagasaki Now" label */
+.text-5xl.font-serif.font-medium {
+  font-family: var(--font-display) !important;
+  color: var(--ink) !important;
+}
+.dark .text-5xl.font-serif.font-medium {
+  color: var(--miffy-yellow) !important;
+}
+
 .text-\[10px\].font-bold.text-stone-400.uppercase.tracking-widest {
   font-family: var(--font-mono) !important;
   color: var(--faded) !important;
   letter-spacing: 3px !important;
 }
-
-/* 氣溫數字 */
-.text-5xl.font-serif.font-medium {
-  font-family: var(--font-display) !important;
-  color: var(--ink) !important;
+.dark .text-\[10px\].font-bold.text-stone-400 {
+  color: var(--text-muted) !important;
 }
 
-/* AQI / 濕度 pill */
+/* AQI pill */
 .text-\[10px\].font-bold.px-2.py-0\.5.rounded-full {
   font-family: var(--font-mono) !important;
   border-radius: 20px !important;
   border: var(--bw) solid var(--ink) !important;
 }
-
-/* AQI 好 */
 .bg-emerald-100.text-emerald-700 {
   background-color: var(--miffy-green) !important;
   color: #fff !important;
@@ -2489,44 +2491,46 @@ h1.text-4xl span.text-amber-500 {
   font-size: 9px !important;
 }
 
-/* 24小時預報條 */
-.bg-white\/80,
-.dark .bg-stone-800\/80 {
+/* 24h forecast */
+.bg-white\/80 {
   background-color: var(--card-white) !important;
   border: var(--bw) solid var(--ink) !important;
   border-radius: var(--r-md) !important;
 }
-.dark .bg-white\/80 {
+.dark .bg-white\/80,
+.dark .bg-stone-800\/80 {
   background-color: var(--bg-card) !important;
+  border-color: var(--miffy-yellow) !important;
 }
 
-/* 預報小時標籤 */
 .text-\[10px\].text-stone-400.font-bold.whitespace-nowrap {
   font-family: var(--font-mono) !important;
   color: var(--faded) !important;
 }
+.dark .text-\[10px\].text-stone-400.font-bold.whitespace-nowrap {
+  color: var(--text-muted) !important;
+}
 
-/* 預報溫度 */
-.text-sm.font-bold.text-stone-700,
-.dark .text-sm.font-bold.text-stone-300 {
+.text-sm.font-bold.text-stone-700 {
   font-family: var(--font-mono) !important;
   color: var(--ink) !important;
 }
+.dark .text-sm.font-bold.text-stone-300 {
+  color: var(--miffy-yellow) !important;
+}
 
-/* 降雨率 */
 .text-\[9px\].text-blue-400.font-bold {
   color: var(--miffy-blue) !important;
   font-family: var(--font-mono) !important;
 }
 
-/* FUTURE 24H 側邊文字 */
 .text-\[10px\].font-bold.text-stone-400.writing-vertical-rl {
   font-family: var(--font-mono) !important;
   color: var(--faded) !important;
   letter-spacing: 3px !important;
 }
 
-/* 雨量警告 alert */
+/* 雨量警告 */
 .p-3.rounded-xl.border.bg-blue-50.text-blue-800 {
   background-color: var(--miffy-blue) !important;
   color: #fff !important;
@@ -2546,9 +2550,14 @@ h1.text-4xl span.text-amber-500 {
   color: var(--ink) !important;
   text-transform: uppercase !important;
 }
+.dark .w-full.mt-3.py-3 {
+  background-color: var(--bg-card) !important;
+  border-color: var(--miffy-yellow) !important;
+  color: var(--miffy-yellow) !important;
+}
 
 /* ============================================================
-   OUTFIT GUIDE 穿搭說明
+   OUTFIT GUIDE
    ============================================================ */
 .bg-\[#FFFBF0\] {
   background-color: var(--card-white) !important;
@@ -2557,7 +2566,7 @@ h1.text-4xl span.text-amber-500 {
 }
 .dark .bg-stone-800 {
   background-color: var(--bg-card) !important;
-  border-color: var(--border) !important;
+  border-color: var(--miffy-yellow) !important;
 }
 
 h3.flex.items-center.gap-2.font-serif.font-bold {
@@ -2574,26 +2583,23 @@ h3.flex.items-center.gap-2.font-serif.font-bold {
   border-radius: 20px !important;
   border-width: var(--bw) !important;
 }
-/* 低/零 → 綠 */
 .bg-emerald-50.text-emerald-700.border-emerald-100 {
   background-color: var(--miffy-green) !important;
   color: #fff !important;
   border-color: var(--ink) !important;
 }
-/* 中 → 橘 */
 .bg-amber-50.text-amber-700.border-amber-100 {
   background-color: var(--miffy-orange) !important;
   color: #fff !important;
   border-color: var(--ink) !important;
 }
-/* 高 → 紅 */
 .bg-rose-50.text-rose-700.border-rose-100 {
   background-color: var(--tulip-red) !important;
   color: #fff !important;
   border-color: var(--ink) !important;
 }
 
-/* highlight badge ★ */
+/* highlight badge */
 .text-\[9px\].px-1\.5.py-0\.5.rounded-md.border.border-amber-100.bg-amber-50.text-amber-700 {
   background-color: var(--miffy-yellow) !important;
   color: var(--ink) !important;
@@ -2603,30 +2609,25 @@ h3.flex.items-center.gap-2.font-serif.font-bold {
 }
 
 /* ============================================================
-   DAY CARDS
+   DAY CARDS — FIX: 統一方塊大小、展開橘底文字可見
    ============================================================ */
 
-/* 外層容器背景跟隨頁面 */
-.mb-3.px-2 { background: transparent; }
-
-/* 未展開 card */
-.relative.flex.items-center.justify-between.p-5.rounded-2xl.cursor-pointer.bg-white {
+/* 未展開 */
+.relative.flex.items-center.justify-between.p-5.rounded-2xl.cursor-pointer.bg-white,
+.relative.flex.items-center.justify-between.p-5.rounded-2xl.cursor-pointer.dark\:bg-stone-800 {
   background-color: var(--card-white) !important;
   border: var(--bw-lg) solid var(--ink) !important;
   border-radius: var(--r-lg) !important;
   box-shadow: 3px 3px 0 var(--ink) !important;
   transition: transform 0.15s ease, box-shadow 0.15s ease !important;
 }
-.relative.flex.items-center.justify-between.p-5.rounded-2xl.cursor-pointer.bg-white:active {
-  transform: translate(2px, 2px) !important;
-  box-shadow: 1px 1px 0 var(--ink) !important;
-}
 .dark .relative.flex.items-center.justify-between.p-5.rounded-2xl.cursor-pointer {
   background-color: var(--bg-card) !important;
   border-color: var(--miffy-yellow) !important;
+  box-shadow: 3px 3px 0 var(--miffy-yellow) !important;
 }
 
-/* 展開 card — 橘色 */
+/* 展開 — 橘色 */
 .relative.flex.items-center.justify-between.p-5.rounded-2xl.cursor-pointer.bg-stone-800 {
   background-color: var(--miffy-orange) !important;
   border: var(--bw-lg) solid var(--ink) !important;
@@ -2634,85 +2635,127 @@ h3.flex.items-center.gap-2.font-serif.font-bold {
   box-shadow: 3px 3px 0 var(--ink) !important;
 }
 
-/* Day 數字方塊 — 未展開 */
-.flex.flex-col.items-center.justify-center.w-12.h-12.rounded-xl.border.bg-stone-50 {
-  background-color: var(--miffy-yellow) !important;
-  border: var(--bw) solid var(--ink) !important;
+/* FIX: Day 數字方塊 — 統一 width/height，防止大小不一 */
+.flex.flex-col.items-center.justify-center.w-12.h-12.rounded-xl.border {
+  width: 48px !important;
+  height: 48px !important;
+  min-width: 48px !important;
+  min-height: 48px !important;
   border-radius: var(--r-sm) !important;
+  border-width: var(--bw) !important;
+  flex-shrink: 0 !important;
+}
+
+/* 未展開方塊 — 黃底 */
+.flex.flex-col.items-center.justify-center.w-12.h-12.rounded-xl.border.bg-stone-50,
+.dark .flex.flex-col.items-center.justify-center.w-12.h-12.rounded-xl.border.dark\:bg-stone-700 {
+  background-color: var(--miffy-yellow) !important;
+  border-color: var(--ink) !important;
 }
 .dark .flex.flex-col.items-center.justify-center.w-12.h-12.rounded-xl.border {
   background-color: rgba(247,232,78,0.15) !important;
   border-color: var(--miffy-yellow) !important;
 }
 
-/* Day 數字方塊 — 展開 */
+/* 展開方塊 — 白半透明 */
 .flex.flex-col.items-center.justify-center.w-12.h-12.rounded-xl.border.bg-stone-700 {
-  background-color: rgba(255,255,255,0.2) !important;
-  border: var(--bw) solid rgba(255,255,255,0.5) !important;
-  border-radius: var(--r-sm) !important;
+  background-color: rgba(255,255,255,0.25) !important;
+  border-color: rgba(255,255,255,0.6) !important;
 }
 
-/* "Day" 小標籤 */
+/* FIX: "Day" 小字 — 在橘底要白色 */
 .text-\[10px\].font-bold.text-stone-400.uppercase {
   font-family: var(--font-mono) !important;
+  font-size: 7px !important;
   letter-spacing: 1px !important;
+  color: var(--faded) !important;
 }
+/* 展開時 DAY 標籤白色 */
+.bg-stone-800 .text-\[10px\].font-bold.text-stone-400.uppercase,
+.bg-stone-700 .text-\[10px\].font-bold.text-stone-400.uppercase {
+  color: rgba(255,255,255,0.7) !important;
+}
+
+/* FIX: Day 數字 */
 .text-xl.font-serif.font-bold.text-stone-800 {
   font-family: var(--font-display) !important;
   color: var(--ink) !important;
+  font-size: 22px !important;
+  line-height: 1 !important;
 }
+.dark .text-xl.font-serif.font-bold {
+  color: var(--miffy-yellow) !important;
+}
+/* 展開時 Day 數字 — 鮮黃 */
 .text-xl.font-serif.font-bold.text-amber-400 {
   font-family: var(--font-display) !important;
   color: var(--miffy-yellow) !important;
+  font-size: 22px !important;
+  line-height: 1 !important;
 }
 
-/* 日期小字 */
+/* FIX: 日期小字 — 橘底要白色 */
 .text-xs.font-bold.mb-0\.5.text-stone-400 {
   font-family: var(--font-mono) !important;
   font-size: 9px !important;
   letter-spacing: 0.5px !important;
+  color: var(--faded) !important;
 }
-/* 展開時白色 */
 .bg-stone-800 .text-xs.font-bold.mb-0\.5 {
-  color: rgba(255,255,255,0.65) !important;
+  color: rgba(255,255,255,0.75) !important;
 }
 
-/* Day 標題 */
+/* FIX: Day 標題 — 橘底要白色 */
 .font-bold.text-lg.leading-tight {
   font-family: var(--font-display) !important;
   font-size: 15px !important;
   line-height: 1.3 !important;
   color: var(--ink) !important;
 }
+.dark .font-bold.text-lg.leading-tight {
+  color: var(--miffy-yellow) !important;
+}
 .bg-stone-800 .font-bold.text-lg.leading-tight {
   color: #fff !important;
 }
 
-/* 左側時間軸線 */
+/* 天氣 icon 旁的溫度數字 */
+.text-sm.font-medium {
+  font-family: var(--font-mono) !important;
+  color: var(--ink) !important;
+}
+.bg-stone-800 .text-sm.font-medium {
+  color: rgba(255,255,255,0.9) !important;
+}
+.dark .text-sm.font-medium {
+  color: var(--text-main) !important;
+}
+
+/* 左側時間軸虛線 */
 .mt-4.pl-4.border-l-2.border-stone-200\/50 {
   border-left-color: var(--ink) !important;
   border-left-width: var(--bw) !important;
   border-left-style: dashed !important;
 }
+.dark .mt-4.pl-4.border-l-2 {
+  border-left-color: var(--miffy-yellow) !important;
+}
 
 /* ============================================================
    LOCATION CARDS
    ============================================================ */
-
-/* 卡片本體 */
 .bg-white.dark\:bg-stone-800.rounded-2xl.border.border-stone-100.mb-4 {
   background-color: var(--card-white) !important;
   border: var(--bw) solid var(--ink) !important;
   border-radius: var(--r-md) !important;
   box-shadow: 2px 2px 0 var(--ink) !important;
-  transition: box-shadow 0.15s ease !important;
 }
 .dark .bg-white.dark\:bg-stone-800.rounded-2xl {
   background-color: var(--bg-card) !important;
   border-color: var(--miffy-yellow) !important;
+  box-shadow: 2px 2px 0 var(--miffy-yellow) !important;
 }
 
-/* 展開時的 ring */
 .ring-2.ring-amber-100 {
   box-shadow: 3px 3px 0 var(--miffy-orange) !important;
   border-color: var(--miffy-orange) !important;
@@ -2720,32 +2763,26 @@ h3.flex.items-center.gap-2.font-serif.font-bold {
 
 /* Icon 圓圈 */
 .mt-1.flex-shrink-0.w-8.h-8.rounded-full.bg-stone-50 {
+  width: 32px !important;
+  height: 32px !important;
   border: var(--bw) solid var(--ink) !important;
   border-radius: 50% !important;
-}
-/* food = 橘 */
-.mt-1.flex-shrink-0.w-8.h-8.rounded-full.bg-stone-50:has(.text-orange-600) {
-  background-color: var(--miffy-orange) !important;
-}
-/* transport = 藍 */
-.mt-1.flex-shrink-0.w-8.h-8.rounded-full.bg-stone-50:has(.text-blue-500) {
-  background-color: var(--miffy-blue) !important;
-}
-/* sight = 綠 */
-.mt-1.flex-shrink-0.w-8.h-8.rounded-full.bg-stone-50:has(.text-emerald-500) {
-  background-color: var(--miffy-green) !important;
+  background-color: var(--miffy-yellow) !important;
 }
 
-/* 圖示顏色 override */
-.text-orange-600 { color: #fff !important; }
-.text-blue-500   { color: #fff !important; }
-.text-emerald-500 { color: #fff !important; }
+/* icon 顏色改白色讓彩色底可見 */
+.text-orange-600 { color: var(--miffy-orange) !important; }
+.text-blue-500   { color: var(--miffy-blue) !important; }
+.text-emerald-500 { color: var(--miffy-green) !important; }
 
 /* 時間標籤 */
 .text-\[10px\].font-bold.text-stone-400.font-mono.uppercase.tracking-wide {
   font-family: var(--font-mono) !important;
   color: var(--faded) !important;
   letter-spacing: 2px !important;
+}
+.dark .text-\[10px\].font-bold.font-mono {
+  color: var(--text-muted) !important;
 }
 
 /* 卡片標題 */
@@ -2755,7 +2792,11 @@ h3.font-bold.text-stone-200.text-lg {
   color: var(--ink) !important;
   font-size: 16px !important;
 }
-.dark h3.font-bold { color: var(--miffy-yellow) !important; }
+.dark h3.font-bold.text-stone-800.text-lg,
+.dark h3.font-bold.text-stone-200.text-lg,
+.dark h3.font-bold {
+  color: var(--miffy-yellow) !important;
+}
 
 /* 卡片備註 */
 p.text-xs.text-stone-500.font-medium.leading-relaxed {
@@ -2764,22 +2805,29 @@ p.text-xs.text-stone-500.font-medium.leading-relaxed {
   color: var(--faded) !important;
   font-size: 10px !important;
 }
+.dark p.text-xs.text-stone-500,
+.dark p.text-xs.text-stone-400 {
+  color: var(--text-muted) !important;
+}
 
-/* 展開內容區 */
+/* 展開內容區 — 黃底 */
 .p-5.bg-stone-50\/50 {
-  background-color: var(--miffy-yellow) !important;
+  background-color: rgba(247,232,78,0.3) !important;
 }
 .dark .p-5.bg-stone-50\/50 {
   background-color: rgba(247,232,78,0.06) !important;
 }
 
-/* 小標題 "導遊作戰..." */
+/* 小標題 */
 h4.text-xs.font-bold.text-amber-700 {
   font-family: var(--font-mono) !important;
   color: var(--miffy-orange) !important;
   letter-spacing: 2px !important;
   font-size: 8.5px !important;
   text-transform: uppercase !important;
+}
+.dark h4.text-xs.font-bold.text-amber-700 {
+  color: var(--miffy-yellow) !important;
 }
 
 /* 內文 */
@@ -2789,8 +2837,11 @@ p.text-sm.text-stone-600.leading-relaxed {
   line-height: 1.8 !important;
   color: var(--ink) !important;
 }
+.dark p.text-sm.text-stone-600 {
+  color: var(--text-main) !important;
+}
 
-/* 導航按鈕 — 深色 */
+/* 導航按鈕 */
 button.flex.items-center.justify-center.gap-2.py-3.bg-stone-800.text-amber-50.rounded-xl {
   background-color: var(--ink) !important;
   color: var(--miffy-yellow) !important;
@@ -2803,7 +2854,7 @@ button.flex.items-center.justify-center.gap-2.py-3.bg-stone-800.text-amber-50.ro
   box-shadow: 2px 2px 0 var(--miffy-orange) !important;
 }
 
-/* AI 按鈕 — 白色 */
+/* AI 按鈕 */
 button.flex.items-center.justify-center.gap-2.py-3.bg-white.border.text-stone-600.rounded-xl {
   background-color: var(--card-white) !important;
   border: var(--bw) solid var(--ink) !important;
@@ -2814,10 +2865,20 @@ button.flex.items-center.justify-center.gap-2.py-3.bg-white.border.text-stone-60
   letter-spacing: 1px !important;
   text-transform: uppercase !important;
 }
+.dark button.flex.items-center.justify-center.gap-2.py-3.bg-white {
+  background-color: var(--bg-card) !important;
+  border-color: var(--miffy-yellow) !important;
+  color: var(--miffy-yellow) !important;
+}
 
 /* ============================================================
-   FLOATING NEXT STOP
+   FIX: FLOATING NEXT STOP — 不再跟按鈕重疊
+   把 bottom 從 bottom-20 往下推，z-index 也確保在 nav 之下
    ============================================================ */
+.fixed.bottom-20.left-4.right-4.z-30 {
+  bottom: 76px !important;
+  z-index: 30 !important;
+}
 .fixed.bottom-20.left-4.right-4.z-30 > div {
   background-color: var(--ink) !important;
   border: var(--bw) solid var(--miffy-yellow) !important;
@@ -2830,12 +2891,10 @@ button.flex.items-center.justify-center.gap-2.py-3.bg-white.border.text-stone-60
 .w-10.h-10.rounded-full.bg-green-500 {
   background-color: var(--miffy-green) !important;
 }
-
 .font-bold.text-sm.truncate.text-white {
   font-family: var(--font-display) !important;
   color: var(--miffy-yellow) !important;
 }
-
 .bg-stone-800.p-2.rounded-full.text-stone-400 {
   background-color: rgba(247,232,78,0.1) !important;
   border-radius: 50% !important;
@@ -2843,7 +2902,7 @@ button.flex.items-center.justify-center.gap-2.py-3.bg-white.border.text-stone-60
 }
 
 /* ============================================================
-   BOTTOM NAV
+   FIX: BOTTOM NAV — 移除跑位的 ::before 黃圈，改用正確方式
    ============================================================ */
 nav.fixed.bottom-0 {
   background-color: var(--card-white) !important;
@@ -2860,28 +2919,40 @@ nav button {
   font-size: 8px !important;
   letter-spacing: 1px !important;
   text-transform: uppercase !important;
+  position: relative !important;
 }
 
-/* active — 黃底黑字 */
+/* FIX: 完全移除舊的 ::before 黃圈偽元素 */
+nav button::before {
+  display: none !important;
+  content: none !important;
+}
+
+/* active tab — 底部橘線指示器，乾淨不干擾 */
 nav button.text-stone-800,
 nav button.dark\:text-stone-100 {
   color: var(--ink) !important;
-  position: relative;
+  border-top: 3px solid var(--miffy-orange) !important;
+  margin-top: -3px !important;
 }
-nav button.text-stone-800::before {
-  content: '';
-  position: absolute;
-  top: 4px; left: 50%;
-  transform: translateX(-50%);
-  width: 32px; height: 32px;
-  background: var(--miffy-yellow);
-  border: var(--bw) solid var(--ink);
-  border-radius: 50%;
-  z-index: -1;
+.dark nav button.dark\:text-stone-100 {
+  color: var(--miffy-yellow) !important;
+  border-top-color: var(--miffy-yellow) !important;
 }
 
+/* inactive tab */
 nav button.text-stone-400 {
   color: var(--faded) !important;
+  border-top: 3px solid transparent !important;
+  margin-top: -3px !important;
+}
+.dark nav button.text-stone-400 {
+  color: var(--text-muted) !important;
+}
+
+/* nav icon 大小固定 */
+nav button svg {
+  pointer-events: none !important;
 }
 
 /* ============================================================
@@ -2895,7 +2966,6 @@ h2.text-2xl.font-serif.font-bold {
   color: var(--miffy-yellow) !important;
 }
 
-/* accent bar */
 .w-1\.5.h-6.bg-amber-500.rounded-full {
   background-color: var(--tulip-red) !important;
 }
@@ -2919,7 +2989,9 @@ button.relative.flex.flex-col.items-center.justify-end.rounded-2xl.border.bg-sto
 /* 進度條 */
 .h-1\.5.w-full.bg-stone-200.rounded-full {
   background-color: rgba(26,21,16,0.12) !important;
-  border: 1px solid rgba(26,21,16,0.2) !important;
+}
+.dark .h-1\.5.w-full.bg-stone-200.rounded-full {
+  background-color: rgba(247,232,78,0.15) !important;
 }
 .h-full.bg-amber-500.transition-all {
   background: linear-gradient(90deg, var(--miffy-blue) 0%, var(--miffy-green) 100%) !important;
@@ -2935,6 +3007,7 @@ button.relative.flex.flex-col.items-center.justify-end.rounded-2xl.border.bg-sto
 .dark .flex.items-center.gap-3.p-4.rounded-xl.border.bg-white {
   background-color: var(--bg-card) !important;
   border-color: var(--miffy-yellow) !important;
+  box-shadow: 2px 2px 0 rgba(247,232,78,0.3) !important;
 }
 
 /* 打包項目 — 已勾 */
@@ -2945,12 +3018,15 @@ button.relative.flex.flex-col.items-center.justify-end.rounded-2xl.border.bg-sto
   box-shadow: none !important;
 }
 
-/* 勾勾圓圈 — 未勾 */
+/* 勾勾圓圈 */
 .w-6.h-6.rounded-full.border-2.border-stone-300 {
   border-color: var(--ink) !important;
   background-color: var(--miffy-yellow) !important;
 }
-/* 勾勾圓圈 — 已勾 */
+.dark .w-6.h-6.rounded-full.border-2.border-stone-300 {
+  border-color: var(--miffy-yellow) !important;
+  background-color: rgba(247,232,78,0.1) !important;
+}
 .w-6.h-6.rounded-full.bg-green-500.border-green-500 {
   background-color: var(--miffy-green) !important;
   border-color: var(--ink) !important;
@@ -2961,9 +3037,11 @@ span.flex-1.font-medium.text-stone-700 {
   font-family: var(--font-body) !important;
   color: var(--ink) !important;
 }
+.dark span.flex-1.font-medium.text-stone-200 {
+  color: var(--text-main) !important;
+}
 span.flex-1.font-medium.text-stone-400.line-through {
   color: var(--faded) !important;
-  text-decoration-color: var(--miffy-green) !important;
 }
 
 /* 新增輸入框 */
@@ -2974,9 +3052,10 @@ span.flex-1.font-medium.text-stone-400.line-through {
   font-family: var(--font-body) !important;
   color: var(--ink) !important;
 }
-.flex-1.p-3.rounded-xl.border.border-stone-200:focus {
-  border-color: var(--miffy-orange) !important;
-  outline: none !important;
+.dark .flex-1.p-3.rounded-xl.border {
+  background-color: var(--bg-card) !important;
+  border-color: var(--miffy-yellow) !important;
+  color: var(--text-main) !important;
 }
 
 /* + 按鈕 */
@@ -2989,14 +3068,18 @@ span.flex-1.font-medium.text-stone-400.line-through {
   box-shadow: 2px 2px 0 var(--miffy-orange) !important;
 }
 
-/* KyushuTips 容器 */
+/* KyushuTips */
 .bg-amber-50.dark\:bg-stone-800.rounded-2xl.border.border-amber-100.overflow-hidden {
   background-color: var(--card-white) !important;
   border: var(--bw) solid var(--ink) !important;
   border-radius: var(--r-md) !important;
   box-shadow: 2px 2px 0 var(--ink) !important;
 }
-/* KyushuTips header */
+.dark .bg-amber-50.dark\:bg-stone-800.rounded-2xl {
+  background-color: var(--bg-card) !important;
+  border-color: var(--miffy-yellow) !important;
+}
+
 button.w-full.flex.items-center.justify-between.p-4.bg-amber-100\/50 {
   background-color: var(--miffy-yellow) !important;
   border-bottom: var(--bw) solid var(--ink) !important;
@@ -3006,13 +3089,10 @@ button.w-full.flex.items-center.justify-between.p-4.bg-amber-100\/50 {
   letter-spacing: 1px !important;
   text-transform: uppercase !important;
 }
-
-/* Visit Japan Web 按鈕 */
-.bg-white.dark\:bg-stone-800.shadow-sm.border.border-stone-100.rounded-2xl.flex.items-center.justify-between {
-  background-color: var(--card-white) !important;
-  border: var(--bw) solid var(--ink) !important;
-  border-radius: var(--r-md) !important;
-  box-shadow: 2px 2px 0 var(--ink) !important;
+.dark button.w-full.flex.items-center.justify-between.p-4 {
+  background-color: rgba(247,232,78,0.1) !important;
+  color: var(--miffy-yellow) !important;
+  border-bottom-color: var(--miffy-yellow) !important;
 }
 
 /* ============================================================
@@ -3026,6 +3106,29 @@ button.w-full.flex.items-center.justify-between.p-4.bg-amber-100\/50 {
   border-radius: var(--r-lg) !important;
   box-shadow: 3px 3px 0 var(--miffy-orange) !important;
 }
+.dark .bg-white.dark\:bg-stone-800.border.border-amber-200 {
+  background-color: var(--bg-card) !important;
+  color: var(--text-main) !important;
+}
+
+.flex.items-center.gap-2.mb-3.text-amber-600.font-bold.text-xs.uppercase.tracking-widest {
+  font-family: var(--font-mono) !important;
+  color: var(--miffy-orange) !important;
+  letter-spacing: 3px !important;
+}
+.dark .flex.items-center.gap-2.mb-3.text-amber-600,
+.dark .flex.items-center.gap-2.mb-3.dark\:text-amber-300 {
+  color: var(--miffy-yellow) !important;
+}
+
+/* 公佈欄內文 */
+.text-sm.text-stone-600.dark\:text-stone-300.leading-relaxed {
+  color: var(--ink) !important;
+  font-family: var(--font-body) !important;
+}
+.dark .text-sm.text-stone-600.dark\:text-stone-300 {
+  color: var(--text-main) !important;
+}
 
 /* 挑食卡片 */
 .bg-rose-50.dark\:bg-rose-950\/30.border.border-rose-200.rounded-2xl.p-4 {
@@ -3034,17 +3137,35 @@ button.w-full.flex.items-center.justify-between.p-4.bg-amber-100\/50 {
   border-radius: var(--r-md) !important;
   box-shadow: 2px 2px 0 var(--tulip-red) !important;
 }
+.dark .bg-rose-50.dark\:bg-rose-950\/30 {
+  background-color: var(--bg-card) !important;
+}
 .font-bold.text-rose-800,
 .dark .font-bold.text-rose-300 {
   font-family: var(--font-mono) !important;
   color: var(--tulip-red) !important;
   font-size: 11px !important;
-  letter-spacing: 0.5px !important;
 }
-/* 日文 NG 文字 */
+
 .text-base.font-black.text-rose-600.font-serif {
   font-family: var(--font-display) !important;
   color: var(--tulip-red) !important;
+}
+
+/* 挑食項目文字 */
+.text-\[10px\].text-stone-400.font-bold {
+  font-family: var(--font-mono) !important;
+  color: var(--faded) !important;
+}
+.dark .text-\[10px\].text-stone-400 {
+  color: var(--text-muted) !important;
+}
+.font-bold.text-stone-800.dark\:text-stone-100 {
+  color: var(--ink) !important;
+  font-family: var(--font-body) !important;
+}
+.dark .font-bold.text-stone-800.dark\:text-stone-100 {
+  color: var(--text-main) !important;
 }
 
 /* 免稅卡片 */
@@ -3054,6 +3175,16 @@ button.w-full.flex.items-center.justify-between.p-4.bg-amber-100\/50 {
   border-radius: var(--r-md) !important;
   box-shadow: 2px 2px 0 var(--miffy-orange) !important;
 }
+.dark .bg-amber-50.dark\:bg-amber-950\/30 {
+  background-color: var(--bg-card) !important;
+}
+.font-bold.text-amber-800.dark\:text-amber-300 {
+  color: var(--miffy-orange) !important;
+  font-family: var(--font-mono) !important;
+}
+.dark .font-bold.text-amber-800.dark\:text-amber-300 {
+  color: var(--miffy-yellow) !important;
+}
 
 /* 指南分類卡片 */
 .p-5.rounded-\[2rem\].border.shadow-sm {
@@ -3062,10 +3193,19 @@ button.w-full.flex.items-center.justify-between.p-4.bg-amber-100\/50 {
   border-radius: var(--r-lg) !important;
   box-shadow: 3px 3px 0 var(--ink) !important;
 }
+.dark .p-5.rounded-\[2rem\].border {
+  background-color: var(--bg-card) !important;
+  border-color: var(--miffy-yellow) !important;
+  box-shadow: 3px 3px 0 var(--miffy-yellow) !important;
+}
+
 h3.text-lg.font-bold.text-stone-800,
 .dark h3.text-lg.font-bold.text-stone-100 {
   font-family: var(--font-display) !important;
   color: var(--ink) !important;
+}
+.dark h3.text-lg.font-bold.text-stone-100 {
+  color: var(--miffy-yellow) !important;
 }
 
 /* 指南 icon wrapper */
@@ -3073,6 +3213,19 @@ h3.text-lg.font-bold.text-stone-800,
   background-color: var(--miffy-yellow) !important;
   border: var(--bw) solid var(--ink) !important;
   border-radius: var(--r-sm) !important;
+}
+.dark .p-2\.5.bg-white {
+  background-color: rgba(247,232,78,0.15) !important;
+  border-color: var(--miffy-yellow) !important;
+}
+
+/* 指南說明小字 */
+.text-\[11px\].text-stone-500 {
+  font-family: var(--font-mono) !important;
+  color: var(--faded) !important;
+}
+.dark .text-\[11px\].text-stone-500 {
+  color: var(--text-muted) !important;
 }
 
 /* 指南開啟按鈕 */
@@ -3095,20 +3248,41 @@ button.flex.items-center.justify-center.gap-2.py-2\.5.bg-stone-800.text-amber-50
   border-radius: var(--r-xl) !important;
   box-shadow: 4px 4px 0 var(--ink) !important;
 }
+.dark .bg-\[#FEF3C7\] {
+  background-color: rgba(247,232,78,0.1) !important;
+}
+
+.flex.items-center.gap-2.mb-5.text-amber-900.font-black.text-sm.tracking-wider {
+  font-family: var(--font-mono) !important;
+  color: var(--ink) !important;
+  letter-spacing: 2px !important;
+  text-transform: uppercase !important;
+}
+.dark .flex.items-center.gap-2.mb-5 {
+  color: var(--miffy-yellow) !important;
+}
+
 .bg-white.dark\:bg-stone-900.p-4.rounded-2xl.border.flex.justify-between {
   background-color: var(--card-white) !important;
   border: var(--bw) solid var(--ink) !important;
   border-radius: var(--r-md) !important;
+}
+.dark .bg-white.dark\:bg-stone-900.p-4 {
+  background-color: var(--bg-card) !important;
+  border-color: var(--miffy-yellow) !important;
 }
 
 /* ============================================================
    UTILS PAGE
    ============================================================ */
 
-/* 主標題 */
 h2.text-2xl.font-serif.font-bold.text-stone-800 {
   font-family: var(--font-display) !important;
   color: var(--ink) !important;
+}
+.dark h2.text-2xl.font-serif.font-bold.text-stone-800,
+.dark h2.text-2xl.font-serif.font-bold.text-stone-100 {
+  color: var(--miffy-yellow) !important;
 }
 
 /* 深色模式切換 */
@@ -3118,6 +3292,12 @@ h2.text-2xl.font-serif.font-bold.text-stone-800 {
   border-radius: var(--r-md) !important;
   box-shadow: 2px 2px 0 var(--ink) !important;
 }
+.dark .bg-white.border.border-stone-100.dark\:border-stone-700 {
+  background-color: var(--bg-card) !important;
+  border-color: var(--miffy-yellow) !important;
+  box-shadow: 2px 2px 0 var(--miffy-yellow) !important;
+}
+
 .w-12.h-6.rounded-full.p-1.bg-amber-500 {
   background-color: var(--miffy-orange) !important;
   border: 1.5px solid var(--ink) !important;
@@ -3126,40 +3306,62 @@ h2.text-2xl.font-serif.font-bold.text-stone-800 {
   background-color: rgba(26,21,16,0.15) !important;
   border: 1.5px solid var(--ink) !important;
 }
+.dark .w-12.h-6.rounded-full.p-1.bg-stone-300 {
+  background-color: rgba(247,232,78,0.15) !important;
+  border-color: var(--miffy-yellow) !important;
+}
 
-/* LightSplit 分帳 */
+/* LightSplit */
 .bg-\[#06C755\].p-6.rounded-2xl {
   background-color: var(--miffy-green) !important;
   border: var(--bw) solid var(--ink) !important;
   border-radius: var(--r-lg) !important;
   box-shadow: 3px 3px 0 var(--ink) !important;
 }
-.bg-\[#06C755\] a.bg-white,
-.bg-\[#06C755\] a.flex.items-center.justify-center {
-  background-color: var(--card-white) !important;
-  color: var(--ink) !important;
-  font-family: var(--font-mono) !important;
-  font-size: 10px !important;
-  letter-spacing: 1px !important;
-  border: var(--bw) solid var(--ink) !important;
-  border-radius: var(--r-sm) !important;
-}
 
-/* 各 section 白色卡片 */
+/* FIX: 工具頁各 section 白色卡片 — 加粗邊框 */
 .bg-white.dark\:bg-stone-800.p-6.rounded-2xl.border.border-stone-100.dark\:border-stone-700 {
   background-color: var(--card-white) !important;
-  border: var(--bw) solid var(--ink) !important;
+  border: var(--bw-lg) solid var(--ink) !important;
   border-radius: var(--r-lg) !important;
   box-shadow: 3px 3px 0 var(--ink) !important;
 }
+.dark .bg-white.dark\:bg-stone-800.p-6.rounded-2xl {
+  background-color: var(--bg-card) !important;
+  border-color: var(--miffy-yellow) !important;
+  box-shadow: 3px 3px 0 rgba(247,232,78,0.4) !important;
+}
 
 /* section 標題 */
-h3.flex.items-center.gap-2.font-bold.text-stone-800.mb-4.border-b.pb-3,
-h3.flex.items-center.gap-2.font-bold.text-red-700 {
+h3.flex.items-center.gap-2.font-bold.text-stone-800.mb-4.border-b.pb-3 {
   font-family: var(--font-display) !important;
   color: var(--ink) !important;
-  border-bottom-color: rgba(26,21,16,0.15) !important;
+  border-bottom: var(--bw) solid rgba(26,21,16,0.15) !important;
   font-size: 15px !important;
+}
+.dark h3.flex.items-center.gap-2.font-bold.text-stone-100 {
+  color: var(--miffy-yellow) !important;
+  border-bottom-color: rgba(247,232,78,0.2) !important;
+}
+
+/* FIX: 航班 Plane icon — 不能被 svg 規則蓋掉顏色 */
+nav svg, .text-blue-500 svg, h3 svg {
+  pointer-events: none !important;
+}
+.text-blue-500 {
+  color: var(--miffy-blue) !important;
+}
+.text-orange-500 {
+  color: var(--miffy-orange) !important;
+}
+.text-red-600 {
+  color: var(--tulip-red) !important;
+}
+.text-green-600 {
+  color: var(--miffy-green) !important;
+}
+.text-purple-500, .text-purple-600 {
+  color: #8B5CF6 !important;
 }
 
 /* 航班卡片 */
@@ -3169,6 +3371,13 @@ h3.flex.items-center.gap-2.font-bold.text-red-700 {
   border-radius: var(--r-md) !important;
   box-shadow: 2px 2px 0 var(--ink) !important;
 }
+.dark .bg-white.dark\:bg-stone-800.rounded-2xl.p-4.border {
+  background-color: var(--bg-card) !important;
+  border-color: var(--miffy-yellow) !important;
+  box-shadow: 2px 2px 0 rgba(247,232,78,0.3) !important;
+}
+
+/* 航班裝飾圓角 */
 .absolute.top-0.right-0.w-24.h-24.bg-stone-50.rounded-bl-full {
   background-color: var(--miffy-yellow) !important;
 }
@@ -3194,11 +3403,13 @@ h3.flex.items-center.gap-2.font-bold.text-red-700 {
   border: 1px solid var(--ink) !important;
 }
 
-/* 機場代碼大字 */
-.text-2xl.font-bold.text-stone-800,
-.dark .text-2xl.font-bold.text-stone-100 {
+/* 機場代碼 */
+.text-2xl.font-bold.text-stone-800 {
   font-family: var(--font-display) !important;
   color: var(--ink) !important;
+}
+.dark .text-2xl.font-bold.text-stone-100 {
+  color: var(--miffy-yellow) !important;
 }
 
 /* 航班號 */
@@ -3207,8 +3418,23 @@ h3.flex.items-center.gap-2.font-bold.text-red-700 {
   color: var(--faded) !important;
   letter-spacing: 2px !important;
 }
+.dark .text-xs.font-bold.text-stone-500 {
+  color: var(--text-muted) !important;
+}
 
-/* 即時動態連結 */
+/* live 狀態 */
+.w-2.h-2.rounded-full.bg-green-500.animate-pulse {
+  background-color: var(--miffy-green) !important;
+}
+.text-xs.text-stone-500.font-medium {
+  font-family: var(--font-mono) !important;
+  color: var(--faded) !important;
+}
+.dark .text-xs.text-stone-500 {
+  color: var(--text-muted) !important;
+}
+
+/* 即時動態 */
 a.flex.items-center.gap-1.text-xs.font-bold.text-blue-500.bg-blue-50 {
   background-color: var(--miffy-blue) !important;
   color: #fff !important;
@@ -3216,17 +3442,49 @@ a.flex.items-center.gap-1.text-xs.font-bold.text-blue-500.bg-blue-50 {
   border-radius: 20px !important;
   font-family: var(--font-mono) !important;
   font-size: 9px !important;
-  letter-spacing: 1px !important;
 }
 
 /* 住宿小卡 */
 .bg-stone-50.dark\:bg-stone-700\/50.rounded-xl.p-4.border {
-  background-color: var(--miffy-yellow) !important;
+  background-color: rgba(247,232,78,0.4) !important;
   border: var(--bw) solid var(--ink) !important;
   border-radius: var(--r-sm) !important;
 }
+.dark .bg-stone-50.dark\:bg-stone-700\/50 {
+  background-color: var(--bg-card) !important;
+  border-color: var(--miffy-yellow) !important;
+}
 
-/* 導航/電話按鈕 */
+/* 飯店類型小字 */
+.text-\[10px\].text-stone-400.font-bold {
+  font-family: var(--font-mono) !important;
+  color: var(--faded) !important;
+  letter-spacing: 1.5px !important;
+  text-transform: uppercase !important;
+}
+.dark .text-\[10px\].text-stone-400.font-bold {
+  color: var(--text-muted) !important;
+}
+
+/* 飯店名 */
+h4.font-bold.text-base {
+  font-family: var(--font-display) !important;
+  color: var(--ink) !important;
+}
+.dark h4.font-bold.text-base {
+  color: var(--miffy-yellow) !important;
+}
+
+/* 日期 badge */
+.text-xs.font-bold.bg-white.px-2.py-1.rounded.border.border-stone-200.whitespace-nowrap {
+  background-color: var(--miffy-yellow) !important;
+  color: var(--ink) !important;
+  border: 1px solid var(--ink) !important;
+  font-family: var(--font-mono) !important;
+  border-radius: 6px !important;
+}
+
+/* 飯店按鈕 */
 a.flex.items-center.justify-center.gap-1\.5.py-2.bg-stone-800.text-amber-50.rounded-lg {
   background-color: var(--ink) !important;
   color: var(--miffy-yellow) !important;
@@ -3244,6 +3502,11 @@ a.flex.items-center.justify-center.gap-1\.5.py-2.bg-white.border.border-stone-20
   font-family: var(--font-mono) !important;
   border-radius: var(--r-sm) !important;
 }
+.dark a.flex.items-center.justify-center.gap-1\.5.py-2.bg-white {
+  background-color: var(--bg-card) !important;
+  border-color: var(--miffy-yellow) !important;
+  color: var(--miffy-yellow) !important;
+}
 
 /* 緊急電話 */
 .bg-red-50.rounded-xl.flex.flex-col.items-center.border.border-red-100 {
@@ -3258,7 +3521,7 @@ a.flex.items-center.justify-center.gap-1\.5.py-2.bg-white.border.border-stone-20
 }
 .text-xs.font-bold.text-red-800 {
   font-family: var(--font-mono) !important;
-  color: rgba(255,255,255,0.85) !important;
+  color: rgba(255,255,255,0.9) !important;
   font-size: 9px !important;
 }
 
@@ -3267,8 +3530,18 @@ a.flex.items-center.justify-center.gap-1\.5.py-2.bg-white.border.border-stone-20
   background-color: var(--ink) !important;
   border-radius: var(--r-sm) !important;
 }
+/* 深色區塊文字強制白色 */
+.bg-stone-800.dark\:bg-stone-950.rounded-xl.p-4 * {
+  color: rgba(255,255,255,0.85) !important;
+}
+.bg-stone-800.dark\:bg-stone-950.rounded-xl.p-4 a {
+  color: var(--miffy-yellow) !important;
+}
+.bg-stone-800.dark\:bg-stone-950.rounded-xl.p-4 strong {
+  color: #fff !important;
+}
 
-/* Safety Tips 功能列 */
+/* Safety Tips */
 .bg-amber-500\/10.border.border-amber-500\/30.rounded-lg.p-3 {
   background-color: rgba(244,131,31,0.15) !important;
   border: var(--bw) solid var(--miffy-orange) !important;
@@ -3277,6 +3550,17 @@ a.flex.items-center.justify-center.gap-1\.5.py-2.bg-white.border.border-stone-20
 .text-\[10px\].font-black.text-amber-500 {
   color: var(--miffy-orange) !important;
   font-family: var(--font-mono) !important;
+}
+
+/* App 列表 */
+.flex.items-center.justify-between.p-3.bg-stone-50.rounded-xl.border.border-stone-100 {
+  background-color: rgba(247,232,78,0.4) !important;
+  border: var(--bw) solid var(--ink) !important;
+  border-radius: var(--r-sm) !important;
+}
+.dark .flex.items-center.justify-between.p-3.dark\:bg-stone-700\/50 {
+  background-color: var(--bg-card) !important;
+  border-color: var(--miffy-yellow) !important;
 }
 
 /* 匯率計算 */
@@ -3297,24 +3581,10 @@ a.flex.items-center.justify-center.gap-1\.5.py-2.bg-white.border.border-stone-20
   font-family: var(--font-mono) !important;
   color: var(--ink) !important;
 }
-.w-full.p-2.rounded-lg.border.border-green-200:focus {
-  border-color: var(--miffy-orange) !important;
-  outline: none !important;
-}
-
-/* App 列表 */
-.flex.items-center.justify-between.p-3.bg-stone-50.rounded-xl.border.border-stone-100 {
-  background-color: var(--miffy-yellow) !important;
-  border: var(--bw) solid var(--ink) !important;
-  border-radius: var(--r-sm) !important;
-}
-
-/* iOS/Android 小按鈕 */
-.text-\[10px\].font-bold.bg-stone-800.text-white.px-2.py-1.rounded-lg {
-  background-color: var(--ink) !important;
-  color: var(--miffy-yellow) !important;
-  font-family: var(--font-mono) !important;
-  border-radius: 6px !important;
+.dark .w-full.p-2.rounded-lg.border {
+  background-color: var(--bg-card) !important;
+  border-color: var(--miffy-yellow) !important;
+  color: var(--text-main) !important;
 }
 
 /* 查看憑證按鈕 */
@@ -3328,6 +3598,19 @@ a.flex.items-center.justify-center.gap-2.w-full.py-3.mt-4.rounded-xl {
   text-transform: uppercase !important;
   border-radius: var(--r-sm) !important;
   box-shadow: 2px 2px 0 var(--ink) !important;
+}
+.dark a.flex.items-center.justify-center.gap-2.w-full.py-3.mt-4 {
+  background-color: rgba(247,232,78,0.1) !important;
+  border-color: var(--miffy-yellow) !important;
+  color: var(--miffy-yellow) !important;
+}
+
+/* iOS/Android 小按鈕 */
+.text-\[10px\].font-bold.bg-stone-800.text-white.px-2.py-1.rounded-lg {
+  background-color: var(--ink) !important;
+  color: var(--miffy-yellow) !important;
+  font-family: var(--font-mono) !important;
+  border-radius: 6px !important;
 }
 
 /* ============================================================
@@ -3351,14 +3634,15 @@ a.flex.items-center.justify-center.gap-2.w-full.py-3.mt-4.rounded-xl {
    MISC
    ============================================================ */
 
-/* 底部 "Journey to Kyushu" */
 .text-center.text-xs.text-stone-400.mt-12.mb-4.font-serif.italic {
   font-family: var(--font-display) !important;
   color: var(--faded) !important;
   font-style: italic !important;
 }
+.dark .text-center.text-xs.text-stone-400 {
+  color: var(--text-muted) !important;
+}
 
-/* 匯出PDF按鈕 */
 button.flex.items-center.gap-1\.5.px-3.py-1\.5.rounded-full.border.border-stone-200 {
   font-family: var(--font-mono) !important;
   font-size: 9px !important;
@@ -3368,8 +3652,12 @@ button.flex.items-center.gap-1\.5.px-3.py-1\.5.rounded-full.border.border-stone-
   letter-spacing: 1px !important;
   background-color: var(--card-white) !important;
 }
+.dark button.flex.items-center.gap-1\.5 {
+  border-color: var(--miffy-yellow) !important;
+  color: var(--miffy-yellow) !important;
+  background-color: transparent !important;
+}
 
-/* 回到頂部 */
 button.fixed.bottom-24.right-4.z-40 {
   background-color: var(--ink) !important;
   border: var(--bw) solid var(--miffy-yellow) !important;
@@ -3377,17 +3665,15 @@ button.fixed.bottom-24.right-4.z-40 {
   color: var(--miffy-yellow) !important;
 }
 
-/* border 分隔線 */
 .border-b.pb-3 { border-bottom-color: rgba(26,21,16,0.15) !important; }
+.dark .border-b.pb-3 { border-bottom-color: rgba(247,232,78,0.15) !important; }
 .border-t.pt-3 { border-top-color: rgba(26,21,16,0.15) !important; }
+.dark .border-t.pt-3 { border-top-color: rgba(247,232,78,0.15) !important; }
 
 /* 密碼輸入框 */
 input[type="password"] {
   font-family: var(--font-mono) !important;
   letter-spacing: 4px !important;
-  background-color: rgba(255,255,255,0.2) !important;
-  border: var(--bw) solid rgba(255,255,255,0.4) !important;
-  color: #fff !important;
 }
 
 /* 解鎖按鈕 */
@@ -3396,8 +3682,21 @@ button[type="submit"] {
   letter-spacing: 1.5px !important;
   text-transform: uppercase !important;
   background-color: var(--miffy-orange) !important;
-  border: var(--bw) solid var(--ink) !important;
-  box-shadow: 3px 3px 0 rgba(0,0,0,0.3) !important;
+  border: var(--bw) solid rgba(255,255,255,0.4) !important;
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.2) !important;
+  color: #fff !important;
+}
+
+/* 管理端 input */
+input[type="text"], input[type="time"], textarea, select {
+  color: var(--ink) !important;
+}
+.dark input[type="text"],
+.dark input[type="time"],
+.dark textarea,
+.dark select {
+  color: var(--text-main) !important;
+  background-color: var(--bg-card) !important;
 }
 
         `}
