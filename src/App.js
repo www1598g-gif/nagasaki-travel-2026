@@ -3834,6 +3834,37 @@ button.fixed.bottom-24.right-4.z-40 {
   box-shadow: 2px 2px 0 var(--miffy-orange) !important;
 }
  
+ 
+/* ============================================================
+   v2.2 PATCH — back-to-top 移到 floating bar 右上角
+   ============================================================ */
+ 
+/* floating bar 恢復原本寬度 */
+.fixed.bottom-20.left-4.right-4.z-30 {
+  bottom: 76px !important;
+  right: 16px !important;
+  z-index: 30 !important;
+}
+ 
+/* back-to-top 貼在 floating bar 右上角 */
+button.fixed.bottom-24.right-4.z-40 {
+  bottom: 128px !important;
+  right: 12px !important;
+  z-index: 40 !important;
+  background-color: var(--ink) !important;
+  border: var(--bw) solid var(--miffy-yellow) !important;
+  border-radius: 50% !important;
+  color: var(--miffy-yellow) !important;
+  box-shadow: 2px 2px 0 var(--miffy-orange) !important;
+  width: 36px !important;
+  height: 36px !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+ 
+ 
 
         `}
       </style>
