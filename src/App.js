@@ -4065,6 +4065,19 @@ button.fixed.bottom-24.right-4.z-40 {
     color: #FFFBF0 !important; /* 強制轉為高對比的極亮米白色 */
 }
 
+
+/* ============================================================
+   🔥 v3.2 航班卡片右側（黃圈重疊文字）高對比度強效修正
+   ============================================================ */
+
+/* 當深色模式啟動時，強行將重疊在右上角黃色圓圈上的文字（右側城市名、代碼、日期）轉為深黑色，才能完美顯色 */
+.dark .bg-white .relative.z-10 div:first-child span:last-child,
+.dark .bg-white .relative.z-10 .text-center:last-child,
+.dark .bg-white .relative.z-10 .text-center:last-child * {
+    color: #1A1510 !important; /* 強制轉回明晰的米飛核心深墨色 */
+}
+
+
         `}
       </style>
       <div className={`min-h-screen font-sans text-stone-800 dark:text-stone-100 max-w-md mx-auto relative overflow-hidden ${isLocked ? 'bg-stone-900' : 'bg-[#FDFBF7] dark:bg-stone-900'}`}>
