@@ -4109,6 +4109,15 @@ button.fixed.bottom-24.right-4.z-40 {
     color: #1A1510 !important;
 }
 
+/* ============================================================
+   🔥 v3.6 修正深色模式背景 Japan 水印過亮問題
+   ============================================================ */
+
+/* 讓深色模式下的 Japan 大字體變暗並降低不透明度，使其融入背景，不再干擾右上角文字閱讀 */
+.dark .absolute.top-\[-20px\].right-\[-20px\] {
+    color: rgba(0, 0, 0, 0.4) !important; /* 轉為深色暗影 */
+    opacity: 0.25 !important;            /* 大幅降低透明度 */
+}
         `}
       </style>
       <div className={`min-h-screen font-sans text-stone-800 dark:text-stone-100 max-w-md mx-auto relative overflow-hidden ${isLocked ? 'bg-stone-900' : 'bg-[#FDFBF7] dark:bg-stone-900'}`}>
