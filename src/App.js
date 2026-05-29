@@ -3951,59 +3951,54 @@ button.fixed.bottom-24.right-4.z-40 {
   color: var(--miffy-yellow) !important;
 }
 
-
 /* ============================================================
-   v2.7 終極對比度強化 — 修正深色模式下泥土色/暗色標題看不清問題
+   v2.8 終極無視權重強殺版 — 徹底解決工具頁與指南頁黑字問題
    ============================================================ */
 
-/* 1. 工具頁：精準轟炸「航班詳細資訊」「住宿飯店導航」「旅行必備App」「匯率換算與動態換匯系統」 */
-.dark section h3.text-stone-800,
-.dark section h3.text-red-700,
-.dark section h3.text-stone-800 *,
-.dark section h3.text-red-700 *,
-.dark h3.flex.items-center,
-.dark h3.flex.items-center * {
-  color: #FFFBF0 !important; /* 強制轉為高對比極亮米白 */
+/* 1. 用最暴力的屬性選取器，只要在 dark 模式下，卡片裡含有 text-stone-800 或 text-amber-900 的標題全部強制變極亮白 */
+.dark [class*="text-stone-800"],
+.dark [class*="text-amber-900"],
+.dark h3[class*="text-stone-800"],
+.dark h3[class*="text-red-700"] {
+  color: #FFFFFF !important;
 }
 
-/* 2. 指南頁：「團員私藏好店許願池」標題文字與內含 Icon 強制拉亮 */
-.dark section.bg-\[#FEF3C7\] .text-amber-900,
-.dark section.bg-\[#FEF3C7\] .text-amber-900 *,
-.dark .text-amber-900,
-.dark .text-amber-900 * {
-  color: #FFFBF0 !important;
+/* 2. 雙重保險：指定工具頁與指南頁所有大區塊下的 h3 標題與其內所有文字、Span 節點 */
+.dark section h3,
+.dark section h3 *,
+.dark main h3,
+.dark main h3 * {
+  color: #FFFFFF !important;
 }
 
-/* 3. 修正所有卡片大標題旁邊的 Lucide Logo 顏色與外框線（如飛機、房子、手機、皮夾） */
+/* 3. 強制讓標題旁邊的 Lucide SVG 網格圖標（飛機、時鐘、房子、皮夾、Logo）在深色模式下全部變全白 */
 .dark h3 svg,
 .dark h3 svg *,
-.dark .text-amber-900 svg,
-.dark .text-amber-900 svg * {
-  color: #FFFBF0 !important;
-  stroke: #FFFBF0 !important;
+.dark [class*="text-amber-900"] svg,
+.dark [class*="text-amber-900"] svg * {
+  color: #FFFFFF !important;
+  stroke: #FFFFFF !important;
 }
 
-/* 4. 飯店小卡類型小字（例如：歐風園區酒店）、App 描述、機票憑證按鈕文字補強 */
-.dark .text-stone-400,
-.dark .text-stone-500,
-.dark .text-\[10px\].text-stone-400 {
-  color: #D6C8A8 !important; /* 轉為清晰可讀的淺沙金色，不與大標題搶戲 */
+/* 4. 針對「團員私藏好店許願池」這個特定標題文字做最高級別強殺 */
+.dark section h2,
+.dark section h2 *,
+.dark .text-amber-900,
+.dark .text-amber-900 * {
+  color: #FFFFFF !important;
 }
 
-/* 5. 卡片內部小標題（例如：飯店名稱、App 名稱）*/
-.dark h4.font-bold,
-.dark h4.font-bold * {
-  color: #F7E84E !important; /* 維持米飛亮黃色，與大標題錯開 */
+/* 5. 確保卡片內部小標題（例如：豪斯登堡阿姆斯特丹酒店、DIGEST菜單翻譯）維持顯眼的亮黃色 */
+.dark h4,
+.dark h4 *,
+.dark [class*="font-bold text-sm"] {
+  color: #F7E84E !important;
 }
 
-/* 6. 緊急救援中心維持黑底紅字/白字防震，不被黃色干擾 */
-.dark .bg-stone-800 .text-red-600,
-.dark .bg-stone-800 .text-red-400 {
+/* 6. 排除緊急救援中心區塊（原本就是紅字/白字），保持原樣不被以上規則破壞 */
+.dark .bg-stone-800 [class*="text-red-600"],
+.dark .bg-stone-800 [class*="text-red-400"] {
   color: #E8334A !important;
-}
-.dark .bg-stone-800 .text-red-800,
-.dark .bg-stone-800 .text-red-800 * {
-  color: #FFF !important;
 }
 
         `}
