@@ -630,7 +630,7 @@ const UTILS_DATA = {
     },
   ],
   emergency: '日本警察通報: 110 \n火災/救護車: 119 \n台北駐日經濟文化代表處(福岡辦事處): +81-92-734-2810',
-  notes: '🔥 2月是泰國燒山季，但我們六月在九州！注意防雨防海風。\n🚗 右駕左行，長崎山路多斜坡。',
+  notes: '六月注意防雨防海風。\n🚗 右駕左行，長崎山路多斜坡。',
   driveUrl: 'https://drive.google.com/drive/folders/1B7hzB79vrlLWe1-N7gOxVJrVRK9ho87i?usp=sharing',
 
 };
@@ -914,9 +914,9 @@ const WeatherHero = ({ isAdmin, versionText, updateVersion, onLock, showSecret, 
             </div>
 
             <h1 className="text-4xl font-serif text-stone-800 dark:text-stone-100 tracking-tight leading-[0.9]">
-              九州
+              Miffy
               <br />
-              <span className="text-amber-600 dark:text-amber-500">生存戰</span>之旅
+              <span className="text-amber-600 dark:text-amber-500">慶生特攻隊</span>之旅
             </h1>
           </div>
 
@@ -1876,7 +1876,7 @@ const KyushuTips = ({ onTrigger }) => {
         >
           <div className="flex items-center gap-2">
             <AlertCircle size={18} className="text-amber-600" />
-            <span>2026 九州作戰天候防範禁忌</span>
+            <span>2026 九州天候防範禁忌</span>
           </div>
           {isOpen ? <ChevronUp size={18} /> : <ChevronDown size={18} />} {/* ← 加回箭頭 */}
         </button>
@@ -2105,7 +2105,7 @@ export default function TravelApp() {
 
   const [itinerary, setItinerary] = useState(INITIAL_ITINERARY_DATA);
   const [appVersion, setAppVersion] = useState('V25 終極版');
-  const [systemInfo, setSystemInfo] = useState('System Ver. 1.0 九州生存戰 🚀');
+  const [systemInfo, setSystemInfo] = useState('System Ver. 1.0 米飛六月荷蘭物語 🚀');
   const [noticeText, setNoticeText] = useState('載入中...');
   const [secretClickCount, setSecretClickCount] = useState(0);
   const [showSecret, setShowSecret] = useState(false);
@@ -2113,7 +2113,7 @@ export default function TravelApp() {
   const handleSecretTrigger = () => {
     const newCount = secretClickCount + 1;
     setSecretClickCount(newCount);
-    if (newCount === 5) { setShowSecret(true); alert("😈 禁忌解除！Kuromi Mode 九州隱藏大麻卡片開啟！🌿"); }
+    if (newCount === 5) { setShowSecret(true); alert("😈 禁忌解除！Kuromi Mode 九州隱藏卡片開啟！🌿"); }
   };
 
   useEffect(() => {
@@ -3699,6 +3699,142 @@ input[type="text"], input[type="time"], textarea, select {
   background-color: var(--bg-card) !important;
 }
 
+
+/* ============================================================
+   v2.1 PATCH — 深色模式文字 + 按鈕位置修正
+   ============================================================ */
+ 
+/* ── FIX 1: 深色模式天氣區塊溫度數字 ── */
+.dark .text-5xl.font-serif.font-medium,
+.dark .text-5xl {
+  color: var(--miffy-yellow) !important;
+}
+ 
+/* 深色模式天氣區整體文字 */
+.dark .relative.bg-\[#FDFBF7\].dark\:bg-stone-900.pt-0.pb-8.px-6 * {
+  color: var(--text-main);
+}
+/* 但 icon 顏色不要亂改 */
+.dark .relative.bg-\[#FDFBF7\].dark\:bg-stone-900 .text-amber-500,
+.dark .relative.bg-\[#FDFBF7\].dark\:bg-stone-900 .text-blue-400,
+.dark .relative.bg-\[#FDFBF7\].dark\:bg-stone-900 .text-stone-400 {
+  color: inherit;
+}
+ 
+/* ── FIX 2: 深色模式工具頁 — 所有白底卡片內的黑字 ── */
+ 
+/* 通用：深色模式下所有 section 標題 */
+.dark h3,
+.dark h4 {
+  color: var(--miffy-yellow) !important;
+}
+ 
+/* 通用：深色模式下所有卡片內一般文字 */
+.dark .bg-white.dark\:bg-stone-800 p,
+.dark .bg-white.dark\:bg-stone-800 span,
+.dark .bg-white.dark\:bg-stone-800 div,
+.dark .bg-white.dark\:bg-stone-800 a {
+  color: var(--text-main) !important;
+}
+ 
+/* 航班詳細資訊 — 機場城市名、代碼 */
+.dark .text-2xl.font-bold {
+  color: var(--miffy-yellow) !important;
+}
+.dark .text-\[10px\].text-stone-400,
+.dark .text-xs.text-stone-400,
+.dark .text-xs.text-stone-500,
+.dark .text-sm.text-stone-500 {
+  color: var(--text-muted) !important;
+}
+ 
+/* 航班時間、航班號 */
+.dark .text-xs.font-bold.text-stone-400,
+.dark .text-xs.font-bold.text-stone-500 {
+  color: var(--text-muted) !important;
+}
+ 
+/* 飯店名稱 */
+.dark h4.font-bold,
+.dark .font-bold.text-base,
+.dark .font-bold.text-lg,
+.dark .font-bold.text-sm {
+  color: var(--miffy-yellow) !important;
+}
+ 
+/* 飯店地址、備註小字 */
+.dark .text-xs.text-stone-500,
+.dark p.text-xs,
+.dark span.text-xs {
+  color: var(--text-muted) !important;
+}
+ 
+/* App 列表文字 */
+.dark .font-bold.text-stone-800.text-sm,
+.dark .font-bold.text-stone-100.text-sm {
+  color: var(--miffy-yellow) !important;
+}
+.dark .text-\[10px\].text-stone-500 {
+  color: var(--text-muted) !important;
+}
+ 
+/* 匯率換算標題文字 */
+.dark .text-stone-800,
+.dark .text-stone-700,
+.dark .text-stone-600 {
+  color: var(--text-main) !important;
+}
+ 
+/* 匯率輸入欄位 placeholder */
+.dark input::placeholder {
+  color: var(--text-muted) !important;
+}
+ 
+/* 深色模式住宿卡片內部 */
+.dark .bg-stone-50.dark\:bg-stone-700\/50 p,
+.dark .bg-stone-50.dark\:bg-stone-700\/50 span,
+.dark .bg-stone-50.dark\:bg-stone-700\/50 h4 {
+  color: var(--text-main) !important;
+}
+ 
+/* 深色模式 App 行 */
+.dark .flex.items-center.justify-between.p-3 .font-bold,
+.dark .flex.items-center.justify-between.p-3 .text-\[10px\] {
+  color: var(--text-main) !important;
+}
+ 
+/* 深色模式 toggle 文字 */
+.dark .flex.items-center.gap-2.font-bold span {
+  color: var(--text-main) !important;
+}
+ 
+/* ── FIX 3: 回到頂部箭頭 + Floating bar 不重疊 ──
+   原本 back-to-top 是 bottom-24 right-4
+   floating bar 是 bottom-20 (已改 76px)
+   兩個會卡在一起 → 把 back-to-top 往上推到 bottom-32
+   floating bar 向右縮，right 留出空間給箭頭
+   最乾淨的解法：floating bar 右邊留 56px padding 給箭頭 */
+ 
+/* floating bar 右邊留空間 */
+.fixed.bottom-20.left-4.right-4.z-30 {
+  bottom: 76px !important;
+  right: 60px !important;  /* 讓右邊箭頭有空間 */
+  z-index: 30 !important;
+}
+ 
+/* back-to-top 箭頭往上推，不擋 floating bar */
+button.fixed.bottom-24.right-4.z-40 {
+  bottom: 80px !important;
+  right: 12px !important;
+  background-color: var(--ink) !important;
+  border: var(--bw) solid var(--miffy-yellow) !important;
+  border-radius: 50% !important;
+  color: var(--miffy-yellow) !important;
+  z-index: 40 !important;
+  box-shadow: 2px 2px 0 var(--miffy-orange) !important;
+}
+ 
+
         `}
       </style>
       <div className={`min-h-screen font-sans text-stone-800 dark:text-stone-100 max-w-md mx-auto relative overflow-hidden ${isLocked ? 'bg-stone-900' : 'bg-[#FDFBF7] dark:bg-stone-900'}`}>
@@ -3790,7 +3926,7 @@ input[type="text"], input[type="time"], textarea, select {
                   )}
                 </main>
                 <BackToTop />
-                {showShakeEgg && <div onClick={() => setShowShakeEgg(false)} className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-8"><div className="bg-[#FFF0F5] p-6 rounded-3xl text-center"><p className="text-pink-500 font-bold">🍀 搖出驚喜！祝全團九州生存戰大順利！</p></div></div>}
+                {showShakeEgg && <div onClick={() => setShowShakeEgg(false)} className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-8"><div className="bg-[#FFF0F5] p-6 rounded-3xl text-center"><p className="text-pink-500 font-bold">🍀 搖出驚喜！Miffy生日快樂！</p></div></div>}
 
                 {/* 底部功能列 */}
                 <nav className="fixed bottom-0 w-full max-w-md bg-white/90 dark:bg-stone-900/90 backdrop-blur-lg border-t flex justify-around py-3 pb-4 z-40 select-none">
