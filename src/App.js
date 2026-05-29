@@ -2116,7 +2116,7 @@ export default function TravelApp() {
     console.log('secret count:', newCount);
     if (newCount >= 5) {
       setShowSecret(true);
-      alert("😈 禁忌解除！Kuromi Mode 九州隱藏卡片開啟！🌿");
+      alert("😈 禁忌解除！Kuromi Mode 九州隱藏卡片開啟！");
       return 0;
     }
     return newCount;
