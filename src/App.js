@@ -4102,7 +4102,7 @@ button.fixed.bottom-24.right-4.z-40 {
 /* 2. 點開變橘色時，左側 DAY 方塊底色稍微拉亮，並將裡面的 "DAY" 與 "數字" 全部強制轉為深墨色 (#1A1510) */
 /* 這樣在亮橘色背景下，方塊內的字體才會像繪本一樣絕對清晰，徹底解決看不清的問題！ */
 .dark .bg-stone-800 .w-12.h-12 {
-    background-color: rgba(255, 255, 255, 0.5) !important; /* 提高方塊透明度讓它更白亮 */
+    background-color: rgba(255, 255, 255, 0.5) !important; /* 提高方塊透明 度讓它更白亮 */
     border-color: #1A1510 !important;
 }
 .dark .bg-stone-800 .w-12.h-12 span {
