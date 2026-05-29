@@ -658,7 +658,7 @@ const WeatherHero = ({ isAdmin, versionText, updateVersion, onLock, showSecret, 
         setSecretLinks(val);
       } else {
         const defaultLinks = [
-          { name: '🚀 九州鐵道即時 JR 運行情報', url: 'https://www.jrkyushu.co.jp/trains/unkou.php' }
+          { name: '🚀 九州鐵道即時 JR 運行情報', url: 'https://www.jrkyushu.co.jp/trains/info/' }
         ];
         setSecretLinks(defaultLinks);
       }
@@ -1229,7 +1229,7 @@ const LocationCard = ({ item, day, index, isAdmin, updateTime, updateContent, on
 
           <div className="p-5 bg-stone-50/50">
             <div className="mb-5">
-              <h4 className="text-xs font-bold text-amber-700 mb-2 flex items-center gap-1.5 uppercase tracking-wider"><Info size={12} /> 導遊作戰故事環境</h4>
+              <h4 className="text-xs font-bold text-amber-700 mb-2 flex items-center gap-1.5 uppercase tracking-wider"><Info size={12} /> 導遊說故事</h4>
               {isAdmin ? (
                 <div onClick={(e) => e.stopPropagation()} className="space-y-3">
                   <textarea value={item.desc} onChange={(e) => updateContent('desc', e.target.value)} className="w-full text-sm text-stone-600 bg-white border rounded-lg p-3 min-h-[100px]" placeholder="輸入詳細介紹..." />
