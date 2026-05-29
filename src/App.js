@@ -3951,64 +3951,61 @@ button.fixed.bottom-24.right-4.z-40 {
   color: var(--miffy-yellow) !important;
 }
  /* ============================================================
-   v2.5 PATCH — 深色模式所有 Section 標題與 Logo 強制亮色（精準修正）
+   v2.6 終極強效修正 — 徹底幹掉深色模式標題黑字
    ============================================================ */
 
-/* 1. 確保深色模式下，工具頁、指南頁的所有卡片大標題 (h3) 轉為亮黃色 */
-.dark h3,
-.dark h3.font-bold,
-.dark h3.flex.items-center,
+/* 1. 工具頁：航班詳細資訊、住宿飯店導航、旅行必備 App、匯率換算與動態換匯系統 */
+.dark .bg-white h3,
+.dark .bg-white h3 *,
 .dark section h3,
-.dark .bg-white h3 {
-  color: var(--miffy-yellow) !important;
+.dark section h3 * {
+  color: #F7E84E !important; /* 直接用硬碼亮黃色，防止變數互相污染 */
+  fill: #F7E84E !important;
 }
 
-/* 2. 確保深色模式下，所有卡片內的中標題 (h4) 轉為亮黃色 */
-.dark h4,
-.dark h4.font-bold,
-.dark .bg-white h4 {
-  color: var(--miffy-yellow) !important;
+/* 2. 指南頁：團員私藏好店許願池 (因為它是黃底卡片，但在深色模式被轉成 dark bg，標題必須變黃) */
+.dark section.bg-\[#FEF3C7\] div,
+.dark section.bg-\[#FEF3C7\] div *,
+.dark .text-amber-900,
+.dark .text-amber-900 * {
+  color: #F7E84E !important;
 }
 
-/* 3. 精準捕捉文字：航班詳細資訊、住宿飯店導航、旅行必備 App、匯率換算與動態換匯系統、團員私藏好店許願池 */
-.dark h3.text-stone-800,
-.dark h3.text-red-700,
-.dark h2.text-stone-800,
-.dark .text-amber-900 {
-  color: var(--miffy-yellow) !important;
-}
-
-/* 4. 強制標題旁邊的 Lucide SVG Logo 在深色模式下同步變為亮黃色 */
+/* 3. 精準對決你在元件裡寫的 Lucide Icon 顏色 */
 .dark h3 svg,
-.dark h3 .text-blue-500,
-.dark h3 .text-orange-500,
-.dark h3 .text-red-600,
-.dark h3 .text-green-600,
-.dark h3 .text-purple-500,
-.dark .text-amber-900 svg {
-  color: var(--miffy-yellow) !important;
-  stroke: var(--miffy-yellow) !important;
+.dark h3 svg *,
+.dark .text-amber-900 svg,
+.dark .text-amber-900 svg * {
+  color: #F7E84E !important;
+  stroke: #F7E84E !important;
 }
 
-/* 5. 深色模式下的一般卡片內文與描述，確保轉為舒適的米白/淺卡其色 */
-.dark p,
-.dark .text-stone-600,
-.dark .text-stone-700,
-.dark .text-stone-500 {
-  color: var(--text-main) !important;
+/* 4. 針對卡片內部的小頭（例如飯店名稱、App 名稱）確保也是亮色 */
+.dark .bg-white h4,
+.dark .bg-white h4 *,
+.dark .bg-stone-50 h4,
+.dark .bg-stone-50 h4 * {
+  color: #F5EDD5 !important; /* 稍微柔和的米白色，跟大標題錯開 */
 }
 
-/* 6. 特例排除：緊急救援深色區塊 (原本就是黑底白字) 保持原樣不影響 */
-.dark .bg-stone-800 .text-stone-800,
-.dark .bg-stone-800 .font-bold.text-stone-800,
+/* 5. 確保卡片內的一般文字描述（如地址、航班時間、備註）維持清晰的米白 */
+.dark .bg-white p,
+.dark .bg-white p *,
+.dark .bg-white span:not(h3),
+.dark .bg-white text {
+  color: #F5EDD5 !important;
+}
+
+/* 6. 特例放行：緊急救援中心本來就是黑底紅字/白字，不要讓上面的黃色污染它 */
+.dark .text-red-700,
+.dark .text-red-700 *,
 .dark .bg-stone-800 *,
 .dark .bg-stone-950 * {
-  color: rgba(255, 255, 255, 0.85) !important;
+  color: #FFF !important;
 }
-
-/* 7. 深色模式下所有 span 文字繼承亮色 */
-.dark span {
-  color: inherit !important;
+.dark .text-red-600,
+.dark .text-red-400 {
+  color: #E8334A !important;
 }
 
         `}
