@@ -4067,14 +4067,22 @@ button.fixed.bottom-24.right-4.z-40 {
 
 
 /* ============================================================
-   🔥 v3.2 航班卡片右側（黃圈重疊文字）高對比度強效修正
+   🔥 v3.3 航班卡片文字全白修正 — 拒絕泥土色與死人黑
    ============================================================ */
 
-/* 當深色模式啟動時，強行將重疊在右上角黃色圓圈上的文字（右側城市名、代碼、日期）轉為深黑色，才能完美顯色 */
-.dark .bg-white .relative.z-10 div:first-child span:last-child,
-.dark .bg-white .relative.z-10 .text-center:last-child,
-.dark .bg-white .relative.z-10 .text-center:last-child * {
-    color: #1A1510 !important; /* 強制轉回明晰的米飛核心深墨色 */
+/* 1. 把左、右兩邊的城市名稱（台北、佐賀）、機場代碼、以及中間的航班號通通強制改成純白色 */
+.dark .bg-white .text-2xl.font-bold,
+.dark .bg-white .text-2xl.font-bold *,
+.dark .bg-white .text-\[10px\].text-stone-400,
+.dark .bg-white .text-xs.font-bold.text-stone-500,
+.dark .bg-white .text-xs.font-bold.text-stone-400 {
+    color: #FFFFFF !important;
+}
+
+/* 2. 右上角的日期（如 6/16 二）因為疊在亮黃色圈圈上，必須維持深墨色，否則白字會看不見 */
+.dark .bg-white .relative.z-10 > div:first-child span:last-child,
+.dark .bg-white .relative.z-10 > div:first-child span:last-child * {
+    color: #1A1510 !important;
 }
 
 
