@@ -4067,19 +4067,22 @@ button.fixed.bottom-24.right-4.z-40 {
 
 
 /* ============================================================
-   🔥 v3.3 航班卡片文字全白修正 — 拒絕泥土色與死人黑
+   🔥 v3.4 航班卡片城市名稱全白修正 — 解決與黃圈融合問題
    ============================================================ */
 
-/* 1. 把左、右兩邊的城市名稱（台北、佐賀）、機場代碼、以及中間的航班號通通強制改成純白色 */
+/* 1. 當開啟暗黑模式 (.dark) 時，將航班卡片內所有城市名稱（台北、佐賀）強制轉為純白色 */
+/* 這樣沒開暗黑模式時，就會完全走你原本的設定（維持黑色不變） */
 .dark .bg-white .text-2xl.font-bold,
-.dark .bg-white .text-2xl.font-bold *,
-.dark .bg-white .text-\[10px\].text-stone-400,
-.dark .bg-white .text-xs.font-bold.text-stone-500,
-.dark .bg-white .text-xs.font-bold.text-stone-400 {
+.dark .bg-white .text-2xl.font-bold * {
     color: #FFFFFF !important;
 }
 
-/* 2. 右上角的日期（如 6/16 二）因為疊在亮黃色圈圈上，必須維持深墨色，否則白字會看不見 */
+/* 2. 同步把底下的機場代碼（TPE、HSG）在暗黑模式下也轉為白色，確保整體高對比度 */
+.dark .bg-white .text-\[10px\].text-stone-400 {
+    color: #FFFFFF !important;
+}
+
+/* 3. 唯獨右上角的日期（如 6/16 二）因為疊在亮黃色圈圈上，在暗黑模式下必須維持深黑色，否則白字在黃底上會看不見 */
 .dark .bg-white .relative.z-10 > div:first-child span:last-child,
 .dark .bg-white .relative.z-10 > div:first-child span:last-child * {
     color: #1A1510 !important;
