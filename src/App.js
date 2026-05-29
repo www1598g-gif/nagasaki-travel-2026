@@ -916,7 +916,7 @@ const WeatherHero = ({ isAdmin, versionText, updateVersion, onLock, showSecret, 
             <h1 className="text-4xl font-serif text-stone-800 dark:text-stone-100 tracking-tight leading-[0.9]">
               Miffy
               <br />
-              <span className="text-amber-600 dark:text-amber-500">慶生特攻隊</span>之旅
+              <span className="text-amber-600 dark:text-amber-500">荷蘭物語</span>
             </h1>
           </div>
 
