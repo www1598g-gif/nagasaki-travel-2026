@@ -4089,6 +4089,26 @@ button.fixed.bottom-24.right-4.z-40 {
 }
 
 
+/* ============================================================
+   🔥 v3.5 行程卡片展開（橘色狀態）文字與日期對比度終極優化
+   ============================================================ */
+
+/* 1. 當行程點開變成橘色底時，將「日期小字」(如 6/16 二) 強制轉為純白色 */
+/* 沒開暗黑模式時完全不影響，一開暗黑就會變高對比的純白 */
+.dark .bg-stone-800 .text-xs.font-bold {
+    color: #FFFFFF !important;
+}
+
+/* 2. 點開變橘色時，左側 DAY 方塊底色稍微拉亮，並將裡面的 "DAY" 與 "數字" 全部強制轉為深墨色 (#1A1510) */
+/* 這樣在亮橘色背景下，方塊內的字體才會像繪本一樣絕對清晰，徹底解決看不清的問題！ */
+.dark .bg-stone-800 .w-12.h-12 {
+    background-color: rgba(255, 255, 255, 0.5) !important; /* 提高方塊透明度讓它更白亮 */
+    border-color: #1A1510 !important;
+}
+.dark .bg-stone-800 .w-12.h-12 span {
+    color: #1A1510 !important;
+}
+
         `}
       </style>
       <div className={`min-h-screen font-sans text-stone-800 dark:text-stone-100 max-w-md mx-auto relative overflow-hidden ${isLocked ? 'bg-stone-900' : 'bg-[#FDFBF7] dark:bg-stone-900'}`}>
