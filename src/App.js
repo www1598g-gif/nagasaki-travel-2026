@@ -4054,6 +4054,16 @@ button.fixed.bottom-24.right-4.z-40 {
     color: #F5EDD5 !important; 
 }
 
+/* ============================================================
+   🔥 v3.1 結構層級強殺 — 徹底解決 text-[10px] 轉義隱形問題
+   ============================================================ */
+
+/* 直接繞過帶有中括號的 Class 名稱，用純 HTML 結構把 App 卡片內部的第二層描述小字抓出來轉白 */
+.dark section .flex.items-center.justify-between.p-3 div div,
+.dark section .flex.items-center.justify-between.p-3 div div *,
+.dark section .flex.items-center.justify-between.p-3 div span {
+    color: #FFFBF0 !important; /* 強制轉為高對比的極亮米白色 */
+}
 
         `}
       </style>
