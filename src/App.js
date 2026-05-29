@@ -2111,10 +2111,17 @@ export default function TravelApp() {
   const [showSecret, setShowSecret] = useState(false);
 
   const handleSecretTrigger = () => {
-    const newCount = secretClickCount + 1;
-    setSecretClickCount(newCount);
-    if (newCount === 5) { setShowSecret(true); alert("😈 禁忌解除！Kuromi Mode 九州隱藏卡片開啟！🌿"); }
-  };
+  setSecretClickCount(prev => {
+    const newCount = prev + 1;
+    console.log('secret count:', newCount);
+    if (newCount >= 5) {
+      setShowSecret(true);
+      alert("😈 禁忌解除！Kuromi Mode 九州隱藏卡片開啟！🌿");
+      return 0;
+    }
+    return newCount;
+  });
+};
 
   useEffect(() => {
     const savedRole = localStorage.getItem('userRole');
@@ -3698,8 +3705,6 @@ input[type="text"], input[type="time"], textarea, select {
   color: var(--text-main) !important;
   background-color: var(--bg-card) !important;
 }
-
-
 /* ============================================================
    v2.1 PATCH — 深色模式文字 + 按鈕位置修正
    ============================================================ */
@@ -3864,6 +3869,54 @@ button.fixed.bottom-24.right-4.z-40 {
   justify-content: center !important;
 }
  
+ 
+/* ============================================================
+   v2.3 PATCH — back-to-top 再往上 + 深色模式標題修正
+   ============================================================ */
+ 
+/* back-to-top 完全脫離 floating bar */
+button.fixed.bottom-24.right-4.z-40 {
+  bottom: 168px !important;
+  right: 12px !important;
+  z-index: 40 !important;
+  background-color: var(--ink) !important;
+  border: var(--bw) solid var(--miffy-yellow) !important;
+  border-radius: 50% !important;
+  color: var(--miffy-yellow) !important;
+  box-shadow: 2px 2px 0 var(--miffy-orange) !important;
+  width: 36px !important;
+  height: 36px !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+ 
+/* 深色模式 — 工具頁/指南頁所有 section 標題強制亮色 */
+.dark h3.flex.items-center.gap-2.font-bold,
+.dark h3.flex.items-center.gap-2.font-bold.text-stone-800,
+.dark h3.flex.items-center.gap-2.font-bold.text-stone-100,
+.dark h3.flex.items-center.gap-2.font-bold.mb-4,
+.dark h3.flex.items-center.gap-2.font-bold.text-red-700 {
+  color: var(--miffy-yellow) !important;
+}
+ 
+/* 深色模式 — 許願池標題 */
+.dark .flex.items-center.gap-2.mb-5.text-amber-900,
+.dark .flex.items-center.gap-2.mb-5 {
+  color: var(--miffy-yellow) !important;
+}
+ 
+/* 深色模式 — section 標題旁的 icon */
+.dark h3.flex.items-center.gap-2.font-bold svg {
+  color: var(--miffy-yellow) !important;
+  pointer-events: none !important;
+}
+ 
+/* 深色模式 — 許願池標題旁的 icon */
+.dark .flex.items-center.gap-2.mb-5 svg {
+  color: var(--miffy-yellow) !important;
+}
  
 
         `}
