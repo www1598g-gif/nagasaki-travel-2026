@@ -4001,6 +4001,51 @@ button.fixed.bottom-24.right-4.z-40 {
   color: #E8334A !important;
 }
 
+
+/* ============================================================
+   🔥 最終加掛補強 — 不動原有功能，只針對黑字進行最高權重覆蓋
+   ============================================================ */
+
+/* 1. 工具頁大標題 (航班詳細資訊、住宿飯店導航、旅行必備App、匯率換算) */
+.dark h3.flex.items-center.gap-2.font-bold.text-stone-800.mb-4.border-b.pb-3 {
+    color: #FFFBF0 !important;
+}
+
+/* 1-1. 工具頁大標題旁邊的 Lucide Icon 同步轉白 */
+.dark h3.flex.items-center.gap-2.font-bold.text-stone-800.mb-4.border-b.pb-3 svg {
+    color: #FFFBF0 !important;
+    stroke: #FFFBF0 !important;
+}
+
+/* 2. 指南頁：團員私藏好店許願池大標題 */
+.dark .flex.items-center.gap-2.mb-5.text-amber-900.font-black.text-sm.tracking-wider {
+    color: #FFFBF0 !important;
+}
+
+/* 2-1. 指南頁：許願池大標題旁邊的 Icon 同步轉白 */
+.dark .flex.items-center.gap-2.mb-5.text-amber-900.font-black.text-sm.tracking-wider svg {
+    color: #FFFBF0 !important;
+    stroke: #FFFBF0 !important;
+}
+
+/* 3. 指南頁：各個分類卡片大標題 (喫茶店地圖、必吃清單等) */
+.dark h3.text-lg.font-bold.text-stone-800 {
+    color: #FFFBF0 !important;
+}
+
+/* 4. 行李準備頁：大標題文字 */
+.dark h2.text-2xl.font-serif.font-bold {
+    color: #FFFBF0 !important;
+}
+
+/* 5. 特例排除：緊急救援中心維持紅字，不被上面的全白規則破壞 */
+.dark h3.flex.items-center.gap-2.font-bold.text-red-700.mb-4.border-b.pb-3 {
+    color: #E8334A !important;
+}
+
+
+
+
         `}
       </style>
       <div className={`min-h-screen font-sans text-stone-800 dark:text-stone-100 max-w-md mx-auto relative overflow-hidden ${isLocked ? 'bg-stone-900' : 'bg-[#FDFBF7] dark:bg-stone-900'}`}>
