@@ -983,6 +983,39 @@ const WeatherHero = ({ isAdmin, versionText, updateVersion, onLock, showSecret, 
         >
           <Sparkles size={16} className="text-teal-500 group-hover:rotate-12 transition-transform" /> Ask AI (Perplexity 深度探索)
         </button>
+
+{showSecret && secretLinks.length > 0 && (
+  <div className="mt-3 overflow-hidden rounded-2xl border-2 border-ink" style={{border: '2px solid #1A1510'}}>
+    <div className="px-4 py-2 flex items-center justify-between" style={{background:'#F7E84E', borderBottom:'2px solid #1A1510'}}>
+      <span style={{fontFamily:"'Space Mono',monospace", fontSize:'9px', fontWeight:'bold', letterSpacing:'2px', textTransform:'uppercase', color:'#1A1510'}}>
+        🔗 SECRET LINKS
+      </span>
+    </div>
+    {secretLinks.map((link, idx) => (
+      <a key={idx} href={link.url} target="_blank" rel="noreferrer"
+        className="flex items-center justify-between px-4 py-3"
+        style={{background:'#fff', borderBottom:'1px solid #D6C8A8', display:'flex'}}
+      >
+        <span style={{fontFamily:"'DM Serif Display',serif", fontSize:'14px', color:'#1A1510'}}>{link.name}</span>
+        <ArrowRight size={14} style={{color:'#888', flexShrink:0}} />
+      </a>
+    ))}
+    {isAdmin && (
+      <div className="p-3 flex gap-2" style={{borderTop:'1px solid #D6C8A8', background:'#F7E84E'}}>
+        <input value={newLinkName} onChange={(e) => setNewLinkName(e.target.value)}
+          placeholder="名稱" className="flex-1 text-xs p-2 border rounded-lg" style={{border:'1.5px solid #1A1510'}} />
+        <input value={newLinkUrl} onChange={(e) => setNewLinkUrl(e.target.value)}
+          placeholder="網址" className="flex-1 text-xs p-2 border rounded-lg" style={{border:'1.5px solid #1A1510'}} />
+        <button onClick={handleAddLink}
+          className="text-xs px-3 rounded-lg font-bold"
+          style={{background:'#1A1510', color:'#F7E84E'}}>+</button>
+      </div>
+    )}
+  </div>
+)}
+
+
+
       </div>
     </div>
   );
