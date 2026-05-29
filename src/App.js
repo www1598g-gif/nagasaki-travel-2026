@@ -3950,55 +3950,63 @@ button.fixed.bottom-24.right-4.z-40 {
 .dark .flex.items-center.gap-2.mb-5 svg {
   color: var(--miffy-yellow) !important;
 }
- 
-/* ============================================================
-   v2.4 PATCH — 深色模式所有 section 標題強制亮色（精準版）
+ /* ============================================================
+   v2.5 PATCH — 深色模式所有 Section 標題與 Logo 強制亮色（精準修正）
    ============================================================ */
- 
-/* 核心修正：深色模式下，白底卡片裡的 h3 標題全部變黃 */
-.dark h3 {
+
+/* 1. 確保深色模式下，工具頁、指南頁的所有卡片大標題 (h3) 轉為亮黃色 */
+.dark h3,
+.dark h3.font-bold,
+.dark h3.flex.items-center,
+.dark section h3,
+.dark .bg-white h3 {
   color: var(--miffy-yellow) !important;
 }
- 
-/* 深色模式下所有 font-bold 的標題文字 */
-.dark .font-bold.text-stone-800,
-.dark .font-bold.text-stone-700,
-.dark .font-bold.text-stone-600,
-.dark .font-bold.text-stone-100 {
+
+/* 2. 確保深色模式下，所有卡片內的中標題 (h4) 轉為亮黃色 */
+.dark h4,
+.dark h4.font-bold,
+.dark .bg-white h4 {
   color: var(--miffy-yellow) !important;
 }
- 
-/* 深色模式下一般內文 */
-.dark .text-stone-800,
-.dark .text-stone-700,
-.dark .text-stone-600 {
-  color: var(--text-main) !important;
-}
- 
-/* 深色模式下 muted 文字 */
-.dark .text-stone-500,
-.dark .text-stone-400,
-.dark .text-stone-300 {
-  color: var(--text-muted) !important;
-}
- 
-/* 例外：緊急電話深色區塊裡面不要改（已經是白字） */
-.dark .bg-stone-800 .text-stone-800,
-.dark .bg-stone-800 .font-bold.text-stone-800 {
-  color: rgba(255,255,255,0.85) !important;
-}
- 
-/* 深色模式 — 許願池標題 Sparkles 旁文字 */
+
+/* 3. 精準捕捉文字：航班詳細資訊、住宿飯店導航、旅行必備 App、匯率換算與動態換匯系統、團員私藏好店許願池 */
+.dark h3.text-stone-800,
+.dark h3.text-red-700,
+.dark h2.text-stone-800,
 .dark .text-amber-900 {
   color: var(--miffy-yellow) !important;
 }
- 
-/* 深色模式 — 所有卡片內 p 標籤 */
-.dark p {
+
+/* 4. 強制標題旁邊的 Lucide SVG Logo 在深色模式下同步變為亮黃色 */
+.dark h3 svg,
+.dark h3 .text-blue-500,
+.dark h3 .text-orange-500,
+.dark h3 .text-red-600,
+.dark h3 .text-green-600,
+.dark h3 .text-purple-500,
+.dark .text-amber-900 svg {
+  color: var(--miffy-yellow) !important;
+  stroke: var(--miffy-yellow) !important;
+}
+
+/* 5. 深色模式下的一般卡片內文與描述，確保轉為舒適的米白/淺卡其色 */
+.dark p,
+.dark .text-stone-600,
+.dark .text-stone-700,
+.dark .text-stone-500 {
   color: var(--text-main) !important;
 }
- 
-/* 深色模式 — 所有 span 文字 */
+
+/* 6. 特例排除：緊急救援深色區塊 (原本就是黑底白字) 保持原樣不影響 */
+.dark .bg-stone-800 .text-stone-800,
+.dark .bg-stone-800 .font-bold.text-stone-800,
+.dark .bg-stone-800 *,
+.dark .bg-stone-950 * {
+  color: rgba(255, 255, 255, 0.85) !important;
+}
+
+/* 7. 深色模式下所有 span 文字繼承亮色 */
 .dark span {
   color: inherit !important;
 }
