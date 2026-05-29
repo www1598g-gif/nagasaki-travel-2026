@@ -2294,9 +2294,8 @@ export default function TravelApp() {
     }
 
 /* ============================================================
-   KYUSHU 2026 — Dick Bruna Miffy × 豪斯登堡 × 長崎
+   KYUSHU 2026 — Dick Bruna Miffy  豪斯登堡  長崎
    Drop-in CSS theme
-   貼入 App.js 的 <style>{` ... `} 裡即可，邏輯完全不動。
    ============================================================ */
 
 
