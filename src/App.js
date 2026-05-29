@@ -4043,7 +4043,16 @@ button.fixed.bottom-24.right-4.z-40 {
     color: #E8334A !important;
 }
 
+/* ============================================================
+   🔥 v3.0 App 列表描述文字對比度補強 — 讓小字完全看清
+   ============================================================ */
 
+/* 精準狙擊 App 卡片內部的 text-[10px] text-stone-500 小字描述，強制轉為明亮米白 */
+.dark .text-\[10px\].text-stone-500,
+.dark [class*="text-[10px] text-stone-500"],
+.dark .bg-stone-50\.dark\:bg-stone-700\/50 .text-stone-500 {
+    color: #F5EDD5 !important; 
+}
 
 
         `}
