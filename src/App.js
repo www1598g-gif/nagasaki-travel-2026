@@ -4147,16 +4147,19 @@ body .dark div.font-serif.select-none.leading-none.pointer-events-none {
 
 
               <div className={`relative z-10 flex flex-col items-center w-full px-8 h-full pt-40 transition-opacity duration-500 ${isUnlocking ? 'opacity-0' : 'opacity-100'}`}>
+               
+               
+               
                <div
   onMouseDown={() => pressTimerRef.current = setTimeout(() => setShowHelloKitty(true), 2000)}
   onMouseUp={() => clearTimeout(pressTimerRef.current)}
-  className={`relative mb-6 cursor-pointer transition-all duration-1000 ease-in-out ${isUnlocking ? 'translate-x-[500%] opacity-0' : 'translate-x-0 opacity-100'}`}
+  className={`relative mb-6 cursor-pointer ${isUnlocking ? 'translate-x-[500%] opacity-0' : 'translate-x-0 opacity-100'}`}
+  style={{ transition: 'transform 9s ease-in-out, opacity 9s ease-in-out' }}
 >
   <img
     src={process.env.PUBLIC_URL + '/images/airplane.jpeg'}
     alt="Miffy Airplane"
-    className="w-28 h-28 rounded-full object-cover shadow-2xl"
-    style={{ border: '3px solid rgba(255,255,255,0.4)' }}
+    className="w-48 object-contain"
   />
 </div>
                 
