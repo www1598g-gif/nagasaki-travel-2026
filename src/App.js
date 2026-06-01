@@ -4145,7 +4145,7 @@ body .dark div.font-serif.select-none.leading-none.pointer-events-none {
   <div className="absolute inset-0 bg-black/20"></div>
 </div>
 
-<div className={`relative z-10 flex flex-col items-center w-full px-8 ...`}>
+
               <div className={`relative z-10 flex flex-col items-center w-full px-8 h-full pt-40 transition-opacity duration-500 ${isUnlocking ? 'opacity-0' : 'opacity-100'}`}>
                <div
   onMouseDown={() => pressTimerRef.current = setTimeout(() => setShowHelloKitty(true), 2000)}
