@@ -4139,7 +4139,18 @@ body .dark div.font-serif.select-none.leading-none.pointer-events-none {
         {isLocked && (
           <div className="fixed inset-0 z-[100] flex justify-center bg-stone-900 h-screen w-full">
             <div className="relative w-full max-w-md h-full flex flex-col items-center">
-              
+              <div
+  className="absolute top-0 left-0 w-full h-full"
+  style={{
+    backgroundImage: `url(${JUNGLE_BG})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+  }}
+>
+  <div className="absolute inset-0 bg-black/20"></div>
+</div>
+
+<div className={`relative z-10 flex flex-col items-center w-full px-8 ...`}>
               <div className={`relative z-10 flex flex-col items-center w-full px-8 h-full pt-40 transition-opacity duration-500 ${isUnlocking ? 'opacity-0' : 'opacity-100'}`}>
                <div
   onMouseDown={() => pressTimerRef.current = setTimeout(() => setShowHelloKitty(true), 2000)}
