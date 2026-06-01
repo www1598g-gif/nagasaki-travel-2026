@@ -4147,10 +4147,47 @@ body .dark div.font-serif.select-none.leading-none.pointer-events-none {
                 <p className="text-emerald-100 text-sm mb-2 text-center tracking-widest font-bold">佑任・軒寶・阿歪・黃蔓</p>
                 <p className="text-emerald-200/60 text-[10px] uppercase font-bold text-center mb-6">{systemInfo}</p>
                 <button onClick={() => window.location.reload()} className="absolute top-12 right-6 p-2 rounded-full bg-white/10 text-white/50"><RefreshCw size={20} /></button>
-                <form className="w-full relative mb-6 mt-auto" onSubmit={(e) => { e.preventDefault(); handleUnlock(); }}>
-                  <div className="relative"><KeyRound size={18} className="absolute left-4 top-4 text-emerald-100" /><input type="password" value={inputPwd} onChange={(e) => setInputPwd(e.target.value)} placeholder="Passcode" className="w-full bg-white/20 border border-white/30 rounded-2xl pl-12 pr-12 py-3.5 text-lg text-emerald-100 text-center font-bold" /></div>
-                  <button type="submit" className="w-full mt-6 bg-emerald-600 text-white font-bold py-3.5 rounded-2xl shadow-lg shadow-emerald-900/40" style={{ marginBottom: 'calc(60px + env(safe-area-inset-bottom))' }}>Start Journey <ArrowRight size={18} className="inline ml-1" /></button>
-                </form>
+                <form
+  className="w-full relative"
+  style={{ marginTop: 'auto', marginBottom: 'calc(240px + env(safe-area-inset-bottom))' }}
+  onSubmit={(e) => { e.preventDefault(); handleUnlock(); }}
+>
+  <div className="relative">
+    <KeyRound size={18} className="absolute left-4 top-4 text-white/70" />
+    <input
+      type="password"
+      value={inputPwd}
+      onChange={(e) => setInputPwd(e.target.value)}
+      placeholder="Passcode"
+      className="w-full rounded-2xl pl-12 pr-12 py-3.5 text-lg text-white text-center font-bold outline-none"
+      style={{
+        background: 'rgba(255,255,255,0.15)',
+        backdropFilter: 'blur(12px)',
+        WebkitBackdropFilter: 'blur(12px)',
+        border: '1.5px solid rgba(255,255,255,0.3)',
+        letterSpacing: '0.2em',
+      }}
+    />
+  </div>
+  <button
+    type="submit"
+    className="w-full mt-4 font-bold py-3.5 rounded-2xl flex items-center justify-center gap-2 active:scale-95 transition-all"
+    style={{
+      background: 'rgba(244, 131, 31, 0.75)',
+      backdropFilter: 'blur(16px)',
+      WebkitBackdropFilter: 'blur(16px)',
+      border: '1.5px solid rgba(255,255,255,0.4)',
+      boxShadow: '0 4px 24px rgba(244,131,31,0.35), inset 0 1px 0 rgba(255,255,255,0.3)',
+      color: '#fff',
+      fontFamily: "'Space Mono', monospace",
+      letterSpacing: '2px',
+      textTransform: 'uppercase',
+      fontSize: '13px',
+    }}
+  >
+    Start Journey <ArrowRight size={18} />
+  </button>
+</form>
               </div>
               {showHelloKitty && <div onClick={() => setShowHelloKitty(false)} className="absolute inset-0 z-50 flex items-center justify-center bg-black/80 animate-fadeIn p-8"><div className="bg-[#FFF0F5] p-6 rounded-3xl text-center"><p className="text-pink-400 font-bold">Surprise! 🎉 系統檢測正常！</p></div></div>}
             </div>
