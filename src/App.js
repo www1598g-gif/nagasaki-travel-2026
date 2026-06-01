@@ -4142,7 +4142,19 @@ body .dark div.font-serif.select-none.leading-none.pointer-events-none {
               <div className={`absolute top-0 left-0 w-1/2 h-full transition-transform duration-1000 ease-in-out ${isUnlocking ? '-translate-x-full' : 'translate-x-0'}`} style={{ backgroundImage: `url(${JUNGLE_BG})`, backgroundSize: '200% 120%', backgroundPosition: 'left center' }}><div className="absolute inset-0 bg-black/20"></div></div>
               <div className={`absolute top-0 right-0 w-1/2 h-full transition-transform duration-1000 ease-in-out ${isUnlocking ? 'translate-x-full' : 'translate-x-0'}`} style={{ backgroundImage: `url(${JUNGLE_BG})`, backgroundSize: '200% 120%', backgroundPosition: 'right center' }}><div className="absolute inset-0 bg-black/20"></div></div>
               <div className={`relative z-10 flex flex-col items-center w-full px-8 h-full pt-40 transition-opacity duration-500 ${isUnlocking ? 'opacity-0' : 'opacity-100'}`}>
-                <div onMouseDown={() => pressTimerRef.current = setTimeout(() => setShowHelloKitty(true), 2000)} onMouseUp={() => clearTimeout(pressTimerRef.current)} className="bg-white/20 p-6 rounded-full mb-6 shadow-2xl backdrop-blur-md cursor-pointer animate-pulse"><HelpCircle size={40} className="text-white" /></div>
+               <div
+  onMouseDown={() => pressTimerRef.current = setTimeout(() => setShowHelloKitty(true), 2000)}
+  onMouseUp={() => clearTimeout(pressTimerRef.current)}
+  className={`relative mb-6 cursor-pointer transition-all duration-1000 ease-in-out ${isUnlocking ? 'translate-x-[500%] opacity-0' : 'translate-x-0 opacity-100'}`}
+>
+  <img
+    src={process.env.PUBLIC_URL + '/images/airplane.jpeg'}
+    alt="Miffy Airplane"
+    className="w-28 h-28 rounded-full object-cover shadow-2xl"
+    style={{ border: '3px solid rgba(255,255,255,0.4)' }}
+  />
+</div>
+                
                 <h2 className="text-3xl font-serif font-bold mb-1 text-white">Kyushu 2026</h2>
                 <p className="text-emerald-100 text-sm mb-2 text-center tracking-widest font-bold">佑任・軒寶・阿歪・黃蔓</p>
                 <p className="text-emerald-200/60 text-[10px] uppercase font-bold text-center mb-6">{systemInfo}</p>
@@ -4161,29 +4173,29 @@ body .dark div.font-serif.select-none.leading-none.pointer-events-none {
       placeholder="Passcode"
       className="w-full rounded-2xl pl-12 pr-12 py-3.5 text-lg text-white text-center font-bold outline-none"
       style={{
-        background: 'rgba(255,255,255,0.15)',
-        backdropFilter: 'blur(12px)',
-        WebkitBackdropFilter: 'blur(12px)',
-        border: '1.5px solid rgba(255,255,255,0.3)',
-        letterSpacing: '0.2em',
-      }}
+  background: 'rgba(255,255,255,0.08)',   // 更透明
+  backdropFilter: 'blur(20px)',
+  WebkitBackdropFilter: 'blur(20px)',
+  border: '1.5px solid rgba(255,255,255,0.18)',
+  letterSpacing: '0.2em',
+}}
     />
   </div>
   <button
     type="submit"
     className="w-full mt-4 font-bold py-3.5 rounded-2xl flex items-center justify-center gap-2 active:scale-95 transition-all"
     style={{
-      background: 'rgba(244, 131, 31, 0.75)',
-      backdropFilter: 'blur(16px)',
-      WebkitBackdropFilter: 'blur(16px)',
-      border: '1.5px solid rgba(255,255,255,0.4)',
-      boxShadow: '0 4px 24px rgba(244,131,31,0.35), inset 0 1px 0 rgba(255,255,255,0.3)',
-      color: '#fff',
-      fontFamily: "'Space Mono', monospace",
-      letterSpacing: '2px',
-      textTransform: 'uppercase',
-      fontSize: '13px',
-    }}
+  background: 'rgba(244, 131, 31, 0.25)',   // 更透明橘
+  backdropFilter: 'blur(20px)',
+  WebkitBackdropFilter: 'blur(20px)',
+  border: '1.5px solid rgba(255,255,255,0.25)',
+  boxShadow: '0 4px 32px rgba(244,131,31,0.2), inset 0 1px 0 rgba(255,255,255,0.2)',
+  color: '#fff',
+  fontFamily: "'Space Mono', monospace",
+  letterSpacing: '2px',
+  textTransform: 'uppercase',
+  fontSize: '13px',
+}}
   >
     Start Journey <ArrowRight size={18} />
   </button>
