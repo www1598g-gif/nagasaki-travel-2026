@@ -4139,8 +4139,7 @@ body .dark div.font-serif.select-none.leading-none.pointer-events-none {
         {isLocked && (
           <div className="fixed inset-0 z-[100] flex justify-center bg-stone-900 h-screen w-full">
             <div className="relative w-full max-w-md h-full flex flex-col items-center">
-              <div className={`absolute top-0 left-0 w-1/2 h-full transition-transform duration-1000 ease-in-out ${isUnlocking ? '-translate-x-full' : 'translate-x-0'}`} style={{ backgroundImage: `url(${JUNGLE_BG})`, backgroundSize: '200% 120%', backgroundPosition: 'left center' }}><div className="absolute inset-0 bg-black/20"></div></div>
-              <div className={`absolute top-0 right-0 w-1/2 h-full transition-transform duration-1000 ease-in-out ${isUnlocking ? 'translate-x-full' : 'translate-x-0'}`} style={{ backgroundImage: `url(${JUNGLE_BG})`, backgroundSize: '200% 120%', backgroundPosition: 'right center' }}><div className="absolute inset-0 bg-black/20"></div></div>
+              
               <div className={`relative z-10 flex flex-col items-center w-full px-8 h-full pt-40 transition-opacity duration-500 ${isUnlocking ? 'opacity-0' : 'opacity-100'}`}>
                <div
   onMouseDown={() => pressTimerRef.current = setTimeout(() => setShowHelloKitty(true), 2000)}
@@ -4173,7 +4172,7 @@ body .dark div.font-serif.select-none.leading-none.pointer-events-none {
       placeholder="Passcode"
       className="w-full rounded-2xl pl-12 pr-12 py-3.5 text-lg text-white text-center font-bold outline-none"
       style={{
-  background: 'rgba(255,255,255,0.08)',   // 更透明
+  background: 'rgba(255,255,255,0.01)',   // 更透明
   backdropFilter: 'blur(20px)',
   WebkitBackdropFilter: 'blur(20px)',
   border: '1.5px solid rgba(255,255,255,0.18)',
@@ -4185,7 +4184,7 @@ body .dark div.font-serif.select-none.leading-none.pointer-events-none {
     type="submit"
     className="w-full mt-4 font-bold py-3.5 rounded-2xl flex items-center justify-center gap-2 active:scale-95 transition-all"
     style={{
-  background: 'rgba(244, 131, 31, 0.25)',   // 更透明橘
+  background: 'rgba(244, 131, 31, 0.08)',   // 更透明橘
   backdropFilter: 'blur(20px)',
   WebkitBackdropFilter: 'blur(20px)',
   border: '1.5px solid rgba(255,255,255,0.25)',
