@@ -2717,11 +2717,11 @@ h1.text-4xl span.text-amber-500 {
 
 /* FUTURE 24H 氣溫顏色修正 */
 .text-sm.font-bold.text-stone-700 {
-  color: #1f2937 !important;           /* 淺色模式：深灰 */
+  color: #adada8 !important;           /* 淺色模式：深灰 */
 }
 .dark .text-sm.font-bold.text-stone-700,
 .dark .text-sm.font-bold.text-stone-300 {
-  color: #ffffff !important;           /* 深色模式：純白色（最清楚） */
+  color: #3099d6 !important;           /* 深色模式：純白色（最清楚） */
 }
 
 .text-\[9px\].text-blue-400.font-bold {
