@@ -2310,9 +2310,9 @@ export default function TravelApp() {
     const encodedInput = btoa(inputPwd);
     const validCodes = ['ODY4Njc3MDg=', 'MTMxNDUyMA==', 'ODg4OA=='];
     if (validCodes.includes(encodedInput)) { localStorage.setItem('isUnlocked', 'true'); localStorage.setItem('userRole', encodedInput); }
-    if (encodedInput === 'ODY4Njc3MDg=') { setIsAdmin(true); setIsMember(true); setIsUnlocking(true); setTimeout(() => setIsLocked(false), 1600); }
-    else if (encodedInput === 'MTMxNDUyMA==') { setIsAdmin(false); setIsMember(true); setIsUnlocking(true); setTimeout(() => setIsLocked(false), 1600); }
-    else if (encodedInput === 'ODg4OA==') { setIsAdmin(false); setIsMember(false); setIsUnlocking(true); setTimeout(() => setIsLocked(false), 1600); }
+    if (encodedInput === 'ODY4Njc3MDg=') { setIsAdmin(true); setIsMember(true); setIsUnlocking(true); setTimeout(() => setIsLocked(false), 1000); }
+    else if (encodedInput === 'MTMxNDUyMA==') { setIsAdmin(false); setIsMember(true); setIsUnlocking(true); setTimeout(() => setIsLocked(false), 1000); }
+    else if (encodedInput === 'ODg4OA==') { setIsAdmin(false); setIsMember(false); setIsUnlocking(true); setTimeout(() => setIsLocked(false), 1000); }
     else { alert('密碼錯誤！🔒'); setInputPwd(''); }
   };
 
@@ -4156,7 +4156,7 @@ body .dark div.font-serif.select-none.leading-none.pointer-events-none {
   className="relative cursor-pointer"
   style={{
     transition: isUnlocking
-      ? 'transform 1.5s cubic-bezier(0.4, 0, 1, 1), opacity 1.2s ease'
+      ? 'transform 1.0s cubic-bezier(0.4, 0, 1, 1), opacity 1.0s ease'
       : 'none',
     transform: isUnlocking ? 'translateX(130vw) translateY(-30px) rotate(8deg)' : 'translateX(0) translateY(0) rotate(0deg)',
     opacity: isUnlocking ? 0 : 1,
