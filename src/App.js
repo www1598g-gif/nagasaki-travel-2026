@@ -954,7 +954,7 @@ const WeatherHero = ({ isAdmin, versionText, updateVersion, onLock, showSecret, 
             )}
           </div>
         </div>
-//kitty
+/*kitty*/
         {data && nextHours.length > 0 && (
           <div className="backdrop-blur-sm rounded-2xl p-4 border border-stone-100 dark:border-stone-700 shadow-sm" style={{background: '#f7f56f'}}> 
 
