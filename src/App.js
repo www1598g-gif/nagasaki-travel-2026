@@ -4139,7 +4139,7 @@ body .dark div.font-serif.select-none.leading-none.pointer-events-none {
   style={{
     backgroundImage: `url(${JUNGLE_BG})`,
     backgroundSize: 'cover',
-    backgroundPosition: 'center 30%',
+    backgroundPosition: 'center 70%',
 
   }}
 >
