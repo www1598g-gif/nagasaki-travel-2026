@@ -4139,7 +4139,8 @@ body .dark div.font-serif.select-none.leading-none.pointer-events-none {
   style={{
     backgroundImage: `url(${JUNGLE_BG})`,
     backgroundSize: 'cover',
-    backgroundPosition: 'center',
+    backgroundPosition: 'center 30%',
+
   }}
 >
   <div className="absolute inset-0 bg-black/20"></div>
@@ -4149,17 +4150,24 @@ body .dark div.font-serif.select-none.leading-none.pointer-events-none {
               <div className={`relative z-10 flex flex-col items-center w-full px-8 h-full pt-40 transition-opacity duration-500 ${isUnlocking ? 'opacity-0' : 'opacity-100'}`}>
                
                
-               
                <div
   onMouseDown={() => pressTimerRef.current = setTimeout(() => setShowHelloKitty(true), 2000)}
   onMouseUp={() => clearTimeout(pressTimerRef.current)}
-  className={`relative mb-6 cursor-pointer ${isUnlocking ? 'translate-x-[500%] opacity-0' : 'translate-x-0 opacity-100'}`}
-  style={{ transition: 'transform 9s ease-in-out, opacity 9s ease-in-out' }}
+  className="relative cursor-pointer"
+  style={{
+    transition: isUnlocking
+      ? 'transform 1.0s cubic-bezier(0.4, 0, 1, 1), opacity 0.8s ease'
+      : 'none',
+    transform: isUnlocking ? 'translateX(130vw) translateY(-30px) rotate(8deg)' : 'translateX(0) translateY(0) rotate(0deg)',
+    opacity: isUnlocking ? 0 : 1,
+    marginBottom: '12px',
+    marginTop: '-80px',
+  }}
 >
   <img
     src={process.env.PUBLIC_URL + '/images/airplane.png'}
     alt="Miffy Airplane"
-    className="w-48 object-contain"
+    style={{ width: '200px', objectFit: 'contain', display: 'block' }}
   />
 </div>
                 
@@ -4169,7 +4177,7 @@ body .dark div.font-serif.select-none.leading-none.pointer-events-none {
                 <button onClick={() => window.location.reload()} className="absolute top-12 right-6 p-2 rounded-full bg-white/10 text-white/50"><RefreshCw size={20} /></button>
                 <form
   className="w-full relative"
-  style={{ marginTop: 'auto', marginBottom: 'calc(240px + env(safe-area-inset-bottom))' }}
+  style={{ marginTop: 'auto', marginBottom: 'calc(320px + env(safe-area-inset-bottom))' }}
   onSubmit={(e) => { e.preventDefault(); handleUnlock(); }}
 >
   <div className="relative">
@@ -4181,11 +4189,11 @@ body .dark div.font-serif.select-none.leading-none.pointer-events-none {
       placeholder="Passcode"
       className="w-full rounded-2xl pl-12 pr-12 py-3.5 text-lg text-white text-center font-bold outline-none"
       style={{
-  background: 'rgba(255,255,255,0.01)',   // 更透明
-  backdropFilter: 'blur(20px)',
-  WebkitBackdropFilter: 'blur(20px)',
-  border: '1.5px solid rgba(255,255,255,0.18)',
-  letterSpacing: '0.2em',
+  background: 'transparent',
+backdropFilter: 'none',
+WebkitBackdropFilter: 'none',
+border: '1.5px solid rgba(255,255,255,0.6)',
+letterSpacing: '0.2em',
 }}
     />
   </div>
@@ -4193,16 +4201,16 @@ body .dark div.font-serif.select-none.leading-none.pointer-events-none {
     type="submit"
     className="w-full mt-4 font-bold py-3.5 rounded-2xl flex items-center justify-center gap-2 active:scale-95 transition-all"
     style={{
-  background: 'rgba(244, 131, 31, 0.08)',   // 更透明橘
-  backdropFilter: 'blur(20px)',
-  WebkitBackdropFilter: 'blur(20px)',
-  border: '1.5px solid rgba(255,255,255,0.25)',
-  boxShadow: '0 4px 32px rgba(244,131,31,0.2), inset 0 1px 0 rgba(255,255,255,0.2)',
-  color: '#fff',
-  fontFamily: "'Space Mono', monospace",
-  letterSpacing: '2px',
-  textTransform: 'uppercase',
-  fontSize: '13px',
+  background: 'transparent',
+backdropFilter: 'none',
+WebkitBackdropFilter: 'none',
+border: '1.5px solid rgba(255,255,255,0.6)',
+boxShadow: 'none',
+color: '#fff',
+fontFamily: "'Space Mono', monospace",
+letterSpacing: '2px',
+textTransform: 'uppercase',
+fontSize: '13px',
 }}
   >
     Start Journey <ArrowRight size={18} />
