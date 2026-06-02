@@ -2714,8 +2714,14 @@ h1.text-4xl span.text-amber-500 {
   font-family: var(--font-mono) !important;
   color: var(--ink) !important;
 }
+
+/* FUTURE 24H 氣溫顏色修正 */
+.text-sm.font-bold.text-stone-700 {
+  color: #1f2937 !important;           /* 淺色模式：深灰 */
+}
+.dark .text-sm.font-bold.text-stone-700,
 .dark .text-sm.font-bold.text-stone-300 {
-  color: var(--miffy-yellow) !important;
+  color: #ffffff !important;           /* 深色模式：純白色（最清楚） */
 }
 
 .text-\[9px\].text-blue-400.font-bold {
