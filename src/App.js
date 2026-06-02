@@ -954,9 +954,9 @@ const WeatherHero = ({ isAdmin, versionText, updateVersion, onLock, showSecret, 
             )}
           </div>
         </div>
-
+//kitty
         {data && nextHours.length > 0 && (
-          <div className="backdrop-blur-sm rounded-2xl p-4 border border-stone-100 dark:border-stone-700 shadow-sm" style={{background: '#76d952'}}>
+          <div className="backdrop-blur-sm rounded-2xl p-4 border border-stone-100 dark:border-stone-700 shadow-sm" style={{background: '#f7f56f'}}> 
 
             <div className="flex items-center">
               <div className="text-[10px] font-bold text-stone-400 writing-vertical-rl border-l pl-3 mr-3 border-stone-200 dark:border-stone-700 dark:border-stone-600 h-10 flex items-center justify-center tracking-widest flex-shrink-0"
