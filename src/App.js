@@ -2721,7 +2721,7 @@ h1.text-4xl span.text-amber-500 {
 }
 .dark .text-sm.font-bold.text-stone-700,
 .dark .text-sm.font-bold.text-stone-300 {
-  color: #3099d6 !important;           /* 深色模式：純白色（最清楚） */
+  color: #adada8 !important;           /* 深色模式：純白色（最清楚） */
 }
 
 .text-\[9px\].text-blue-400.font-bold {
