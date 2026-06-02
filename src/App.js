@@ -1648,6 +1648,22 @@ useEffect(() => {
     mapUrl: 'https://maps.app.goo.gl/nagasaki-shopping',
     aiQuery: '長崎購物免稅推薦2026 以中文回答'
   },
+  {
+  title: '佐賀午餐推薦',
+  icon: <Utensils className="text-orange-600" />,
+  desc: '三瀨雞、佐賀牛、當地定食與特色便當推薦。',
+  color: 'bg-orange-50 border-orange-100 dark:bg-orange-900/20 dark:border-orange-800',
+  mapUrl: 'https://maps.app.goo.gl/S61xhZHh3D9873yF6',
+  aiQuery: '佐賀必吃午餐推薦 2026 以中文回答'
+},
+{
+  title: '佐賀晚餐推薦',
+  icon: <UtensilsCrossed className="text-red-600" />,
+  desc: '三瀨雞串燒、鍋島清酒、佐賀在地居酒屋與海鮮。',
+  color: 'bg-red-50 border-red-100 dark:bg-red-900/20 dark:border-red-800',
+  mapUrl: 'https://maps.app.goo.gl/S61xhZHh3D9873yF6',
+  aiQuery: '佐賀晚上必吃美食推薦 2026 以中文回答'
+},
 ];
 
   return (
