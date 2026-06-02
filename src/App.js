@@ -62,27 +62,28 @@ import {
 import { ref, onValue, set, goOffline, goOnline, get } from "firebase/database";
 import { db } from "./firebase"; // ⚠️ 前提：你要先建立 firebase.js 檔案
 
-// 🪷 泰式/古典雙線條版 Icon 
-const LotusIcon = ({ className }) => (
+
+
+
+// 🌷 三色鬱金香 Icon (紅/黃/紫)
+const TulipIcon = ({ className }) => (
   <svg
     viewBox="0 0 24 24"
     fill="none"
-    stroke="currentColor"
-    strokeWidth="1.5"
     strokeLinecap="round"
     strokeLinejoin="round"
     className={className}
   >
-    {/* 中央花瓣 */}
-    <path d="M12 3C12 3 14.5 7 14.5 10C14.5 12.5 12 14 12 14C12 14 9.5 12.5 9.5 10C9.5 7 12 3 12 3Z" />
-    {/* 左側花瓣 */}
-    <path d="M9.5 10C9.5 10 7 9.5 5.5 11C4 12.5 5 15 8 15.5" />
-    {/* 右側花瓣 */}
-    <path d="M14.5 10C14.5 10 17 9.5 18.5 11C20 12.5 19 15 16 15.5" />
-    {/* 底部左葉 */}
-    <path d="M12 14C12 14 9 14.5 7 16.5C5 18.5 6 20.5 12 20.5" />
-    {/* 底部右葉 */}
-    <path d="M12 14C12 14 15 14.5 17 16.5C19 18.5 18 20.5 12 20.5" />
+    {/* 莖 */}
+    <path d="M12 14 Q11 17 12 20.5" stroke="#5BB56A" strokeWidth="1.8" />
+    {/* 葉子 */}
+    <path d="M12 17 Q9 15 7.5 16.5" stroke="#5BB56A" strokeWidth="1.5" />
+    {/* 紫色花瓣 (左) */}
+    <path d="M9.5 12 C8 9 9 6 12 5 C12 5 10 8 9.5 12Z" fill="#A855F7" stroke="#7C3AED" strokeWidth="1" />
+    {/* 紅色花瓣 (中) */}
+    <path d="M12 4 C12 4 14 7.5 14 10.5 C14 12.5 13 14 12 14 C11 14 10 12.5 10 10.5 C10 7.5 12 4 12 4Z" fill="#E8334A" stroke="#C0152A" strokeWidth="1" />
+    {/* 黃色花瓣 (右) */}
+    <path d="M14.5 12 C15 9 14 6 12 5 C12 5 14 8 14.5 12Z" fill="#F7E84E" stroke="#D4A017" strokeWidth="1" />
   </svg>
 );
 
@@ -900,7 +901,7 @@ const WeatherHero = ({ isAdmin, versionText, updateVersion, onLock, showSecret, 
                 <input type="text" value={versionText || ''} onChange={(e) => updateVersion(e.target.value)} className="w-16 bg-transparent border-b border-amber-300 text-sm font-serif font-bold italic focus:outline-none text-center dark:text-stone-300" />
               ) : (
                 <div className="flex items-center gap-1 ml-1 relative group">
-                  <LotusIcon className="w-5 h-5 text-amber-400 dark:text-amber-300 drop-shadow-[0_0_3px_rgba(251,191,36,0.5)]" />
+                  <TulipIcon className="w-5 h-5 text-amber-400 dark:text-amber-300 drop-shadow-[0_0_3px_rgba(251,191,36,0.5)]" />
                   <span className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-b from-[#F3E5AB] via-[#FDB931] to-[#996515] drop-shadow-sm tracking-wide ml-1.5 mt-0.5" style={{ fontFamily: '"Cinzel Decorative", serif' }}>
                     {versionText || '2026'}
                   </span>
@@ -955,7 +956,8 @@ const WeatherHero = ({ isAdmin, versionText, updateVersion, onLock, showSecret, 
         </div>
 
         {data && nextHours.length > 0 && (
-          <div className="bg-white/80 dark:bg-stone-800/80 backdrop-blur-sm rounded-2xl p-4 border border-stone-100 dark:border-stone-700 shadow-sm">
+          <div className="backdrop-blur-sm rounded-2xl p-4 border border-stone-100 dark:border-stone-700 shadow-sm" style={{background: '#ffc80b'}}>
+
             <div className="flex items-center">
               <div className="text-[10px] font-bold text-stone-400 writing-vertical-rl border-l pl-3 mr-3 border-stone-200 dark:border-stone-700 dark:border-stone-600 h-10 flex items-center justify-center tracking-widest flex-shrink-0"
               >FUTURE 24H</div>
@@ -1665,8 +1667,8 @@ const GuidePage = ({ isAdmin, isMember, noticeText, updateNoticeText }) => {
             <select value={adderName} onChange={(e) => setAdderName(e.target.value)} className="w-full p-2 rounded-xl text-xs font-bold border border-amber-200 dark:border-stone-600 bg-white dark:bg-stone-900 text-stone-800 dark:text-stone-100">
               {USERS.map(name => <option key={name} value={name}>{name}</option>)}
             </select>
-            <input value={newStoreName} onChange={(e) => setNewStoreName(e.target.value)} placeholder="店家名稱" className="w-full p-2 border rounded-xl text-sm" />
-            <input value={newStoreNote} onChange={(e) => setNewStoreNote(e.target.value)} placeholder="理由備註" className="w-full p-2 border rounded-xl text-sm" />
+            <input value={newStoreName} onChange={(e) => setNewStoreName(e.target.value)} placeholder="店家名稱" className="w-full p-2 border rounded-xl text-sm bg-white dark:bg-stone-700 text-stone-800 dark:text-white placeholder:text-stone-400 dark:placeholder:text-stone-400" />
+            <input value={newStoreNote} onChange={(e) => setNewStoreNote(e.target.value)} placeholder="理由備註" className="w-full p-2 border rounded-xl text-sm bg-white dark:bg-stone-700 text-stone-800 dark:text-white placeholder:text-stone-400 dark:placeholder:text-stone-400" />
             <button onClick={handleAddStore} className="w-full bg-amber-500 text-white font-bold py-2 rounded-xl text-sm">+</button>
           </div>
         )}
@@ -1881,6 +1883,71 @@ const handleAppDownload = () => {
 
 
       <CurrencySection isAdmin={isAdmin} isMember={isMember} />
+
+<section className="bg-white dark:bg-stone-800 p-6 rounded-2xl border border-stone-100 dark:border-stone-700">
+  <h3 className="flex items-center gap-2 font-bold text-stone-800 dark:text-stone-100 mb-4 border-b pb-3">
+    <ShoppingBag size={18} className="text-rose-500" /> 日本集運寄回台灣
+  </h3>
+
+  {/* 站點地址卡 */}
+  <div className="bg-rose-50 dark:bg-rose-900/20 rounded-2xl p-4 border border-rose-100 dark:border-rose-900/50 mb-4">
+    <div className="text-[10px] font-bold text-rose-600 dark:text-rose-400 uppercase tracking-wider mb-3">📦 集運站點地址（千葉站）</div>
+    <div className="space-y-3">
+      {[
+        { label: '郵遞區號', value: '290-0166' },
+        { label: '地址', value: '千葉縣市原市犬成1069-1 運匠倉 63220' },
+        { label: '收件人', value: '張佑任 63220' },
+        { label: '電話', value: '070-9003-7588' },
+      ].map((item) => (
+        <div key={item.label} className="flex items-center justify-between py-2 border-b border-rose-100 dark:border-rose-900/30 last:border-0">
+          <div>
+            <div className="text-[9px] text-stone-400 font-bold uppercase tracking-wide">{item.label}</div>
+            <div className="font-bold text-stone-800 dark:text-stone-100 text-sm mt-0.5">{item.value}</div>
+          </div>
+          <button
+            onClick={() => { navigator.clipboard.writeText(item.value); }}
+            className="flex items-center gap-1 text-[10px] font-bold bg-white dark:bg-stone-700 border border-stone-200 dark:border-stone-600 text-stone-600 dark:text-stone-300 px-2.5 py-1.5 rounded-lg active:scale-95 transition-all"
+          >
+            複製
+          </button>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  {/* 日本地址填寫教學 */}
+  <div className="bg-stone-50 dark:bg-stone-700/50 rounded-2xl p-4 border border-stone-100 dark:border-stone-600">
+    <div className="text-[10px] font-bold text-stone-500 dark:text-stone-400 uppercase tracking-wider mb-3 flex items-center gap-1.5">
+      <Info size={11} /> 日本地址填寫說明（購物網站用）
+    </div>
+    <div className="space-y-2 text-xs">
+      {[
+        { label: '氏名【姓名】', value: '輸入姓名 + 會員編號' },
+        { label: '郵便番号【郵遞區號】', value: '290-0166' },
+        { label: '都道府県【城市】', value: '千葉縣' },
+        { label: '市區町村【區域】', value: '市原市' },
+        { label: '町名番地【地名】', value: '犬成1069-1' },
+        { label: '建物名・部屋番号【門牌號】', value: '運匠倉 + 會員編號' },
+        { label: '電話番号【電話】', value: '070-9003-7588' },
+      ].map((row) => (
+        <div key={row.label} className="grid grid-cols-2 gap-2 py-1.5 border-b border-stone-100 dark:border-stone-600 last:border-0">
+          <span className="text-stone-500 dark:text-stone-400 text-[10px] leading-relaxed">{row.label}</span>
+          <span className="font-bold text-stone-700 dark:text-stone-200 text-[11px]">{row.value}</span>
+        </div>
+      ))}
+    </div>
+    <div className="mt-3 p-2.5 bg-amber-50 dark:bg-amber-900/20 border border-amber-100 dark:border-amber-900/50 rounded-xl text-[10px] text-amber-800 dark:text-amber-300 font-bold">
+      ⚠️ 會員編號請向佑任確認，填錯將導致包裹遺失！
+    </div>
+  </div>
+</section>
+
+
+
+
+
+
+
     </div>
   );
 };
