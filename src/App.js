@@ -781,9 +781,9 @@ const WeatherHero = ({ isAdmin, versionText, updateVersion, onLock, showSecret, 
         }
 
 
-        const rawHour = new Intl.DateTimeFormat("en-US", { timeZone: "Asia/Tokyo", hour: "numeric", hour12: false }).format(new Date());
-const currentHourInJp = rawHour === "24" ? 0 : parseInt(rawHour, 10);
-        );
+        const nowInJp = new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Tokyo" }));
+       const currentHourInJp = nowInJp.getHours();
+      
         const next3HoursRain = json.hourly.precipitation_probability.slice(currentHourInJp, currentHourInJp + 3);
         const maxRainProb = Math.max(...next3HoursRain);
 
@@ -864,8 +864,8 @@ const currentHourInJp = rawHour === "24" ? 0 : parseInt(rawHour, 10);
   const getNext24Hours = () => {
     if (!data || !data.hourly || !data.hourly.time) return [];
 
-    const rawHour2 = new Intl.DateTimeFormat("en-US", { timeZone: "Asia/Tokyo", hour: "numeric", hour12: false }).format(new Date());
-const currentHourIndex = rawHour2 === "24" ? 0 : parseInt(rawHour2, 10);
+    const nowInJp = new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Tokyo" }));
+    const currentHourIndex = nowInJp.getHours();
     const startIndex = currentHourIndex + 1;
     const endIndex = startIndex + 24;
 
