@@ -4156,7 +4156,7 @@ body .dark div.font-serif.select-none.leading-none.pointer-events-none {
   className="relative cursor-pointer"
   style={{
     transition: isUnlocking
-      ? 'transform 1.6s cubic-bezier(0.4, 0, 1, 1), opacity 0.8s ease'
+      ? 'transform 1.5s cubic-bezier(0.4, 0, 1, 1), opacity 1.2s ease'
       : 'none',
     transform: isUnlocking ? 'translateX(130vw) translateY(-30px) rotate(8deg)' : 'translateX(0) translateY(0) rotate(0deg)',
     opacity: isUnlocking ? 0 : 1,
