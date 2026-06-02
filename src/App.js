@@ -64,8 +64,7 @@ import { db } from "./firebase"; // ⚠️ 前提：你要先建立 firebase.js 
 
 
 
-
-// 🌷 三色鬱金香 Icon (紅/黃/紫)
+// 🌷 優化版三色鬱金香 Icon（更可愛、更像繪本風）
 const TulipIcon = ({ className }) => (
   <svg
     viewBox="0 0 24 24"
@@ -75,15 +74,45 @@ const TulipIcon = ({ className }) => (
     className={className}
   >
     {/* 莖 */}
-    <path d="M12 14 Q11 17 12 20.5" stroke="#5BB56A" strokeWidth="1.8" />
-    {/* 葉子 */}
-    <path d="M12 17 Q9 15 7.5 16.5" stroke="#5BB56A" strokeWidth="1.5" />
-    {/* 紫色花瓣 (左) */}
-    <path d="M9.5 12 C8 9 9 6 12 5 C12 5 10 8 9.5 12Z" fill="#A855F7" stroke="#7C3AED" strokeWidth="1" />
-    {/* 紅色花瓣 (中) */}
-    <path d="M12 4 C12 4 14 7.5 14 10.5 C14 12.5 13 14 12 14 C11 14 10 12.5 10 10.5 C10 7.5 12 4 12 4Z" fill="#E8334A" stroke="#C0152A" strokeWidth="1" />
-    {/* 黃色花瓣 (右) */}
-    <path d="M14.5 12 C15 9 14 6 12 5 C12 5 14 8 14.5 12Z" fill="#F7E84E" stroke="#D4A017" strokeWidth="1" />
+    <path d="M12 19 L12 13" stroke="#4A9C4F" strokeWidth="1.8" strokeLinecap="round" />
+    
+    {/* 葉子 - 左 */}
+    <path d="M12 15 Q8.5 13 7 16" stroke="#4A9C4F" strokeWidth="1.6" fill="none" />
+    {/* 葉子 - 右 */}
+    <path d="M12 15 Q15.5 13 17 16" stroke="#4A9C4F" strokeWidth="1.6" fill="none" />
+
+    {/* 花瓣 - 左（紫） */}
+    <path 
+      d="M9 10 Q7.5 7 9.5 5 Q11 4 12 5.5" 
+      fill="#A855F7" 
+      stroke="#7C3AED" 
+      strokeWidth="1" 
+    />
+    
+    {/* 花瓣 - 中（紅） - 主要花瓣 */}
+    <path 
+      d="M12 4 Q14 6 14.5 9 Q13.5 12 12 13 Q10.5 12 9.5 9 Q10 6 12 4Z" 
+      fill="#E8334A" 
+      stroke="#C0262E" 
+      strokeWidth="1" 
+    />
+    
+    {/* 花瓣 - 右（黃） */}
+    <path 
+      d="M15 10 Q16.5 7 14.5 5 Q13 4 12 5.5" 
+      fill="#FACC15" 
+      stroke="#D97706" 
+      strokeWidth="1" 
+    />
+
+    {/* 花瓣中間亮部（增加立體感） */}
+    <path 
+      d="M12 5 Q13 7 12.8 9" 
+      fill="none" 
+      stroke="#ffffff" 
+      strokeWidth="1" 
+      strokeOpacity="0.4" 
+    />
   </svg>
 );
 
