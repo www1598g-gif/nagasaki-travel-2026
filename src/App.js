@@ -133,7 +133,7 @@ const INITIAL_ITINERARY_DATA = [
     day: 1,
     date: '2026-06-16',
     displayDate: '6/16 (二)',
-    title: '佐賀入境 ➜ 豪斯登堡歐風街景 ➜ 深夜硬核歷史探險',
+    title: '佐賀入境 ➜ 豪斯登堡歐風街景',
     weather: { temp: '24°C', icon: 'sunny', aqi: 35, realData: false },
     locations: [
       {
@@ -202,7 +202,7 @@ const INITIAL_ITINERARY_DATA = [
         imageId: 'day1_7',
         type: 'sight',
         time: '22:00',
-        name: '深夜硬核探險 / 超商補貨備案',
+        name: '超商補貨備案',
         note: '路線 A（Lawson 補貨）/ 路線 B（針尾電波塔遠眺）',
         desc: '路線 A：散步 20 分鐘至車站前唯一的 Lawson 買炸雞清酒。路線 B：步行 40-50 分鐘隔海遠眺 1922 年建的「舊佐世保海軍航空隊 針尾送信所」三座巨塔黑影，體驗深夜魔幻感。',
         nav: '針尾送信所',
@@ -214,7 +214,7 @@ const INITIAL_ITINERARY_DATA = [
     day: 2,
     date: '2026-06-17',
     displayDate: '6/17 (三)',
-    title: '豪斯登堡全日漫遊 ➜ 移防長崎（★新三大夜景與海鮮彈性夜）',
+    title: '豪斯登堡全日漫遊 ➜ gogo長崎（★新三大夜景與海鮮彈性夜）',
     weather: { temp: '25°C', icon: 'cloudy', aqi: 40, realData: false },
     locations: [
       {
@@ -502,7 +502,7 @@ const INITIAL_ITINERARY_DATA = [
     day: 6,
     date: '2026-06-21',
     displayDate: '6/21 (日)',
-    title: '最後伴手禮衝刺 ➜ 佐賀機場返台',
+    title: '飯店早餐 ➜ 佐賀機場返台',
     weather: { temp: '24°C', icon: 'sunny', aqi: 30, realData: false },
     locations: [
       {
@@ -517,17 +517,6 @@ const INITIAL_ITINERARY_DATA = [
       },
       {
         imageId: 'day6_2',
-        type: 'sight',
-        time: '09:30',
-        name: '最終大補貨: 佐賀工房',
-        note: '退房後，在佐賀站內進行最後伴手禮大衝刺。',
-        desc: '選購佐賀特產伴手禮。',
-        nav: '佐賀工房',
-        highlight: '伴手禮最終加碼',
-        difficulty: '低',
-      },
-      {
-        imageId: 'day6_3',
         type: 'transport',
         time: '10:00',
         name: '搭乘機場巴士直達佐賀機場',
@@ -537,7 +526,7 @@ const INITIAL_ITINERARY_DATA = [
         difficulty: '低',
       },
       {
-        imageId: 'day6_4',
+        imageId: 'day6_3',
         type: 'transport',
         time: '11:35',
         name: '搭乘虎航 IT247 班機返台',
