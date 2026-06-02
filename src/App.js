@@ -956,7 +956,7 @@ const WeatherHero = ({ isAdmin, versionText, updateVersion, onLock, showSecret, 
         </div>
 
         {data && nextHours.length > 0 && (
-          <div className="backdrop-blur-sm rounded-2xl p-4 border border-stone-100 dark:border-stone-700 shadow-sm" style={{background: '#7CB87A'}}> 
+          <div className="backdrop-blur-sm rounded-2xl p-4 border border-stone-100 dark:border-stone-700 shadow-sm" style={{background: '#fcef8b'}}> 
 
             <div className="flex items-center">
               <div className="text-[10px] font-bold text-stone-400 writing-vertical-rl border-l pl-3 mr-3 border-stone-200 dark:border-stone-700 dark:border-stone-600 h-10 flex items-center justify-center tracking-widest flex-shrink-0"
