@@ -1486,12 +1486,23 @@ const ReservationAdminSection = () => {
   const [newTime, setNewTime] = useState('');
   const [newNote, setNewNote] = useState('');
 
-  useEffect(() => {
-    const unsubscribe = onValue(ref(db, 'reservations'), (snap) => {
-      if (snap.val()) setReservations(snap.val());
-    });
-    return () => unsubscribe();
-  }, []);
+  // 2. 加入 useEffect 實時監聽雲端資料節點
+useEffect(() => {
+  const unsubscribe = onValue(ref(db, 'reservations'), (snapshot) => {
+    const val = snapshot.val();
+    if (val) {
+      setReservations(val);
+    } else {
+      // 如果雲端是空的，預設顯示你原本這三筆
+      setReservations([
+        { name: '松翁軒 Café Sevilla（大正浪漫茶會）', date: '6/20 (六)', time: '12:00', note: '預約號碼：A000913389・4名席' },
+        { name: '軍艦島登島船票', date: '6/18 (四)', time: '09:00', note: '預約號碼：128734' },
+        { name: '大阪屋 浜町店（A5和牛燒肉）', date: '6/18 (四)', time: '21:00', note: '晚鳥時段・需電話確認' },
+      ]);
+    }
+  });
+  return () => unsubscribe();
+}, []);
 
   const handleAdd = () => {
     if (!newName.trim()) return;
@@ -1532,11 +1543,7 @@ const GuidePage = ({ isAdmin, isMember, noticeText, updateNoticeText }) => {
   const [adderName, setAdderName] = useState('佑任');
   const [taxInfo, setTaxInfo] = useState({ threshold: "5,000", luxuryThreshold: "500,000", totalThreshold: "5,000", fee: "0" });
   const [showReservations, setShowReservations] = useState(false);
-  const RESERVATIONS = [
-  { name: '松翁軒 Café Sevilla（大正浪漫茶會）', date: '6/20 (六)', time: '12:00', note: '預約號碼：A000913389・4名席' },
-  { name: '軍艦島登島船票', date: '6/18 (四)', time: '09:00', note: '預約號碼：128734' },
-  { name: '大阪屋 浜町店（A5和牛燒肉）', date: '6/18 (四)', time: '21:00', note: '晚鳥時段・需電話確認' },
-  ];
+  
 
 
 
@@ -1684,7 +1691,7 @@ const GuidePage = ({ isAdmin, isMember, noticeText, updateNoticeText }) => {
   {showReservations && (
     <div className="mt-3 bg-white dark:bg-stone-800 rounded-3xl border border-blue-100 dark:border-blue-900/50 overflow-hidden">
       <div className="divide-y divide-stone-100 dark:divide-stone-700">
-        {RESERVATIONS.map((r, i) => (
+        {reservations.map((r, i) => (
           <div key={i} className="px-5 py-4">
             <div className="flex justify-between items-start mb-1">
               <span className="font-bold text-stone-800 dark:text-stone-100 text-sm">{r.name}</span>
