@@ -1479,6 +1479,49 @@ const CurrencySection = ({ isAdmin, isMember }) => {
   );
 };
 
+const ReservationAdminSection = () => {
+  const [reservations, setReservations] = useState([]);
+  const [newName, setNewName] = useState('');
+  const [newDate, setNewDate] = useState('');
+  const [newTime, setNewTime] = useState('');
+  const [newNote, setNewNote] = useState('');
+
+  useEffect(() => {
+    const unsubscribe = onValue(ref(db, 'reservations'), (snap) => {
+      if (snap.val()) setReservations(snap.val());
+    });
+    return () => unsubscribe();
+  }, []);
+
+  const handleAdd = () => {
+    if (!newName.trim()) return;
+    const newList = [...reservations, { name: newName, date: newDate, time: newTime, note: newNote }];
+    set(ref(db, 'reservations'), newList).then(() => {
+      setNewName(''); setNewDate(''); setNewTime(''); setNewNote('');
+    });
+  };
+
+  return (
+    <div className="p-4 border-t border-stone-100 dark:border-stone-700 bg-blue-50 dark:bg-blue-950/20 space-y-2">
+      <div className="text-[10px] font-bold text-blue-700 dark:text-blue-400 uppercase tracking-wider mb-2">管理員新增預約</div>
+      <input value={newName} onChange={e => setNewName(e.target.value)} placeholder="店名" className="w-full p-2 border rounded-lg text-xs bg-white dark:bg-stone-700 dark:text-white" />
+      <div className="grid grid-cols-2 gap-2">
+        <input value={newDate} onChange={e => setNewDate(e.target.value)} placeholder="日期 (6/18)" className="p-2 border rounded-lg text-xs bg-white dark:bg-stone-700 dark:text-white" />
+        <input value={newTime} onChange={e => setNewTime(e.target.value)} placeholder="時間 (21:00)" className="p-2 border rounded-lg text-xs bg-white dark:bg-stone-700 dark:text-white" />
+      </div>
+      <input value={newNote} onChange={e => setNewNote(e.target.value)} placeholder="備註 (預約號碼等)" className="w-full p-2 border rounded-lg text-xs bg-white dark:bg-stone-700 dark:text-white" />
+      <button onClick={handleAdd} className="w-full bg-blue-600 text-white font-bold py-2 rounded-xl text-xs">+ 新增</button>
+      {reservations.map((r, i) => (
+        <div key={i} className="flex justify-between items-center text-xs bg-white dark:bg-stone-700 p-2 rounded-lg">
+          <span className="dark:text-white">{r.name} · {r.date} {r.time}</span>
+          <button onClick={() => set(ref(db, 'reservations'), reservations.filter((_, idx) => idx !== i))} className="text-red-400 ml-2">×</button>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+
 const GuidePage = ({ isAdmin, isMember, noticeText, updateNoticeText }) => {
   const [showPickyEater, setShowPickyEater] = useState(false);
   const [sharedStores, setSharedStores] = useState([]);
@@ -1488,6 +1531,15 @@ const GuidePage = ({ isAdmin, isMember, noticeText, updateNoticeText }) => {
   const [showTaxRefund, setShowTaxRefund] = useState(false);
   const [adderName, setAdderName] = useState('佑任');
   const [taxInfo, setTaxInfo] = useState({ threshold: "5,000", luxuryThreshold: "500,000", totalThreshold: "5,000", fee: "0" });
+  const [showReservations, setShowReservations] = useState(false);
+  const RESERVATIONS = [
+  { name: '松翁軒 Café Sevilla（大正浪漫茶會）', date: '6/20 (六)', time: '12:00', note: '預約號碼：A000913389・4名席' },
+  { name: '軍艦島登島船票', date: '6/18 (四)', time: '09:00', note: '預約號碼：128734' },
+  { name: '大阪屋 浜町店（A5和牛燒肉）', date: '6/18 (四)', time: '21:00', note: '晚鳥時段・需電話確認' },
+  ];
+
+
+
 
   useEffect(() => {
     const taxRef = ref(db, 'taxRefund');
@@ -1620,6 +1672,39 @@ const GuidePage = ({ isAdmin, isMember, noticeText, updateNoticeText }) => {
           </div>
         )}
       </section>
+
+<section>
+  <button onClick={() => setShowReservations(!showReservations)} className="w-full bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-900/50 rounded-2xl p-4 flex items-center justify-between">
+    <div className="flex items-center gap-3">
+      <div className="p-2 bg-white rounded-xl text-blue-600"><Calendar size={20} /></div>
+      <div className="font-bold text-blue-800 dark:text-blue-300 text-sm">已預約商家清單</div>
+    </div>
+    {showReservations ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+  </button>
+  {showReservations && (
+    <div className="mt-3 bg-white dark:bg-stone-800 rounded-3xl border border-blue-100 dark:border-blue-900/50 overflow-hidden">
+      <div className="divide-y divide-stone-100 dark:divide-stone-700">
+        {RESERVATIONS.map((r, i) => (
+          <div key={i} className="px-5 py-4">
+            <div className="flex justify-between items-start mb-1">
+              <span className="font-bold text-stone-800 dark:text-stone-100 text-sm">{r.name}</span>
+              <span className="text-[10px] font-bold bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 px-2 py-0.5 rounded-full whitespace-nowrap ml-2">{r.date}</span>
+            </div>
+            <div className="flex items-center gap-2 text-xs text-stone-500 dark:text-stone-400">
+              <Clock size={11} /> {r.time} ・ {r.note}
+            </div>
+          </div>
+        ))}
+      </div>
+      {isAdmin && (
+        <ReservationAdminSection />
+      )}
+    </div>
+  )}
+</section>
+
+
+
 
       <div className="grid grid-cols-1 gap-4">
         {guideSections.map((section, idx) => (
