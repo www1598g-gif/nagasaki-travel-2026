@@ -64,7 +64,7 @@ import { db } from "./firebase"; // ⚠️ 前提：你要先建立 firebase.js 
 
 
 
-// 🌷 優化版三色鬱金香 Icon（更可愛、更像繪本風）
+// 🌷 加大版三色鬱金香 Icon（花朵更大、更顯眼）
 const TulipIcon = ({ className }) => (
   <svg
     viewBox="0 0 24 24"
@@ -73,45 +73,45 @@ const TulipIcon = ({ className }) => (
     strokeLinejoin="round"
     className={className}
   >
-    {/* 莖 */}
-    <path d="M12 19 L12 13" stroke="#4A9C4F" strokeWidth="1.8" strokeLinecap="round" />
-    
-    {/* 葉子 - 左 */}
-    <path d="M12 15 Q8.5 13 7 16" stroke="#4A9C4F" strokeWidth="1.6" fill="none" />
-    {/* 葉子 - 右 */}
-    <path d="M12 15 Q15.5 13 17 16" stroke="#4A9C4F" strokeWidth="1.6" fill="none" />
+    {/* 莖（加長） */}
+    <path d="M12 20 L12 13.5" stroke="#4A9C4F" strokeWidth="1.9" strokeLinecap="round" />
 
-    {/* 花瓣 - 左（紫） */}
+    {/* 葉子 - 左 */}
+    <path d="M12 15.5 Q7.5 12.5 6.5 16.5" stroke="#4A9C4F" strokeWidth="1.7" fill="none" />
+    {/* 葉子 - 右 */}
+    <path d="M12 15.5 Q16.5 12.5 17.5 16.5" stroke="#4A9C4F" strokeWidth="1.7" fill="none" />
+
+    {/* 左花瓣（紫） - 加大 */}
     <path 
-      d="M9 10 Q7.5 7 9.5 5 Q11 4 12 5.5" 
+      d="M8.5 11 Q6.5 7 9 4.5 Q11.5 3.5 12.5 6" 
       fill="#A855F7" 
       stroke="#7C3AED" 
       strokeWidth="1" 
     />
-    
-    {/* 花瓣 - 中（紅） - 主要花瓣 */}
+
+    {/* 中花瓣（紅） - 明顯加大 */}
     <path 
-      d="M12 4 Q14 6 14.5 9 Q13.5 12 12 13 Q10.5 12 9.5 9 Q10 6 12 4Z" 
+      d="M12 4 Q15.5 6.5 15.8 10.5 Q14.5 13.5 12 14.5 Q9.5 13.5 8.2 10.5 Q8.5 6.5 12 4Z" 
       fill="#E8334A" 
       stroke="#C0262E" 
-      strokeWidth="1" 
+      strokeWidth="1.1" 
     />
-    
-    {/* 花瓣 - 右（黃） */}
+
+    {/* 右花瓣（黃） - 加大 */}
     <path 
-      d="M15 10 Q16.5 7 14.5 5 Q13 4 12 5.5" 
+      d="M15.5 11 Q17.5 7 15 4.5 Q12.5 3.5 12.5 6" 
       fill="#FACC15" 
       stroke="#D97706" 
       strokeWidth="1" 
     />
 
-    {/* 花瓣中間亮部（增加立體感） */}
+    {/* 花瓣高光（增加立體感） */}
     <path 
-      d="M12 5 Q13 7 12.8 9" 
+      d="M11.5 5.5 Q12.8 7 13.2 9" 
       fill="none" 
       stroke="#ffffff" 
       strokeWidth="1" 
-      strokeOpacity="0.4" 
+      strokeOpacity="0.45" 
     />
   </svg>
 );
@@ -930,7 +930,7 @@ const WeatherHero = ({ isAdmin, versionText, updateVersion, onLock, showSecret, 
                 <input type="text" value={versionText || ''} onChange={(e) => updateVersion(e.target.value)} className="w-16 bg-transparent border-b border-amber-300 text-sm font-serif font-bold italic focus:outline-none text-center dark:text-stone-300" />
               ) : (
                 <div className="flex items-center gap-1 ml-1 relative group">
-                  <TulipIcon className="w-5 h-5 text-amber-400 dark:text-amber-300 drop-shadow-[0_0_3px_rgba(251,191,36,0.5)]" />
+                  <TulipIcon className="w-6 h-6 text-amber-400 dark:text-amber-300 drop-shadow-[0_0_3px_rgba(251,191,36,0.5)]" />
                   <span className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-b from-[#F3E5AB] via-[#FDB931] to-[#996515] drop-shadow-sm tracking-wide ml-1.5 mt-0.5" style={{ fontFamily: '"Cinzel Decorative", serif' }}>
                     {versionText || '2026'}
                   </span>
