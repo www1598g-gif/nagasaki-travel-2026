@@ -966,7 +966,7 @@ const WeatherHero = ({ isAdmin, versionText, updateVersion, onLock, showSecret, 
                   <div key={idx} className="flex flex-col items-center gap-1 min-w-[3.5rem] flex-shrink-0">
                     <span className="text-[10px] text-stone-400 font-bold whitespace-nowrap">{h.time}</span>
                     <div className="py-1">{getWeatherIcon(h.code, 20)}</div>
-                    <span className="text-sm font-bold text-stone-700 dark:text-stone-300">{h.temp}°</span>
+                    <span className="text-sm font-bold text-stone-700 dark:text-stone-900">{h.temp}°</span>
                     {h.rain >= 0 && <span className="text-[9px] text-blue-400 font-bold">{h.rain}%</span>}
                   </div>
                 ))}
@@ -1532,12 +1532,22 @@ const GuidePage = ({ isAdmin, isMember, noticeText, updateNoticeText }) => {
   const [adderName, setAdderName] = useState('佑任');
   const [taxInfo, setTaxInfo] = useState({ threshold: "5,000", luxuryThreshold: "500,000", totalThreshold: "5,000", fee: "0" });
   const [showReservations, setShowReservations] = useState(false);
-  const RESERVATIONS = [
+  
+const [reservations, setReservations] = useState([
   { name: '松翁軒 Café Sevilla（大正浪漫茶會）', date: '6/20 (六)', time: '12:00', note: '預約號碼：A000913389・4名席' },
   { name: '軍艦島登島船票', date: '6/18 (四)', time: '09:00', note: '預約號碼：128734' },
   { name: '大阪屋 浜町店（A5和牛燒肉）', date: '6/18 (四)', time: '21:00', note: '晚鳥時段・需電話確認' },
-  ];
+]);
 
+useEffect(() => {
+  const unsubscribe = onValue(ref(db, 'reservations'), (snapshot) => {
+    const data = snapshot.val();
+    if (data) {
+      setReservations(data);
+    }
+  });
+  return () => unsubscribe();
+}, []);
 
 
 
@@ -1684,17 +1694,17 @@ const GuidePage = ({ isAdmin, isMember, noticeText, updateNoticeText }) => {
   {showReservations && (
     <div className="mt-3 bg-white dark:bg-stone-800 rounded-3xl border border-blue-100 dark:border-blue-900/50 overflow-hidden">
       <div className="divide-y divide-stone-100 dark:divide-stone-700">
-        {RESERVATIONS.map((r, i) => (
-          <div key={i} className="px-5 py-4">
-            <div className="flex justify-between items-start mb-1">
-              <span className="font-bold text-stone-800 dark:text-stone-100 text-sm">{r.name}</span>
-              <span className="text-[10px] font-bold bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 px-2 py-0.5 rounded-full whitespace-nowrap ml-2">{r.date}</span>
-            </div>
-            <div className="flex items-center gap-2 text-xs text-stone-500 dark:text-stone-400">
-              <Clock size={11} /> {r.time} ・ {r.note}
-            </div>
-          </div>
-        ))}
+        {reservations.map((r, i) => (
+  <div key={i} className="px-5 py-4">
+    <div className="flex justify-between items-start mb-1">
+      <span className="font-bold text-stone-800 dark:text-stone-100 text-sm">{r.name}</span>
+      <span className="text-[10px] font-bold bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 px-2 py-0.5 rounded-full whitespace-nowrap ml-2">{r.date}</span>
+    </div>
+    <div className="flex items-center gap-2 text-xs text-stone-500 dark:text-stone-400">
+      <Clock size={11} /> {r.time} ・ {r.note}
+    </div>
+  </div>
+))}
       </div>
       {isAdmin && (
         <ReservationAdminSection />
