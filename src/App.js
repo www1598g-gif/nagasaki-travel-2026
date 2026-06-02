@@ -4157,7 +4157,7 @@ body .dark div.font-serif.select-none.leading-none.pointer-events-none {
   style={{ transition: 'transform 9s ease-in-out, opacity 9s ease-in-out' }}
 >
   <img
-    src={process.env.PUBLIC_URL + '/images/airplane.jpeg'}
+    src={process.env.PUBLIC_URL + '/images/airplane.png'}
     alt="Miffy Airplane"
     className="w-48 object-contain"
   />
