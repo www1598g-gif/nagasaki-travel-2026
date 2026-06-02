@@ -2310,9 +2310,9 @@ export default function TravelApp() {
     const encodedInput = btoa(inputPwd);
     const validCodes = ['ODY4Njc3MDg=', 'MTMxNDUyMA==', 'ODg4OA=='];
     if (validCodes.includes(encodedInput)) { localStorage.setItem('isUnlocked', 'true'); localStorage.setItem('userRole', encodedInput); }
-    if (encodedInput === 'ODY4Njc3MDg=') { setIsAdmin(true); setIsMember(true); setIsUnlocking(true); setTimeout(() => setIsLocked(false), 2000); }
-    else if (encodedInput === 'MTMxNDUyMA==') { setIsAdmin(false); setIsMember(true); setIsUnlocking(true); setTimeout(() => setIsLocked(false), 2000); }
-    else if (encodedInput === 'ODg4OA==') { setIsAdmin(false); setIsMember(false); setIsUnlocking(true); setTimeout(() => setIsLocked(false), 2000); }
+    if (encodedInput === 'ODY4Njc3MDg=') { setIsAdmin(true); setIsMember(true); setIsUnlocking(true); setTimeout(() => setIsLocked(false), 1600); }
+    else if (encodedInput === 'MTMxNDUyMA==') { setIsAdmin(false); setIsMember(true); setIsUnlocking(true); setTimeout(() => setIsLocked(false), 1600); }
+    else if (encodedInput === 'ODg4OA==') { setIsAdmin(false); setIsMember(false); setIsUnlocking(true); setTimeout(() => setIsLocked(false), 1600); }
     else { alert('密碼錯誤！🔒'); setInputPwd(''); }
   };
 
@@ -4147,7 +4147,7 @@ body .dark div.font-serif.select-none.leading-none.pointer-events-none {
 </div>
 
 
-              <div className={`relative z-10 flex flex-col items-center w-full px-8 h-full pt-40 transition-opacity duration-500 ${isUnlocking ? 'opacity-0' : 'opacity-100'}`}>
+              <div className="relative z-10 flex flex-col items-center w-full px-8 h-full pt-40">
                
                
                <div
