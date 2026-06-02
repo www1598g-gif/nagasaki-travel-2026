@@ -966,7 +966,9 @@ const WeatherHero = ({ isAdmin, versionText, updateVersion, onLock, showSecret, 
                   <div key={idx} className="flex flex-col items-center gap-1 min-w-[3.5rem] flex-shrink-0">
                     <span className="text-[10px] text-stone-400 font-bold whitespace-nowrap">{h.time}</span>
                     <div className="py-1">{getWeatherIcon(h.code, 20)}</div>
-                    <span className="text-sm font-bold text-stone-700 dark:text-stone-300">{h.temp}°</span>
+                    <span className="text-sm font-bold text-stone-700 dark:!text-stone-950">
+  {h.temp}°
+</span>
                     {h.rain >= 0 && <span className="text-[9px] text-blue-400 font-bold">{h.rain}%</span>}
                   </div>
                 ))}
