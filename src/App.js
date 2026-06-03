@@ -4509,7 +4509,11 @@ fontSize: '13px',
   >
     <div className="bg-[#FFF0F5] p-6 rounded-3xl text-center">
       <img 
-        src="https://i.pinimg.com/originals/24/63/40/24634090aa96299f569a8bb60c9dda14.gif" 
+        //src="https://i.pinimg.com/originals/24/63/40/24634090aa96299f569a8bb60c9dda14.gif" 
+        src="https://c.tenor.com/ddLE-WNX6gkAAAAd/tenor.gif" 
+
+
+        
         alt="Egg" 
         className="w-full rounded-xl mb-4" 
       />
