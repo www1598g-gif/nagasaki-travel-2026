@@ -700,7 +700,7 @@ const WeatherHero = ({ isAdmin, versionText, updateVersion, onLock, showSecret, 
     try {
       // 🎯 自動切換為日本長崎座標 (緯度 32.7503, 經度 129.8777, 日本東京時區)
       const res = await fetch(
-        'https://api.open-meteo.com/v1/forecast?latitude=32.7503&longitude=129.8777&current=temperature_2m,weather_code,relative_humidity_2m&hourly=temperature_2m,weather_code,precipitation_probability&daily=temperature_2m_max,weather_code&forecast_days=16&timezone=Asia%2FTokyo&models=jma'
+        'https://api.open-meteo.com/v1/forecast?latitude=32.7503&longitude=129.8777&current=temperature_2m,weather_code,relative_humidity_2m&hourly=temperature_2m,weather_code,precipitation_probability&daily=temperature_2m_max,weather_code&forecast_days=16&timezone=Asia%2FTokyo'
       );
       const json = await res.json();
 
