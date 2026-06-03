@@ -4502,7 +4502,21 @@ fontSize: '13px',
                   )}
                 </main>
                 <BackToTop />
-                {showShakeEgg && <div onClick={() => setShowShakeEgg(false)} className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-8"><div className="bg-[#FFF0F5] p-6 rounded-3xl text-center"><p className="text-pink-500 font-bold">🍀 搖出驚喜！Miffy生日快樂！</p></div></div>}
+                {showShakeEgg && (
+  <div 
+    onClick={() => setShowShakeEgg(false)} 
+    className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-8 backdrop-blur-sm animate-fadeIn"
+  >
+    <div className="bg-[#FFF0F5] p-6 rounded-3xl text-center">
+      <img 
+        src="https://i.pinimg.com/originals/24/63/40/24634090aa96299f569a8bb60c9dda14.gif" 
+        alt="Egg" 
+        className="w-full rounded-xl mb-4" 
+      />
+      <p className="text-pink-500 font-bold">🍀 搖出驚喜！Miffy生日快樂！</p>
+    </div>
+  </div>
+)}
 
                 {/* 底部功能列 */}
                 <nav className="fixed bottom-0 w-full max-w-md bg-white/90 dark:bg-stone-900/90 backdrop-blur-lg border-t flex justify-around py-3 pb-4 z-40 select-none">
