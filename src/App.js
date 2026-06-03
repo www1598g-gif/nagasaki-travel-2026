@@ -1607,36 +1607,36 @@ useEffect(() => {
 ];
 
   const guideSections = [
-    {
-    title: '喫茶店地圖',
+  {
+    title: '長崎的墓',
+    icon: <Coffee className="text-stone-600" />,
+    desc: '94長崎的墓',
+    color: 'bg-stone-50 border-stone-200 dark:bg-stone-900/40 dark:border-stone-700',
+    mapUrl: 'https://maps.app.goo.gl/hZPumAwkoMSeDiK79?g_st=al',
+    aiQuery: '長崎有哪些古墓或特殊的墓 會吸引墳墓愛好者2026 以中文回答'
+  },
+  {
+    title: '喫茶店與甜點',
     icon: <Coffee className="text-amber-600" />,
-    desc: '1946年創業珈琲冨士男、長崎老宅復古喫茶文化巡禮。',
+    desc: '1946年創業珈琲冨士男、長崎老宅復古喫茶文化巡禮。金箔五三燒長崎蛋糕、各式和菓子老鋪與網美咖啡甜點。',
     color: 'bg-amber-50 border-amber-100 dark:bg-amber-900/20 dark:border-amber-800',
-    mapUrl: 'https://maps.app.goo.gl/nagasaki-cafe',
-    aiQuery: '長崎老宅喫茶店推薦2026 以中文回答'
+    mapUrl: 'https://maps.app.goo.gl/Wni4jG8EwWNjj8dG6',
+    aiQuery: '長崎老宅喫茶店以及甜點推薦2026 以中文回答'
   },
   {
     title: '必吃清單',
     icon: <UtensilsCrossed className="text-red-600" />,
     desc: '長崎強棒麵、角煮饅頭、A5和牛燒肉，沒吃到不算來過長崎。',
     color: 'bg-red-50 border-red-100 dark:bg-red-900/20 dark:border-red-800',
-    mapUrl: 'https://maps.app.goo.gl/nagasaki-food',
+    mapUrl: 'https://maps.app.goo.gl/Hw4hAp8gDf7ow7sT8',
     aiQuery: '長崎必吃美食推薦2026 以中文回答'
-  },
-  {
-    title: '甜點清單',
-    icon: <IceCream className="text-pink-600" />,
-    desc: '金箔五三燒長崎蛋糕、各式和菓子老鋪與網美咖啡甜點。',
-    color: 'bg-pink-50 border-pink-100 dark:bg-pink-900/20 dark:border-pink-800',
-    mapUrl: 'https://maps.app.goo.gl/nagasaki-sweets',
-    aiQuery: '長崎甜點推薦2026 以中文回答'
   },
   {
     title: '微醺音樂酒吧',
     icon: <Beer className="text-purple-600" />,
     desc: '思案橋不夜城、出島 Wharf 海景居酒屋，長崎夜晚的靈魂。',
     color: 'bg-purple-50 border-purple-100 dark:bg-purple-900/20 dark:border-purple-800',
-    mapUrl: 'https://maps.app.goo.gl/nagasaki-bar',
+    mapUrl: 'https://maps.app.goo.gl/1qSnTLpqYi3rsUHy8',
     aiQuery: '長崎居酒屋酒吧推薦2026 以中文回答'
   },
   {
@@ -1644,25 +1644,25 @@ useEffect(() => {
     icon: <ShoppingBag className="text-blue-600" />,
     desc: '濱町觀光通、3COINS plus、海鷗市場免稅血拼完全攻略。',
     color: 'bg-blue-50 border-blue-100 dark:bg-blue-900/20 dark:border-blue-800',
-    mapUrl: 'https://maps.app.goo.gl/nagasaki-shopping',
+    mapUrl: 'https://maps.app.goo.gl/yGTKPTbhzX5sJyq97',
     aiQuery: '長崎購物免稅推薦2026 以中文回答'
   },
   {
-  title: '佐賀午餐推薦',
-  icon: <Utensils className="text-orange-600" />,
-  desc: '三瀨雞、佐賀牛、當地定食與特色便當推薦。',
-  color: 'bg-orange-50 border-orange-100 dark:bg-orange-900/20 dark:border-orange-800',
-  mapUrl: 'https://maps.app.goo.gl/S61xhZHh3D9873yF6',
-  aiQuery: '佐賀必吃午餐推薦 2026 以中文回答'
-},
-{
-  title: '佐賀晚餐推薦',
-  icon: <UtensilsCrossed className="text-red-600" />,
-  desc: '三瀨雞串燒、鍋島清酒、佐賀在地居酒屋與海鮮。',
-  color: 'bg-red-50 border-red-100 dark:bg-red-900/20 dark:border-red-800',
-  mapUrl: 'https://maps.app.goo.gl/S61xhZHh3D9873yF6',
-  aiQuery: '佐賀晚上必吃美食推薦 2026 以中文回答'
-},
+    title: '佐賀午餐推薦',
+    icon: <Utensils className="text-emerald-600" />,
+    desc: '三瀨雞、佐賀牛、當地定食與特色便當推薦。',
+    color: 'bg-emerald-50 border-emerald-100 dark:bg-emerald-900/20 dark:border-emerald-800',
+    mapUrl: 'https://maps.app.goo.gl/tHMhDYYxdsnkAjjh6',
+    aiQuery: '佐賀必吃午餐推薦 2026 以中文回答'
+  },
+  {
+    title: '佐賀晚餐推薦',
+    icon: <UtensilsCrossed className="text-orange-600" />,
+    desc: '三瀨雞串燒、鍋島清酒、佐賀在地居酒屋與海鮮。',
+    color: 'bg-orange-50 border-orange-100 dark:bg-orange-900/20 dark:border-orange-800',
+    mapUrl: 'https://maps.app.goo.gl/Bc1z9oeXC95R2V2c9',
+    aiQuery: '佐賀晚上必吃美食推薦 2026 以中文回答'
+  },
 ];
 
   return (
