@@ -2364,7 +2364,7 @@ export default function TravelApp() {
   useEffect(() => {
     const savedRole = localStorage.getItem('userRole');
     if (savedRole === 'ODY4Njc3MDg=') { setIsAdmin(true); setIsMember(true); }
-    else if (savedRole === 'MTMxNDUyMA==') { setIsAdmin(false); setIsMember(true); }
+    else if (savedRole === 'NTU2Ng==') { setIsAdmin(false); setIsMember(true); }
   }, []);
 
   useEffect(() => {
@@ -2518,10 +2518,10 @@ export default function TravelApp() {
   const handleUnlock = () => {
     if (typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function') { DeviceMotionEvent.requestPermission().catch(console.error); }
     const encodedInput = btoa(inputPwd);
-    const validCodes = ['ODY4Njc3MDg=', 'MTMxNDUyMA==', 'ODg4OA=='];
+    const validCodes = ['ODY4Njc3MDg=', 'NTU2Ng==', 'ODg4OA=='];
     if (validCodes.includes(encodedInput)) { localStorage.setItem('isUnlocked', 'true'); localStorage.setItem('userRole', encodedInput); }
     if (encodedInput === 'ODY4Njc3MDg=') { setIsAdmin(true); setIsMember(true); setIsUnlocking(true); setTimeout(() => setIsLocked(false), 1000); }
-    else if (encodedInput === 'MTMxNDUyMA==') { setIsAdmin(false); setIsMember(true); setIsUnlocking(true); setTimeout(() => setIsLocked(false), 1000); }
+    else if (encodedInput === 'NTU2Ng==') { setIsAdmin(false); setIsMember(true); setIsUnlocking(true); setTimeout(() => setIsLocked(false), 1000); }
     else if (encodedInput === 'ODg4OA==') { setIsAdmin(false); setIsMember(false); setIsUnlocking(true); setTimeout(() => setIsLocked(false), 1000); }
     else { alert('密碼錯誤！🔒'); setInputPwd(''); }
   };
