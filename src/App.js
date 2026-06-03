@@ -994,7 +994,7 @@ const WeatherHero = ({ isAdmin, versionText, updateVersion, onLock, showSecret, 
           </div>
         )}
         <button
-          onClick={() => window.open(`https://www.perplexity.ai/search?q=${encodeURIComponent('長崎 佐賀 2026 6月中旬 必吃美食與私房景點 歷史文化深度介紹 也請納入日本在地Tabelog與小紅書評價 以中文回答')}`, '_blank')}
+          onClick={() => window.open(`https://www.perplexity.ai/search?q=${encodeURIComponent('長崎 佐賀 2026 6月中旬 長崎佐賀都在市區內 必吃美食與私房景點 歷史文化深度介紹 也請納入日本在地Tabelog與小紅書評價 以中文回答')}`, '_blank')}
           className="w-full mt-3 py-3 bg-white/90 dark:bg-stone-800/90 backdrop-blur-md border border-stone-200 dark:border-stone-700 rounded-2xl flex items-center justify-center gap-2 text-sm font-bold text-stone-600 dark:text-stone-200 active:scale-95 shadow-sm group"
         >
           <Sparkles size={16} className="text-teal-500 group-hover:rotate-12 transition-transform" /> Ask AI (Perplexity 深度探索)
@@ -2511,7 +2511,7 @@ export default function TravelApp() {
 
   useEffect(() => {
     if (konamiSequence.join(' ') === 'up down left right') {
-      setIsKonamiActive((prev) => { alert(!prev ? '🌟 隱藏三麗鷗模式啟動！' : '關閉隱藏模式 👋'); return !prev; }); setKonamiSequence([]);
+      setIsKonamiActive((prev) => { alert(!prev ? '🌟 巨星模式啟動！' : '關閉隱藏模式 👋'); return !prev; }); setKonamiSequence([]);
     }
   }, [konamiSequence]);
 
