@@ -2156,14 +2156,14 @@ const PackingPage = ({ isKonamiActive, isAdmin, isMember, onSecretTrigger }) => 
     佑任: 'w-16 h-16 translate-y-2', 
     軒寶: 'w-16 h-16 translate-y-2', 
     阿歪: 'w-16 h-16 translate-y-2', 
-    黃蔓: 'w-16 h-16 translate-y-2' 
+    黃蔓: 'w-16 h-16 translate-y-2 scale-110' 
   };
 
   const HEADER_ICON_STYLE = { 
     佑任: 'w-9 h-9', 
     軒寶: 'w-9 h-9', 
     阿歪: 'w-9 h-9', 
-    黃蔓: 'w-9 h-9' 
+    黃蔓: 'w-9 h-9 scale-110' 
   };
 
   useEffect(() => {
