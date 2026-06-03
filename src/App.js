@@ -199,7 +199,7 @@ const INITIAL_ITINERARY_DATA = [
         difficulty: '低',
       },
       {
-        imageId: 'day1_7',
+        imageId: 'day1_8',
         type: 'sight',
         time: '22:00',
         name: '超商補貨備案',
@@ -248,7 +248,7 @@ const INITIAL_ITINERARY_DATA = [
         difficulty: '低',
       },
       {
-        imageId: 'day2_4',
+        imageId: 'day2_5',
         type: 'food',
         time: '21:30',
         name: '常規宵夜: 免費拉麵 / 思案橋深夜探險',
@@ -486,7 +486,7 @@ const INITIAL_ITINERARY_DATA = [
         difficulty: '零',
       },
       {
-        imageId: 'day5_7',
+        imageId: 'day5_6',
         type: 'food',
         time: '19:00',
         name: '佐賀地雞晚餐 & 縣廳 360 燈光秀',
