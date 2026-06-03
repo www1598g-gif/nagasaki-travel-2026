@@ -2152,8 +2152,19 @@ const PackingPage = ({ isKonamiActive, isAdmin, isMember, onSecretTrigger }) => 
     阿歪: process.env.PUBLIC_URL + '/sanrio/2.png',
     黃蔓: process.env.PUBLIC_URL + '/sanrio/4.png',
   };
-  const STYLE_MAP = { 佑任: 'w-16 h-16 translate-y-4', 軒寶: 'w-14 h-14 translate-y-1', 阿歪: 'w-24 h-24 translate-y-8', 黃蔓: 'w-30 h-30 translate-y-7' };
-  const HEADER_ICON_STYLE = { 佑任: 'w-9 h-9', 軒寶: 'w-9 h-9', 阿歪: 'w-16 h-16 -my-4 ml-1', 黃蔓: 'w-14 h-14 -my-3 ml-1' };
+  const STYLE_MAP = { 
+    佑任: 'w-16 h-16 translate-y-2', 
+    軒寶: 'w-16 h-16 translate-y-2', 
+    阿歪: 'w-16 h-16 translate-y-2', 
+    黃蔓: 'w-16 h-16 translate-y-2' 
+  };
+
+  const HEADER_ICON_STYLE = { 
+    佑任: 'w-9 h-9', 
+    軒寶: 'w-9 h-9', 
+    阿歪: 'w-9 h-9', 
+    黃蔓: 'w-9 h-9' 
+  };
 
   useEffect(() => {
     const saved = localStorage.getItem('cm_packing_list_v2');
