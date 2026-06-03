@@ -1608,10 +1608,10 @@ useEffect(() => {
 
   const guideSections = [
   {
-    title: '長崎的墓',
-    icon: <Coffee className="text-stone-600" />,
+   title: '長崎的墓',
+    icon: <Flower2 className="text-pink-400" />,
     desc: '94長崎的墓',
-    color: 'bg-stone-50 border-stone-200 dark:bg-stone-900/40 dark:border-stone-700',
+    color: 'bg-pink-50 border-pink-100 dark:bg-pink-900/20 dark:border-pink-800',
     mapUrl: 'https://maps.app.goo.gl/hZPumAwkoMSeDiK79?g_st=al',
     aiQuery: '長崎有哪些古墓或特殊的墓 會吸引墳墓愛好者2026 以中文回答'
   },
