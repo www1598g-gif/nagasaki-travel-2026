@@ -4353,6 +4353,48 @@ body .dark div.font-serif.select-none.leading-none.pointer-events-none {
     opacity: 0.12 !important;            /* 降低透明度，讓它乖乖退到背景深處 */
 }
 
+/* ============================================================
+   FINAL FIX 1 — 淺色模式 橘色展開DAY卡片內 DAY文字和日期加深
+   ============================================================ */
+
+/* DAY 小字 */
+.bg-stone-800 .text-\[10px\].font-bold.text-stone-400.uppercase {
+  color: rgba(255, 255, 255, 0.95) !important;
+}
+
+/* 日期小字 (6/16 二) */
+.bg-stone-800 .text-xs.font-bold.mb-0\.5 {
+  color: rgba(255, 255, 255, 0.95) !important;
+}
+
+/* DAY 數字方塊底色拉亮 */
+.bg-stone-800 .flex.flex-col.items-center.justify-center.w-12.h-12 {
+  background-color: rgba(255, 255, 255, 0.35) !important;
+  border-color: rgba(255, 255, 255, 0.8) !important;
+}
+
+/* DAY 數字方塊內所有文字強制純白 */
+.bg-stone-800 .flex.flex-col.items-center.justify-center.w-12.h-12 span {
+  color: #ffffff !important;
+}
+
+
+/* ============================================================
+   FINAL FIX 2 — 深色模式 指南頁「問問AI」按鈕文字加深可見
+   ============================================================ */
+
+/* 問問AI按鈕在深色模式下 白底變深底 */
+.dark button.flex.items-center.justify-center.gap-2.py-2\.5.bg-white.border.border-stone-200 {
+  background-color: #2A2010 !important;
+  border-color: var(--miffy-yellow) !important;
+  color: var(--miffy-yellow) !important;
+}
+
+/* 問問AI按鈕裡的 teal icon 也要亮一點 */
+.dark button.flex.items-center.justify-center.gap-2.py-2\.5.bg-white .text-teal-500 {
+  color: #2DD4BF !important;
+}
+
 
         `}
       </style>
