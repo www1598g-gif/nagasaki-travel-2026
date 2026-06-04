@@ -4387,6 +4387,31 @@ body .dark div.font-serif.select-none.leading-none.pointer-events-none {
 }
 
 
+/* ============================================================
+   FINAL FIX 3 — 淺色模式 DAY文字和日期強制深色
+   ============================================================ */
+:not(.dark) .text-\[10px\].font-bold.text-stone-400.uppercase {
+  color: #1A1510 !important;
+}
+:not(.dark) .text-xs.font-bold.mb-0\.5.text-stone-400 {
+  color: #1A1510 !important;
+}
+
+/* ============================================================
+   FINAL FIX 4 — 指南頁問問AI按鈕深色模式強制可見
+   ============================================================ */
+.dark .p-5.rounded-\[2rem\].border button.bg-white,
+.dark .p-5.rounded-\[2rem\].border button[class*="bg-white"] {
+  background-color: #2A2010 !important;
+  border-color: #F7E84E !important;
+  color: #F7E84E !important;
+}
+.dark .p-5.rounded-\[2rem\].border button[class*="bg-white"] svg {
+  color: #2DD4BF !important;
+}
+
+
+
         `}
       </style>
       <div className={`min-h-screen font-sans text-stone-800 dark:text-stone-100 max-w-md mx-auto relative overflow-hidden ${isLocked ? 'bg-stone-900' : 'bg-[#FDFBF7] dark:bg-stone-900'}`}>
