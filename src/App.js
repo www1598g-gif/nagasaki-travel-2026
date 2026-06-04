@@ -1937,6 +1937,18 @@ const handleAppDownload = () => {
   </div>
 </div>
 
+<a href="https://static.japan.travel.navitime.com/web/walk/contents/html/boot/market.html?utm_source=safetytips&utm_medium=web&utm_campaign=safetytips"
+  target="_blank" rel="noreferrer"
+  className="flex items-center justify-between p-3 bg-stone-50 dark:bg-stone-700/50 rounded-xl border border-stone-100 dark:border-stone-600 active:scale-95 transition-all"
+>
+  <div>
+    <div className="font-bold text-stone-800 dark:text-stone-100 text-sm">Japan Travel by Navitime</div>
+    <div className="text-[10px] text-stone-500">離線地圖・交通路線・景點導覽</div>
+  </div>
+  <ArrowRight size={16} className="text-stone-400" />
+</a>
+
+
     <div className="flex items-center justify-between p-3 bg-stone-50 dark:bg-stone-700/50 rounded-xl border border-stone-100 dark:border-stone-600">
       <div>
         <div className="font-bold text-stone-800 dark:text-stone-100 text-sm">ecbo cloak 行李寄放</div>
@@ -1983,16 +1995,7 @@ const handleAppDownload = () => {
         <ArrowRight size={14} className="text-stone-600 group-hover:text-amber-500" />
       </div>
 
-      <a href="https://static.japan.travel.navitime.com/web/walk/contents/html/boot/market.html?utm_source=safetytips&utm_medium=web&utm_campaign=safetytips"
-        target="_blank" rel="noreferrer"
-        className="flex items-center justify-between p-3 bg-stone-800/50 rounded-xl border border-stone-700 mt-3 block"
-      >
-        <div>
-          <div className="text-xs font-bold text-stone-100">Japan Travel by Navitime</div>
-          <div className="text-[9px] text-stone-400">離線地圖・交通路線・景點導覽</div>
-        </div>
-        <ArrowRight size={14} className="text-stone-600" />
-      </a>
+      
 
       <div className="space-y-3">
         <div className="flex justify-between items-center border-b border-stone-700 pb-2">
