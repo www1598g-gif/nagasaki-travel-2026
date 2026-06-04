@@ -1918,6 +1918,19 @@ const handleAppDownload = () => {
       <ArrowRight size={16} className="text-stone-400" />
     </a>
 
+<div className="flex items-center justify-between p-3 bg-stone-50 dark:bg-stone-700/50 rounded-xl border border-stone-100 dark:border-stone-600">
+  <div>
+    <div className="font-bold text-stone-800 dark:text-stone-100 text-sm">豪斯登堡官方 App</div>
+    <div className="text-[10px] text-stone-500">等待時間・餐廳叫號・表演日程・園區地圖</div>
+  </div>
+  <div className="flex gap-2">
+    <a href="https://apps.apple.com/jp/app/id6450489514" target="_blank" rel="noreferrer"
+      className="text-[10px] font-bold bg-stone-800 text-white px-2 py-1 rounded-lg">iOS</a>
+    <a href="https://play.google.com/store/apps/details?id=jp.co.huistenbosch.ThemapaNavi.huistenbosch" target="_blank" rel="noreferrer"
+      className="text-[10px] font-bold bg-stone-800 text-white px-2 py-1 rounded-lg">Android</a>
+  </div>
+</div>
+
     <div className="flex items-center justify-between p-3 bg-stone-50 dark:bg-stone-700/50 rounded-xl border border-stone-100 dark:border-stone-600">
       <div>
         <div className="font-bold text-stone-800 dark:text-stone-100 text-sm">ecbo cloak 行李寄放</div>
