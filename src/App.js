@@ -1313,11 +1313,12 @@ const DayCard = ({ dayData, isOpen, toggle, isAdmin, updateTime, updateContent, 
       <div onClick={toggle} className={`relative flex items-center justify-between p-5 rounded-2xl cursor-pointer transition-all duration-300 ${isOpen ? 'bg-stone-800 text-stone-50 shadow-xl scale-[1.02]' : 'bg-white dark:bg-stone-800 text-stone-800 dark:text-stone-200 shadow-sm border border-stone-100 dark:border-stone-700'}`}>
         <div className="flex items-center gap-4">
           <div className={`flex flex-col items-center justify-center w-12 h-12 rounded-xl border ${isOpen ? 'bg-stone-700 border-stone-600' : 'bg-stone-50 dark:bg-stone-700 border-stone-200 dark:border-stone-600'}`}>
-            <span className="text-[10px] font-bold text-stone-400 uppercase">Day</span>
+            <span className="text-[10px] font-bold uppercase" style={{color:'#1A1510'}}>Day</span>
+
             <span className={`text-xl font-serif font-bold ${isOpen ? 'text-amber-400' : 'text-stone-800 dark:text-amber-400'}`}>{dayData.day}</span>
           </div>
           <div>
-            <div className="text-xs font-bold mb-0.5 text-stone-400">{dayData.displayDate}</div>
+            <div className="text-xs font-bold mb-0.5" style={{color:'#1A1510'}}>{dayData.displayDate}</div>
             <div className="font-bold text-lg leading-tight">{dayData.title}</div>
           </div>
         </div>
@@ -1541,7 +1542,7 @@ const ReservationAdminSection = () => {
 };
 
 
-const GuidePage = ({ isAdmin, isMember, noticeText, updateNoticeText }) => {
+const GuidePage = ({ isAdmin, isMember, noticeText, updateNoticeText, darkMode }) => {
   const [showPickyEater, setShowPickyEater] = useState(false);
   const [sharedStores, setSharedStores] = useState([]);
   const [newStoreName, setNewStoreName] = useState('');
@@ -1767,11 +1768,16 @@ useEffect(() => {
                 <MapPin size={14} /> 開啟清單
               </button>
               <button
-                onClick={() => window.open(`https://www.perplexity.ai/search?q=${encodeURIComponent('長崎 ' + section.aiQuery)}`, '_blank')}
-                className="flex items-center justify-center gap-2 py-2.5 bg-white border border-stone-200 dark:border-stone-700 text-stone-700 rounded-2xl text-xs font-bold shadow-sm active:scale-95"
-              >
-                <Sparkles size={14} className="text-teal-500" /> 問問 AI
-              </button>
+  onClick={() => window.open(`https://www.perplexity.ai/search?q=${encodeURIComponent('長崎 ' + section.aiQuery)}`, '_blank')}
+  className="flex items-center justify-center gap-2 py-2.5 border rounded-2xl text-xs font-bold shadow-sm active:scale-95"
+  style={{
+    background: darkMode ? '#2A2010' : '#ffffff',
+    borderColor: darkMode ? '#F7E84E' : '#e2e8f0',
+    color: darkMode ? '#F7E84E' : '#374151',
+  }}
+>
+  <Sparkles size={14} className="text-teal-500" /> 問問 AI
+</button>
             </div>
           </div>
         ))}
@@ -4557,7 +4563,7 @@ fontSize: '13px',
                   )}
 
                   {activeTab === 'guide' && (
-                    <GuidePage isAdmin={isAdmin} isMember={isMember} noticeText={noticeText} updateNoticeText={handleUpdateNotice} />
+                    <GuidePage isAdmin={isAdmin} isMember={isMember} noticeText={noticeText} updateNoticeText={handleUpdateNotice} darkMode={darkMode} />
                   )}
 
                   {activeTab === 'utils' && (
