@@ -2932,7 +2932,7 @@ h3.flex.items-center.gap-2.font-serif.font-bold {
   font-family: var(--font-mono) !important;
   font-size: 7px !important;
   letter-spacing: 1px !important;
-  color: var(--faded) !important;
+  color: #1A1510 !important;
 }
 /* 展開時 DAY 標籤白色 */
 .bg-stone-800 .text-\[10px\].font-bold.text-stone-400.uppercase,
@@ -2963,7 +2963,7 @@ h3.flex.items-center.gap-2.font-serif.font-bold {
   font-family: var(--font-mono) !important;
   font-size: 9px !important;
   letter-spacing: 0.5px !important;
-  color: var(--faded) !important;
+  color: #1A1510 !important;
 }
 .bg-stone-800 .text-xs.font-bold.mb-0\.5 {
   color: rgba(255,255,255,0.75) !important;
@@ -4367,16 +4367,7 @@ body .dark div.font-serif.select-none.leading-none.pointer-events-none {
   color: rgba(255, 255, 255, 0.95) !important;
 }
 
-/* DAY 數字方塊底色拉亮 */
-.bg-stone-800 .flex.flex-col.items-center.justify-center.w-12.h-12 {
-  background-color: rgba(255, 255, 255, 0.35) !important;
-  border-color: rgba(255, 255, 255, 0.8) !important;
-}
 
-/* DAY 數字方塊內所有文字強制純白 */
-.bg-stone-800 .flex.flex-col.items-center.justify-center.w-12.h-12 span {
-  color: #ffffff !important;
-}
 
 
 /* ============================================================
