@@ -1545,6 +1545,7 @@ const ReservationAdminSection = () => {
 // 共享塗鴉白板 v2 — 即時多人同步版
 // 放在 GuidePage function 定義的上方
 // ============================================
+
 const SharedWhiteboard = () => {
   const canvasRef = useRef(null);
   const [tool, setToolState] = useState('pen');
@@ -1554,10 +1555,10 @@ const SharedWhiteboard = () => {
   const painting = useRef(false);
   const lastPos = useRef(null);
   const isInit = useRef(false);
+  const strokeHistory = useRef([]); // 🆕 記錄自己這個 session 的 key 順序
 
   const COLORS = ['#1A1510','#E8334A','#F4831F','#4BACD6','#5BB56A','#9B59B6'];
 
-  // ── 初始化：從 Firebase 載入底圖快照 ──
   useEffect(() => {
     const c = canvasRef.current;
     if (!c) return;
@@ -1576,39 +1577,36 @@ const SharedWhiteboard = () => {
     });
   }, []);
 
-  // ── 監聽別人的筆劃，即時繪製到畫布 ──
   useEffect(() => {
     const c = canvasRef.current;
     const strokesRef = ref(db, 'wb/strokes');
-    
+
     const unsub = onValue(strokesRef, (snap) => {
       const data = snap.val();
-      if (!data || !isInit.current) return;
+      if (!isInit.current) return;
       const ctx = c.getContext('2d');
-      
-      // 用最新的底圖快照重繪，再疊上所有筆劃
+
       get(ref(db, 'wb/snapshot')).then(snapShot => {
         ctx.fillStyle = '#FFFFFF';
         ctx.fillRect(0, 0, c.width, c.height);
-        
-        const applySnapshot = () => {
-          Object.values(data).forEach(stroke => drawStroke(ctx, stroke));
+
+        const applyStrokes = () => {
+          if (data) Object.values(data).forEach(stroke => drawStroke(ctx, stroke));
         };
-        
+
         if (snapShot.val()) {
           const img = new Image();
-          img.onload = () => { ctx.drawImage(img, 0, 0, c.width, c.height); applySnapshot(); };
+          img.onload = () => { ctx.drawImage(img, 0, 0, c.width, c.height); applyStrokes(); };
           img.src = snapShot.val();
         } else {
-          applySnapshot();
+          applyStrokes();
         }
       });
     });
-    
+
     return () => unsub();
   }, []);
 
-  // ── 繪製單一筆劃 ──
   const drawStroke = (ctx, stroke) => {
     if (stroke.type === 'text') {
       ctx.font = `${stroke.fontSize}px 'Space Mono', monospace`;
@@ -1629,10 +1627,8 @@ const SharedWhiteboard = () => {
     ctx.stroke();
   };
 
-  // ── 目前這筆的點陣列 ──
   const currentStroke = useRef([]);
   const currentStrokeKey = useRef(null);
-  const snapshotTimer = useRef(null);
 
   const getPos = (e) => {
     const c = canvasRef.current;
@@ -1660,6 +1656,7 @@ const SharedWhiteboard = () => {
         ts: Date.now(),
       };
       const key = Date.now().toString();
+      strokeHistory.current.push(key); // 🆕
       set(ref(db, `wb/strokes/${key}`), stroke);
       return;
     }
@@ -1674,7 +1671,6 @@ const SharedWhiteboard = () => {
     const pos = getPos(e);
     currentStroke.current.push(pos);
 
-    // 本地即時預覽（不等 Firebase）
     const c = canvasRef.current;
     const ctx = c.getContext('2d');
     const pts = currentStroke.current;
@@ -1695,7 +1691,6 @@ const SharedWhiteboard = () => {
     painting.current = false;
     if (currentStroke.current.length < 2) return;
 
-    // 把這筆完整筆劃存到 Firebase
     const stroke = {
       type: tool,
       color,
@@ -1703,17 +1698,24 @@ const SharedWhiteboard = () => {
       points: currentStroke.current,
       ts: Date.now(),
     };
-    set(ref(db, `wb/strokes/${currentStrokeKey.current}`), stroke);
+    const key = currentStrokeKey.current;
+    strokeHistory.current.push(key); // 🆕
+    set(ref(db, `wb/strokes/${key}`), stroke);
     currentStroke.current = [];
 
-    // 累積到一定數量就壓縮成底圖快照，清空 strokes 節省流量
     get(ref(db, 'wb/strokes')).then(snap => {
       const count = snap.val() ? Object.keys(snap.val()).length : 0;
       if (count > 80) mergeSnapshot();
     });
   };
 
-  // 把畫布壓成快照存入 Firebase，清空 strokes
+  // 🆕 上一步：刪掉自己這個 session 最後一筆
+  const undoLast = () => {
+    if (strokeHistory.current.length === 0) return;
+    const lastKey = strokeHistory.current.pop();
+    set(ref(db, `wb/strokes/${lastKey}`), null);
+  };
+
   const mergeSnapshot = () => {
     const c = canvasRef.current;
     const off = document.createElement('canvas');
@@ -1722,12 +1724,14 @@ const SharedWhiteboard = () => {
     const data = off.toDataURL('image/jpeg', 0.65);
     set(ref(db, 'wb/snapshot'), data);
     set(ref(db, 'wb/strokes'), null);
+    strokeHistory.current = []; // 🆕 快照後清空歷史
   };
 
   const clearBoard = () => {
     if (!window.confirm('確定清空？所有人的塗鴉都會消失！')) return;
     set(ref(db, 'wb/snapshot'), '');
     set(ref(db, 'wb/strokes'), null);
+    strokeHistory.current = []; // 🆕
     const c = canvasRef.current;
     const ctx = c.getContext('2d');
     ctx.fillStyle = '#FFFFFF';
@@ -1742,7 +1746,7 @@ const SharedWhiteboard = () => {
     }
   };
 
-  const tbtn = (t, label) =>
+  const tbtn = (t) =>
     `text-[9px] font-bold px-3 py-1.5 rounded-full border transition-all ${
       tool === t
         ? 'bg-stone-900 text-amber-400 border-stone-900'
@@ -1753,13 +1757,11 @@ const SharedWhiteboard = () => {
     <section className="mt-4 rounded-[2rem] overflow-hidden border-2 border-stone-900 dark:border-stone-500"
       style={{ boxShadow: '4px 4px 0 #1A1510' }}>
 
-      {/* 標題 */}
       <div className="flex items-center gap-2 px-4 py-2.5 bg-amber-400 border-b-2 border-stone-900">
         <span className="text-[10px] font-bold tracking-widest uppercase text-stone-900">✏️ 共享塗鴉白板</span>
         <span className="text-[9px] text-stone-600 ml-1">大家都在同一張畫布上！</span>
       </div>
 
-      {/* 畫布 */}
       <canvas
         ref={canvasRef}
         width={480} height={320}
@@ -1770,7 +1772,6 @@ const SharedWhiteboard = () => {
         onTouchStart={startDraw} onTouchMove={draw} onTouchEnd={stopDraw}
       />
 
-      {/* 工具列 */}
       <div className="px-3 py-2.5 border-t-2 border-stone-900 bg-amber-50 dark:bg-stone-800 flex flex-wrap items-center gap-2">
         <button onClick={() => setTool('pen')} className={tbtn('pen')}>✏️ 畫筆</button>
         <button onClick={() => setTool('eraser')} className={tbtn('eraser')}>⬜ 橡皮</button>
@@ -1782,13 +1783,17 @@ const SharedWhiteboard = () => {
             style={{ background: c, borderColor: color === c ? '#1A1510' : 'transparent',
               transform: color === c ? 'scale(1.3)' : 'scale(1)' }} />
         ))}
+        {/* 🆕 上一步按鈕 */}
+        <button onClick={undoLast}
+          className="text-[9px] font-bold px-3 py-1.5 rounded-full border border-stone-400 text-stone-600 dark:text-stone-300 bg-white dark:bg-stone-700">
+          ↩ 上一步
+        </button>
         <button onClick={clearBoard}
-          className="ml-auto text-[9px] font-bold px-3 py-1.5 rounded-full border border-red-300 text-red-500 bg-white dark:bg-stone-700">
+          className="text-[9px] font-bold px-3 py-1.5 rounded-full border border-red-300 text-red-500 bg-white dark:bg-stone-700">
           🗑 清空
         </button>
       </div>
 
-      {/* 筆刷大小 */}
       <div className="px-4 py-2 bg-amber-50 dark:bg-stone-800 border-t border-stone-200 dark:border-stone-700 flex items-center gap-3">
         <span className="text-[8px] font-bold text-stone-400 uppercase tracking-wider">SIZE</span>
         <input type="range" min="2" max="30" value={size}
@@ -1799,7 +1804,6 @@ const SharedWhiteboard = () => {
         </div>
       </div>
 
-      {/* 文字輸入列 */}
       {tool === 'text' && (
         <div className="px-3 py-2.5 bg-blue-50 dark:bg-stone-700 border-t border-stone-200 dark:border-stone-600 flex gap-2 items-center animate-fadeIn">
           <input type="text" value={textInput} onChange={e => setTextInput(e.target.value)}
@@ -1811,6 +1815,12 @@ const SharedWhiteboard = () => {
     </section>
   );
 };
+
+
+
+
+
+
 const GuidePage = ({ isAdmin, isMember, noticeText, updateNoticeText, darkMode }) => {
   const [showPickyEater, setShowPickyEater] = useState(false);
   const [sharedStores, setSharedStores] = useState([]);
