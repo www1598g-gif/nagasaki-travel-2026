@@ -1680,6 +1680,285 @@ useEffect(() => {
         </div>
       </section>
 
+
+// ============================================
+// 共享塗鴉白板 v2 — 即時多人同步版
+// 放在 GuidePage function 定義的上方
+// ============================================
+const SharedWhiteboard = () => {
+  const canvasRef = useRef(null);
+  const [tool, setToolState] = useState('pen');
+  const [color, setColor] = useState('#1A1510');
+  const [size, setSize] = useState(4);
+  const [textInput, setTextInput] = useState('');
+  const painting = useRef(false);
+  const lastPos = useRef(null);
+  const isInit = useRef(false);
+
+  const COLORS = ['#1A1510','#E8334A','#F4831F','#4BACD6','#5BB56A','#9B59B6'];
+
+  // ── 初始化：從 Firebase 載入底圖快照 ──
+  useEffect(() => {
+    const c = canvasRef.current;
+    if (!c) return;
+    const ctx = c.getContext('2d');
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillRect(0, 0, c.width, c.height);
+
+    get(ref(db, 'wb/snapshot')).then(snap => {
+      if (snap.val()) {
+        const img = new Image();
+        img.onload = () => { ctx.drawImage(img, 0, 0, c.width, c.height); isInit.current = true; };
+        img.src = snap.val();
+      } else {
+        isInit.current = true;
+      }
+    });
+  }, []);
+
+  // ── 監聽別人的筆劃，即時繪製到畫布 ──
+  useEffect(() => {
+    const c = canvasRef.current;
+    const strokesRef = ref(db, 'wb/strokes');
+    
+    const unsub = onValue(strokesRef, (snap) => {
+      const data = snap.val();
+      if (!data || !isInit.current) return;
+      const ctx = c.getContext('2d');
+      
+      // 用最新的底圖快照重繪，再疊上所有筆劃
+      get(ref(db, 'wb/snapshot')).then(snapShot => {
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(0, 0, c.width, c.height);
+        
+        const applySnapshot = () => {
+          Object.values(data).forEach(stroke => drawStroke(ctx, stroke));
+        };
+        
+        if (snapShot.val()) {
+          const img = new Image();
+          img.onload = () => { ctx.drawImage(img, 0, 0, c.width, c.height); applySnapshot(); };
+          img.src = snapShot.val();
+        } else {
+          applySnapshot();
+        }
+      });
+    });
+    
+    return () => unsub();
+  }, []);
+
+  // ── 繪製單一筆劃 ──
+  const drawStroke = (ctx, stroke) => {
+    if (stroke.type === 'text') {
+      ctx.font = `${stroke.fontSize}px 'Space Mono', monospace`;
+      ctx.fillStyle = stroke.color;
+      ctx.fillText(stroke.text, stroke.x, stroke.y);
+      return;
+    }
+    if (!stroke.points || stroke.points.length < 2) return;
+    ctx.beginPath();
+    ctx.moveTo(stroke.points[0].x, stroke.points[0].y);
+    for (let i = 1; i < stroke.points.length; i++) {
+      ctx.lineTo(stroke.points[i].x, stroke.points[i].y);
+    }
+    ctx.strokeStyle = stroke.type === 'eraser' ? '#FFFFFF' : stroke.color;
+    ctx.lineWidth = stroke.type === 'eraser' ? stroke.size * 5 : stroke.size;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.stroke();
+  };
+
+  // ── 目前這筆的點陣列 ──
+  const currentStroke = useRef([]);
+  const currentStrokeKey = useRef(null);
+  const snapshotTimer = useRef(null);
+
+  const getPos = (e) => {
+    const c = canvasRef.current;
+    const rect = c.getBoundingClientRect();
+    const sx = c.width / rect.width;
+    const sy = c.height / rect.height;
+    const src = e.touches ? e.touches[0] : e;
+    return {
+      x: Math.round((src.clientX - rect.left) * sx),
+      y: Math.round((src.clientY - rect.top) * sy),
+    };
+  };
+
+  const startDraw = (e) => {
+    e.preventDefault();
+    if (tool === 'text') {
+      if (!textInput.trim()) return;
+      const pos = getPos(e);
+      const stroke = {
+        type: 'text',
+        text: textInput,
+        x: pos.x, y: pos.y,
+        color,
+        fontSize: Math.max(16, size * 3),
+        ts: Date.now(),
+      };
+      const key = Date.now().toString();
+      set(ref(db, `wb/strokes/${key}`), stroke);
+      return;
+    }
+    painting.current = true;
+    currentStroke.current = [getPos(e)];
+    currentStrokeKey.current = Date.now().toString();
+  };
+
+  const draw = (e) => {
+    e.preventDefault();
+    if (!painting.current) return;
+    const pos = getPos(e);
+    currentStroke.current.push(pos);
+
+    // 本地即時預覽（不等 Firebase）
+    const c = canvasRef.current;
+    const ctx = c.getContext('2d');
+    const pts = currentStroke.current;
+    if (pts.length >= 2) {
+      ctx.beginPath();
+      ctx.moveTo(pts[pts.length - 2].x, pts[pts.length - 2].y);
+      ctx.lineTo(pos.x, pos.y);
+      ctx.strokeStyle = tool === 'eraser' ? '#FFFFFF' : color;
+      ctx.lineWidth = tool === 'eraser' ? size * 5 : size;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.stroke();
+    }
+  };
+
+  const stopDraw = () => {
+    if (!painting.current) return;
+    painting.current = false;
+    if (currentStroke.current.length < 2) return;
+
+    // 把這筆完整筆劃存到 Firebase
+    const stroke = {
+      type: tool,
+      color,
+      size,
+      points: currentStroke.current,
+      ts: Date.now(),
+    };
+    set(ref(db, `wb/strokes/${currentStrokeKey.current}`), stroke);
+    currentStroke.current = [];
+
+    // 累積到一定數量就壓縮成底圖快照，清空 strokes 節省流量
+    get(ref(db, 'wb/strokes')).then(snap => {
+      const count = snap.val() ? Object.keys(snap.val()).length : 0;
+      if (count > 80) mergeSnapshot();
+    });
+  };
+
+  // 把畫布壓成快照存入 Firebase，清空 strokes
+  const mergeSnapshot = () => {
+    const c = canvasRef.current;
+    const off = document.createElement('canvas');
+    off.width = 480; off.height = 320;
+    off.getContext('2d').drawImage(c, 0, 0);
+    const data = off.toDataURL('image/jpeg', 0.65);
+    set(ref(db, 'wb/snapshot'), data);
+    set(ref(db, 'wb/strokes'), null);
+  };
+
+  const clearBoard = () => {
+    if (!window.confirm('確定清空？所有人的塗鴉都會消失！')) return;
+    set(ref(db, 'wb/snapshot'), '');
+    set(ref(db, 'wb/strokes'), null);
+    const c = canvasRef.current;
+    const ctx = c.getContext('2d');
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillRect(0, 0, c.width, c.height);
+  };
+
+  const setTool = (t) => {
+    setToolState(t);
+    if (canvasRef.current) {
+      canvasRef.current.style.cursor =
+        t === 'eraser' ? 'cell' : t === 'text' ? 'text' : 'crosshair';
+    }
+  };
+
+  const tbtn = (t, label) =>
+    `text-[9px] font-bold px-3 py-1.5 rounded-full border transition-all ${
+      tool === t
+        ? 'bg-stone-900 text-amber-400 border-stone-900'
+        : 'bg-white dark:bg-stone-700 text-stone-600 dark:text-stone-300 border-stone-300'
+    }`;
+
+  return (
+    <section className="mt-4 rounded-[2rem] overflow-hidden border-2 border-stone-900 dark:border-stone-500"
+      style={{ boxShadow: '4px 4px 0 #1A1510' }}>
+
+      {/* 標題 */}
+      <div className="flex items-center gap-2 px-4 py-2.5 bg-amber-400 border-b-2 border-stone-900">
+        <span className="text-[10px] font-bold tracking-widest uppercase text-stone-900">✏️ 共享塗鴉白板</span>
+        <span className="text-[9px] text-stone-600 ml-1">大家都在同一張畫布上！</span>
+      </div>
+
+      {/* 畫布 */}
+      <canvas
+        ref={canvasRef}
+        width={480} height={320}
+        className="block w-full bg-white"
+        style={{ touchAction: 'none', cursor: 'crosshair' }}
+        onMouseDown={startDraw} onMouseMove={draw}
+        onMouseUp={stopDraw} onMouseLeave={stopDraw}
+        onTouchStart={startDraw} onTouchMove={draw} onTouchEnd={stopDraw}
+      />
+
+      {/* 工具列 */}
+      <div className="px-3 py-2.5 border-t-2 border-stone-900 bg-amber-50 dark:bg-stone-800 flex flex-wrap items-center gap-2">
+        <button onClick={() => setTool('pen')} className={tbtn('pen')}>✏️ 畫筆</button>
+        <button onClick={() => setTool('eraser')} className={tbtn('eraser')}>⬜ 橡皮</button>
+        <button onClick={() => setTool('text')} className={tbtn('text')}>🔤 文字</button>
+        <div className="w-px h-5 bg-stone-300 dark:bg-stone-600 mx-1" />
+        {COLORS.map(c => (
+          <button key={c} onClick={() => { setColor(c); if (tool === 'eraser') setTool('pen'); }}
+            className="w-5 h-5 rounded-full border-2 flex-shrink-0 transition-transform"
+            style={{ background: c, borderColor: color === c ? '#1A1510' : 'transparent',
+              transform: color === c ? 'scale(1.3)' : 'scale(1)' }} />
+        ))}
+        <button onClick={clearBoard}
+          className="ml-auto text-[9px] font-bold px-3 py-1.5 rounded-full border border-red-300 text-red-500 bg-white dark:bg-stone-700">
+          🗑 清空
+        </button>
+      </div>
+
+      {/* 筆刷大小 */}
+      <div className="px-4 py-2 bg-amber-50 dark:bg-stone-800 border-t border-stone-200 dark:border-stone-700 flex items-center gap-3">
+        <span className="text-[8px] font-bold text-stone-400 uppercase tracking-wider">SIZE</span>
+        <input type="range" min="2" max="30" value={size}
+          onChange={e => setSize(parseInt(e.target.value))} className="flex-1" />
+        <div className="w-6 h-6 flex items-center justify-center">
+          <div className="rounded-full bg-stone-800 dark:bg-stone-200 transition-all"
+            style={{ width: Math.max(4, Math.min(size * 1.2, 24)), height: Math.max(4, Math.min(size * 1.2, 24)) }} />
+        </div>
+      </div>
+
+      {/* 文字輸入列 */}
+      {tool === 'text' && (
+        <div className="px-3 py-2.5 bg-blue-50 dark:bg-stone-700 border-t border-stone-200 dark:border-stone-600 flex gap-2 items-center animate-fadeIn">
+          <input type="text" value={textInput} onChange={e => setTextInput(e.target.value)}
+            placeholder="輸入文字後點畫布放置..." maxLength={20}
+            className="flex-1 text-xs px-3 py-2 rounded-full border border-stone-300 bg-white dark:bg-stone-800 text-stone-800 dark:text-white outline-none focus:border-amber-400" />
+          <span className="text-[9px] text-stone-400 whitespace-nowrap">→ 點畫布</span>
+        </div>
+      )}
+    </section>
+  );
+};
+
+
+
+
+
+
+
+
       <section>
         <button onClick={() => setShowPickyEater(!showPickyEater)} className="w-full bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-900/50 rounded-2xl p-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
