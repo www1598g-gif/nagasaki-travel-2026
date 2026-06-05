@@ -1541,146 +1541,6 @@ const ReservationAdminSection = () => {
   );
 };
 
-
-const GuidePage = ({ isAdmin, isMember, noticeText, updateNoticeText, darkMode }) => {
-  const [showPickyEater, setShowPickyEater] = useState(false);
-  const [sharedStores, setSharedStores] = useState([]);
-  const [newStoreName, setNewStoreName] = useState('');
-  const [newStoreUrl, setNewStoreUrl] = useState('');
-  const [newStoreNote, setNewStoreNote] = useState('');
-  const [showTaxRefund, setShowTaxRefund] = useState(false);
-  const [adderName, setAdderName] = useState('佑任');
-  const [taxInfo, setTaxInfo] = useState({ threshold: "5,000", luxuryThreshold: "500,000", totalThreshold: "5,000", fee: "0" });
-  const [showReservations, setShowReservations] = useState(false);
-  
-const [reservations, setReservations] = useState([
-  { name: '松翁軒 Café Sevilla（大正浪漫茶會）', date: '6/20 (六)', time: '12:00', note: '預約號碼：A000913389・4名席' },
-  { name: '軍艦島登島船票', date: '6/18 (四)', time: '09:00', note: '預約號碼：128734' },
-  { name: '大阪屋 浜町店（A5和牛燒肉）', date: '6/18 (四)', time: '21:00', note: '晚鳥時段・需電話確認' },
-]);
-
-useEffect(() => {
-  const unsubscribe = onValue(ref(db, 'reservations'), (snapshot) => {
-    const data = snapshot.val();
-    if (data) {
-      setReservations(data);
-    }
-  });
-  return () => unsubscribe();
-}, []);
-
-
-
-  useEffect(() => {
-    const taxRef = ref(db, 'taxRefund');
-    const unsubscribe = onValue(taxRef, (snapshot) => {
-      const val = snapshot.val();
-      if (val) setTaxInfo(val);
-    });
-    return () => unsubscribe();
-  }, []);
-
-  useEffect(() => {
-    const unsubscribe = onValue(ref(db, 'sharedStores'), (snapshot) => {
-      if (snapshot.val()) setSharedStores(snapshot.val());
-    });
-    return () => unsubscribe();
-  }, []);
-
-  const handleAddStore = () => {
-    if (!newStoreName.trim()) return;
-    const finalUrl = newStoreUrl.trim() ? newStoreUrl : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(newStoreName)}`;
-    const newList = [...sharedStores, { name: newStoreName, url: finalUrl, note: newStoreNote, adder: adderName }];
-    set(ref(db, 'sharedStores'), newList).then(() => { setNewStoreName(''); setNewStoreUrl(''); setNewStoreNote(''); });
-  };
-
-  const pickyItems = [
-  { en: 'No Raw Fish / Sashimi', th: '生魚・刺身NG', zh: '不吃生魚片 / 生食' },
-  { en: 'No Beef', th: '牛肉NG', zh: '不吃牛肉' },
-  { en: 'No Coriander', th: 'パクチーNG', zh: '不加香菜' },
-  { en: 'No Green Onion / Scallion', th: 'ネギNG', zh: '不加蔥' },
-  { en: 'No Ginger', th: '生姜NG', zh: '不加薑' },
-  { en: 'No Garlic', th: 'ニンニクNG', zh: '不加蒜' },
-  { en: 'No Cinnamon', th: 'シナモンNG', zh: '不加肉桂' },
-  { en: 'No Chinese Chive', th: 'ニラNG', zh: '不加韭菜' },
-  { en: 'No Star Anise', th: '八角NG', zh: '不加八角' },
-  { en: 'No Celery', th: 'セロリNG', zh: '不加芹菜' },
-];
-
-  const guideSections = [
-  {
-   title: '長崎的墓',
-    icon: <Flower2 className="text-pink-400" />,
-    desc: '94長崎的墓',
-    color: 'bg-pink-50 border-pink-100 dark:bg-pink-900/20 dark:border-pink-800',
-    mapUrl: 'https://maps.app.goo.gl/hZPumAwkoMSeDiK79?g_st=al',
-    aiQuery: '長崎有哪些古墓或特殊的墓 會吸引墳墓愛好者2026 以中文回答'
-  },
-  {
-    title: '喫茶店與甜點',
-    icon: <Coffee className="text-amber-600" />,
-    desc: '1946年創業珈琲冨士男、長崎老宅復古喫茶文化巡禮。金箔五三燒長崎蛋糕、各式和菓子老鋪與網美咖啡甜點。',
-    color: 'bg-amber-50 border-amber-100 dark:bg-amber-900/20 dark:border-amber-800',
-    mapUrl: 'https://maps.app.goo.gl/Wni4jG8EwWNjj8dG6',
-    aiQuery: '長崎老宅喫茶店以及甜點推薦2026 以中文回答'
-  },
-  {
-    title: '必吃清單',
-    icon: <UtensilsCrossed className="text-red-600" />,
-    desc: '長崎強棒麵、角煮饅頭、A5和牛燒肉，沒吃到不算來過長崎。',
-    color: 'bg-red-50 border-red-100 dark:bg-red-900/20 dark:border-red-800',
-    mapUrl: 'https://maps.app.goo.gl/Hw4hAp8gDf7ow7sT8',
-    aiQuery: '長崎必吃美食推薦2026 以中文回答'
-  },
-  {
-    title: '微醺音樂酒吧',
-    icon: <Beer className="text-purple-600" />,
-    desc: '思案橋不夜城、出島 Wharf 海景居酒屋，長崎夜晚的靈魂。',
-    color: 'bg-purple-50 border-purple-100 dark:bg-purple-900/20 dark:border-purple-800',
-    mapUrl: 'https://maps.app.goo.gl/1qSnTLpqYi3rsUHy8',
-    aiQuery: '長崎居酒屋酒吧推薦2026 以中文回答'
-  },
-  {
-    title: '購物商舖',
-    icon: <ShoppingBag className="text-blue-600" />,
-    desc: '濱町觀光通、3COINS plus、海鷗市場免稅血拼完全攻略。',
-    color: 'bg-blue-50 border-blue-100 dark:bg-blue-900/20 dark:border-blue-800',
-    mapUrl: 'https://maps.app.goo.gl/yGTKPTbhzX5sJyq97',
-    aiQuery: '長崎購物免稅推薦2026 以中文回答'
-  },
-  {
-    title: '佐賀午餐推薦',
-    icon: <Utensils className="text-emerald-600" />,
-    desc: '三瀨雞、佐賀牛、當地定食與特色便當推薦。',
-    color: 'bg-emerald-50 border-emerald-100 dark:bg-emerald-900/20 dark:border-emerald-800',
-    mapUrl: 'https://maps.app.goo.gl/tHMhDYYxdsnkAjjh6',
-    aiQuery: '佐賀必吃午餐推薦 2026 以中文回答'
-  },
-  {
-    title: '佐賀晚餐推薦',
-    icon: <UtensilsCrossed className="text-orange-600" />,
-    desc: '三瀨雞串燒、鍋島清酒、佐賀在地居酒屋與海鮮。',
-    color: 'bg-orange-50 border-orange-100 dark:bg-orange-900/20 dark:border-orange-800',
-    mapUrl: 'https://maps.app.goo.gl/Bc1z9oeXC95R2V2c9',
-    aiQuery: '佐賀晚上必吃美食推薦 2026 以中文回答'
-  },
-];
-
-  return (
-    <div className="p-6 space-y-6 pb-24 animate-fadeIn">
-      <section>
-        <div className="bg-white dark:bg-stone-800 border border-amber-200 dark:border-amber-900/50 rounded-[2rem] p-5 shadow-sm">
-
-          <div className="flex items-center gap-2 mb-3 text-amber-600 font-bold text-xs uppercase tracking-widest"><Pin size={14} className="rotate-45" /> 團隊重要通知公佈欄</div>
-          {isAdmin ? (
-            <textarea value={noticeText} onChange={(e) => updateNoticeText(e.target.value)} className="w-full bg-amber-50/50 rounded-2xl p-3 text-sm min-h-[100px] outline-none" />
-          ) : (
-            <div className="text-sm text-stone-600 dark:text-stone-300 leading-relaxed whitespace-pre-line italic px-1">{noticeText}</div>
-          )}
-        </div>
-      </section>
-
-
 // ============================================
 // 共享塗鴉白板 v2 — 即時多人同步版
 // 放在 GuidePage function 定義的上方
@@ -1951,12 +1811,145 @@ const SharedWhiteboard = () => {
     </section>
   );
 };
+const GuidePage = ({ isAdmin, isMember, noticeText, updateNoticeText, darkMode }) => {
+  const [showPickyEater, setShowPickyEater] = useState(false);
+  const [sharedStores, setSharedStores] = useState([]);
+  const [newStoreName, setNewStoreName] = useState('');
+  const [newStoreUrl, setNewStoreUrl] = useState('');
+  const [newStoreNote, setNewStoreNote] = useState('');
+  const [showTaxRefund, setShowTaxRefund] = useState(false);
+  const [adderName, setAdderName] = useState('佑任');
+  const [taxInfo, setTaxInfo] = useState({ threshold: "5,000", luxuryThreshold: "500,000", totalThreshold: "5,000", fee: "0" });
+  const [showReservations, setShowReservations] = useState(false);
+  
+const [reservations, setReservations] = useState([
+  { name: '松翁軒 Café Sevilla（大正浪漫茶會）', date: '6/20 (六)', time: '12:00', note: '預約號碼：A000913389・4名席' },
+  { name: '軍艦島登島船票', date: '6/18 (四)', time: '09:00', note: '預約號碼：128734' },
+  { name: '大阪屋 浜町店（A5和牛燒肉）', date: '6/18 (四)', time: '21:00', note: '晚鳥時段・需電話確認' },
+]);
+
+useEffect(() => {
+  const unsubscribe = onValue(ref(db, 'reservations'), (snapshot) => {
+    const data = snapshot.val();
+    if (data) {
+      setReservations(data);
+    }
+  });
+  return () => unsubscribe();
+}, []);
 
 
 
+  useEffect(() => {
+    const taxRef = ref(db, 'taxRefund');
+    const unsubscribe = onValue(taxRef, (snapshot) => {
+      const val = snapshot.val();
+      if (val) setTaxInfo(val);
+    });
+    return () => unsubscribe();
+  }, []);
 
+  useEffect(() => {
+    const unsubscribe = onValue(ref(db, 'sharedStores'), (snapshot) => {
+      if (snapshot.val()) setSharedStores(snapshot.val());
+    });
+    return () => unsubscribe();
+  }, []);
 
+  const handleAddStore = () => {
+    if (!newStoreName.trim()) return;
+    const finalUrl = newStoreUrl.trim() ? newStoreUrl : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(newStoreName)}`;
+    const newList = [...sharedStores, { name: newStoreName, url: finalUrl, note: newStoreNote, adder: adderName }];
+    set(ref(db, 'sharedStores'), newList).then(() => { setNewStoreName(''); setNewStoreUrl(''); setNewStoreNote(''); });
+  };
 
+  const pickyItems = [
+  { en: 'No Raw Fish / Sashimi', th: '生魚・刺身NG', zh: '不吃生魚片 / 生食' },
+  { en: 'No Beef', th: '牛肉NG', zh: '不吃牛肉' },
+  { en: 'No Coriander', th: 'パクチーNG', zh: '不加香菜' },
+  { en: 'No Green Onion / Scallion', th: 'ネギNG', zh: '不加蔥' },
+  { en: 'No Ginger', th: '生姜NG', zh: '不加薑' },
+  { en: 'No Garlic', th: 'ニンニクNG', zh: '不加蒜' },
+  { en: 'No Cinnamon', th: 'シナモンNG', zh: '不加肉桂' },
+  { en: 'No Chinese Chive', th: 'ニラNG', zh: '不加韭菜' },
+  { en: 'No Star Anise', th: '八角NG', zh: '不加八角' },
+  { en: 'No Celery', th: 'セロリNG', zh: '不加芹菜' },
+];
+
+  const guideSections = [
+  {
+   title: '長崎的墓',
+    icon: <Flower2 className="text-pink-400" />,
+    desc: '94長崎的墓',
+    color: 'bg-pink-50 border-pink-100 dark:bg-pink-900/20 dark:border-pink-800',
+    mapUrl: 'https://maps.app.goo.gl/hZPumAwkoMSeDiK79?g_st=al',
+    aiQuery: '長崎有哪些古墓或特殊的墓 會吸引墳墓愛好者2026 以中文回答'
+  },
+  {
+    title: '喫茶店與甜點',
+    icon: <Coffee className="text-amber-600" />,
+    desc: '1946年創業珈琲冨士男、長崎老宅復古喫茶文化巡禮。金箔五三燒長崎蛋糕、各式和菓子老鋪與網美咖啡甜點。',
+    color: 'bg-amber-50 border-amber-100 dark:bg-amber-900/20 dark:border-amber-800',
+    mapUrl: 'https://maps.app.goo.gl/Wni4jG8EwWNjj8dG6',
+    aiQuery: '長崎老宅喫茶店以及甜點推薦2026 以中文回答'
+  },
+  {
+    title: '必吃清單',
+    icon: <UtensilsCrossed className="text-red-600" />,
+    desc: '長崎強棒麵、角煮饅頭、A5和牛燒肉，沒吃到不算來過長崎。',
+    color: 'bg-red-50 border-red-100 dark:bg-red-900/20 dark:border-red-800',
+    mapUrl: 'https://maps.app.goo.gl/Hw4hAp8gDf7ow7sT8',
+    aiQuery: '長崎必吃美食推薦2026 以中文回答'
+  },
+  {
+    title: '微醺音樂酒吧',
+    icon: <Beer className="text-purple-600" />,
+    desc: '思案橋不夜城、出島 Wharf 海景居酒屋，長崎夜晚的靈魂。',
+    color: 'bg-purple-50 border-purple-100 dark:bg-purple-900/20 dark:border-purple-800',
+    mapUrl: 'https://maps.app.goo.gl/1qSnTLpqYi3rsUHy8',
+    aiQuery: '長崎居酒屋酒吧推薦2026 以中文回答'
+  },
+  {
+    title: '購物商舖',
+    icon: <ShoppingBag className="text-blue-600" />,
+    desc: '濱町觀光通、3COINS plus、海鷗市場免稅血拼完全攻略。',
+    color: 'bg-blue-50 border-blue-100 dark:bg-blue-900/20 dark:border-blue-800',
+    mapUrl: 'https://maps.app.goo.gl/yGTKPTbhzX5sJyq97',
+    aiQuery: '長崎購物免稅推薦2026 以中文回答'
+  },
+  {
+    title: '佐賀午餐推薦',
+    icon: <Utensils className="text-emerald-600" />,
+    desc: '三瀨雞、佐賀牛、當地定食與特色便當推薦。',
+    color: 'bg-emerald-50 border-emerald-100 dark:bg-emerald-900/20 dark:border-emerald-800',
+    mapUrl: 'https://maps.app.goo.gl/tHMhDYYxdsnkAjjh6',
+    aiQuery: '佐賀必吃午餐推薦 2026 以中文回答'
+  },
+  {
+    title: '佐賀晚餐推薦',
+    icon: <UtensilsCrossed className="text-orange-600" />,
+    desc: '三瀨雞串燒、鍋島清酒、佐賀在地居酒屋與海鮮。',
+    color: 'bg-orange-50 border-orange-100 dark:bg-orange-900/20 dark:border-orange-800',
+    mapUrl: 'https://maps.app.goo.gl/Bc1z9oeXC95R2V2c9',
+    aiQuery: '佐賀晚上必吃美食推薦 2026 以中文回答'
+  },
+];
+
+  return (
+    <div className="p-6 space-y-6 pb-24 animate-fadeIn">
+      <section>
+        <div className="bg-white dark:bg-stone-800 border border-amber-200 dark:border-amber-900/50 rounded-[2rem] p-5 shadow-sm">
+
+          <div className="flex items-center gap-2 mb-3 text-amber-600 font-bold text-xs uppercase tracking-widest"><Pin size={14} className="rotate-45" /> 團隊重要通知公佈欄</div>
+          {isAdmin ? (
+            <textarea value={noticeText} onChange={(e) => updateNoticeText(e.target.value)} className="w-full bg-amber-50/50 rounded-2xl p-3 text-sm min-h-[100px] outline-none" />
+          ) : (
+            <div className="text-sm text-stone-600 dark:text-stone-300 leading-relaxed whitespace-pre-line italic px-1">{noticeText}</div>
+          )}
+        </div>
+      </section>
+
+ <SharedWhiteboard />
 
 
       <section>
