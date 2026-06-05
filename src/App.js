@@ -1546,7 +1546,7 @@ const ReservationAdminSection = () => {
 // 放在 GuidePage function 定義的上方
 // ============================================
 
-const SharedWhiteboard = () => {
+const SharedWhiteboard = ({ isAdmin, isMember }) => {
   const canvasRef = useRef(null);
   const [tool, setToolState] = useState('pen');
   const [color, setColor] = useState('#1A1510');
@@ -1555,9 +1555,10 @@ const SharedWhiteboard = () => {
   const painting = useRef(false);
   const lastPos = useRef(null);
   const isInit = useRef(false);
-  const strokeHistory = useRef([]); // 🆕 記錄自己這個 session 的 key 順序
+  const strokeHistory = useRef([]);
+  const redoHistory = useRef([]); // 下一步暫存
 
-  const COLORS = ['#1A1510','#E8334A','#F4831F','#4BACD6','#5BB56A','#9B59B6'];
+  const COLORS = ['#1A1510','#FFFFFF','#E8334A','#F4831F','#F7E84E','#4BACD6','#5BB56A','#9B59B6','#EC4899','#92400E'];
 
   useEffect(() => {
     const c = canvasRef.current;
@@ -1656,7 +1657,8 @@ const SharedWhiteboard = () => {
         ts: Date.now(),
       };
       const key = Date.now().toString();
-      strokeHistory.current.push(key); // 🆕
+      strokeHistory.current.push({ key, stroke });
+      redoHistory.current = [];
       set(ref(db, `wb/strokes/${key}`), stroke);
       return;
     }
@@ -1699,7 +1701,8 @@ const SharedWhiteboard = () => {
       ts: Date.now(),
     };
     const key = currentStrokeKey.current;
-    strokeHistory.current.push(key); // 🆕
+    strokeHistory.current.push({ key, stroke });
+    redoHistory.current = [];
     set(ref(db, `wb/strokes/${key}`), stroke);
     currentStroke.current = [];
 
@@ -1712,8 +1715,17 @@ const SharedWhiteboard = () => {
   // 🆕 上一步：刪掉自己這個 session 最後一筆
   const undoLast = () => {
     if (strokeHistory.current.length === 0) return;
-    const lastKey = strokeHistory.current.pop();
-    set(ref(db, `wb/strokes/${lastKey}`), null);
+    const last = strokeHistory.current.pop();
+    redoHistory.current.push(last.stroke);
+    set(ref(db, `wb/strokes/${last.key}`), null);
+  };
+
+  const redoLast = () => {
+    if (redoHistory.current.length === 0) return;
+    const stroke = redoHistory.current.pop();
+    const key = Date.now().toString();
+    strokeHistory.current.push({ key, stroke });
+    set(ref(db, `wb/strokes/${key}`), stroke);
   };
 
   const mergeSnapshot = () => {
@@ -1724,14 +1736,16 @@ const SharedWhiteboard = () => {
     const data = off.toDataURL('image/jpeg', 0.65);
     set(ref(db, 'wb/snapshot'), data);
     set(ref(db, 'wb/strokes'), null);
-    strokeHistory.current = []; // 🆕 快照後清空歷史
+    strokeHistory.current = [];
+    redoHistory.current = [];
   };
 
   const clearBoard = () => {
     if (!window.confirm('確定清空？所有人的塗鴉都會消失！')) return;
     set(ref(db, 'wb/snapshot'), '');
     set(ref(db, 'wb/strokes'), null);
-    strokeHistory.current = []; // 🆕
+    strokeHistory.current = [];
+    redoHistory.current = [];
     const c = canvasRef.current;
     const ctx = c.getContext('2d');
     ctx.fillStyle = '#FFFFFF';
@@ -1767,9 +1781,13 @@ const SharedWhiteboard = () => {
         width={480} height={320}
         className="block w-full bg-white"
         style={{ touchAction: 'none', cursor: 'crosshair' }}
-        onMouseDown={startDraw} onMouseMove={draw}
-        onMouseUp={stopDraw} onMouseLeave={stopDraw}
-        onTouchStart={startDraw} onTouchMove={draw} onTouchEnd={stopDraw}
+        onMouseDown={isAdmin || isMember ? startDraw : undefined}
+      onMouseMove={isAdmin || isMember ? draw : undefined}
+      onMouseUp={stopDraw} onMouseLeave={stopDraw}
+      onTouchStart={isAdmin || isMember ? startDraw : undefined}
+      onTouchMove={isAdmin || isMember ? draw : undefined}
+      onTouchEnd={stopDraw}
+      style={{ touchAction: 'none', cursor: isAdmin || isMember ? 'crosshair' : 'not-allowed' }}
       />
 
       <div className="px-3 py-2.5 border-t-2 border-stone-900 bg-amber-50 dark:bg-stone-800 flex flex-wrap items-center gap-2">
@@ -1788,6 +1806,10 @@ const SharedWhiteboard = () => {
           className="text-[9px] font-bold px-3 py-1.5 rounded-full border border-stone-400 text-stone-600 dark:text-stone-300 bg-white dark:bg-stone-700">
           ↩ 上一步
         </button>
+        <button onClick={redoLast}
+          className="text-[9px] font-bold px-3 py-1.5 rounded-full border border-stone-400 text-stone-600 dark:text-stone-300 bg-white dark:bg-stone-700">
+          ↪ 下一步
+        </button>
         <button onClick={clearBoard}
           className="text-[9px] font-bold px-3 py-1.5 rounded-full border border-red-300 text-red-500 bg-white dark:bg-stone-700">
           🗑 清空
@@ -1799,7 +1821,8 @@ const SharedWhiteboard = () => {
         <input type="range" min="2" max="30" value={size}
           onChange={e => setSize(parseInt(e.target.value))} className="flex-1" />
         <div className="w-6 h-6 flex items-center justify-center">
-          <div className="rounded-full bg-stone-800 dark:bg-stone-200 transition-all"
+          <div className="rounded-full transition-all border border-stone-400"
+            style={{ background: color }}
             style={{ width: Math.max(4, Math.min(size * 1.2, 24)), height: Math.max(4, Math.min(size * 1.2, 24)) }} />
         </div>
       </div>
@@ -1959,7 +1982,7 @@ useEffect(() => {
         </div>
       </section>
 
- <SharedWhiteboard />
+ <SharedWhiteboard isAdmin={isAdmin} isMember={isMember} />
 
 
       <section>
