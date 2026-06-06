@@ -1050,7 +1050,7 @@ const WeatherHero = ({ isAdmin, versionText, updateVersion, onLock, showSecret, 
   );
 };
 
-const FloatingStatus = ({ itinerary }) => {
+const FloatingStatus = ({ itinerary, showOutfitPicker }) => {
   const [nextStop, setNextStop] = useState(null);
 
   useEffect(() => {
@@ -1094,7 +1094,8 @@ const FloatingStatus = ({ itinerary }) => {
   if (!nextStop) return null;
 
   return (
-    <div className="fixed bottom-20 left-4 right-4 z-30">
+    <div className="fixed bottom-20 left-4 right-4 z-30" style={{ display: showOutfitPicker ? 'none' : 'block' }}>
+
       <div className="bg-stone-900/95 backdrop-blur-md text-stone-50 p-4 rounded-2xl shadow-2xl border border-stone-700/50 flex items-center justify-between">
         <div className="flex items-center gap-3 overflow-hidden">
           <div className={`w-10 h-10 rounded-full flex items-center justify-center text-stone-900 flex-shrink-0 ${nextStop.finished ? 'bg-green-500' : 'bg-amber-500 animate-pulse'}`}>
@@ -4962,7 +4963,7 @@ fontSize: '13px',
                         <div className="text-center text-xs text-stone-400 mt-12 mb-4 font-serif italic">— Journey to Kyushu —</div>
                         <div className="flex justify-center mb-8"><button onClick={() => window.print()} className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-stone-200 text-[10px] font-bold text-stone-400 shadow-sm"><FileText size={10} /> 匯出 PDF 精裝行程</button></div>
                       </div>
-                      <FloatingStatus itinerary={itinerary} />
+                      <FloatingStatus itinerary={itinerary} showOutfitPicker={showOutfitPicker} />
                     </div>
                   )}
 
