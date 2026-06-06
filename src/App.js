@@ -1025,7 +1025,7 @@ const WeatherHero = ({ isAdmin, versionText, updateVersion, onLock, showSecret, 
         <Shirt size={18} className="text-amber-500" /> 選擇要查詢的天數
       </h3>
       <p className="text-xs text-stone-400 mb-5">Perplexity 會自動查當天天氣預報並結合行程給建議</p>
-      <div className="space-y-2">
+      <div className="space-y-2 overflow-y-auto max-h-[60vh]">
         {INITIAL_ITINERARY_DATA.map((day) => {
           const today = new Date().toISOString().split('T')[0];
           const isToday = day.date === today;
