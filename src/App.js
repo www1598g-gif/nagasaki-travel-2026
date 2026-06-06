@@ -880,7 +880,7 @@ const WeatherHero = ({ isAdmin, versionText, updateVersion, onLock, showSecret, 
   const nextHours = getNext24Hours();
 
   return (
-    <div className="relative bg-[#FDFBF7] dark:bg-stone-900 pt-0 pb-8 px-6 border-b border-stone-200 dark:border-stone-800 rounded-b-[2.5rem] z-10 overflow-hidden transition-colors duration-500">
+   <div className="relative bg-[#FDFBF7] dark:bg-stone-900 pt-0 pb-8 px-6 border-b border-stone-200 dark:border-stone-800 rounded-b-[2.5rem] z-10 overflow-visible transition-colors duration-500">
       {bannerText && (
         <div className={`absolute top-0 left-0 right-0 py-1.5 z-20 shadow-sm text-[10px] font-bold text-center transition-colors duration-500
           ${bannerText.includes('結束') ? 'bg-stone-200 text-stone-500 dark:bg-stone-800 dark:text-stone-400' : 'bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-200'}`}
