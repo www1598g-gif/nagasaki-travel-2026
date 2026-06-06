@@ -653,15 +653,13 @@ const UTILS_DATA = {
 // UIUX part
 // ============================================
 
-const WeatherHero = ({ isAdmin, versionText, updateVersion, onLock, showSecret, onHardRefresh, itinerary, setItinerary, showOutfitPicker, setShowOutfitPicker }) => {
-
+const WeatherHero = ({ isAdmin, versionText, updateVersion, onLock, showSecret, onHardRefresh, itinerary, setItinerary }) => {
   const [data, setData] = useState(null);
   const [aqi, setAqi] = useState(15);
   const [bannerText, setBannerText] = useState('');
   const [lastUpdate, setLastUpdate] = useState('');
   const [alerts, setAlerts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  
   const [secretLinks, setSecretLinks] = useState([]);
   const [newLinkName, setNewLinkName] = useState('');
   const [newLinkUrl, setNewLinkUrl] = useState('');
@@ -881,7 +879,7 @@ const WeatherHero = ({ isAdmin, versionText, updateVersion, onLock, showSecret, 
   const nextHours = getNext24Hours();
 
   return (
-   <div className="relative bg-[#FDFBF7] dark:bg-stone-900 pt-0 pb-8 px-6 border-b border-stone-200 dark:border-stone-800 rounded-b-[2.5rem] z-10 overflow-visible transition-colors duration-500">
+    <div className="relative bg-[#FDFBF7] dark:bg-stone-900 pt-0 pb-8 px-6 border-b border-stone-200 dark:border-stone-800 rounded-b-[2.5rem] z-10 overflow-hidden transition-colors duration-500">
       {bannerText && (
         <div className={`absolute top-0 left-0 right-0 py-1.5 z-20 shadow-sm text-[10px] font-bold text-center transition-colors duration-500
           ${bannerText.includes('結束') ? 'bg-stone-200 text-stone-500 dark:bg-stone-800 dark:text-stone-400' : 'bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-200'}`}
@@ -995,24 +993,12 @@ const WeatherHero = ({ isAdmin, versionText, updateVersion, onLock, showSecret, 
             </div>
           </div>
         )}
-        {/* 穿搭 AI 按鈕 */}
-<button
-  onClick={() => setShowOutfitPicker(true)}
-  className="w-full mt-3 py-3 bg-white/90 dark:bg-stone-800/90 backdrop-blur-md border border-stone-200 dark:border-stone-700 rounded-2xl flex items-center justify-center gap-2 text-sm font-bold text-stone-600 dark:text-stone-200 active:scale-95 shadow-sm group"
->
-  <Shirt size={16} className="text-amber-500 group-hover:rotate-12 transition-transform" /> 今日穿搭 AI 建議
-</button>
-
-{/* Ask AI 原本按鈕，維持不動 */}
-<button
-  onClick={() => window.open(`https://www.perplexity.ai/search?q=${encodeURIComponent('長崎 佐賀 2026 6月中旬 長崎佐賀都在市區內 必吃美食與私房景點 歷史文化深度介紹 也請納入日本在地Tabelog與小紅書評價 以中文回答')}`, '_blank')}
-  className="w-full mt-3 py-3 bg-white/90 dark:bg-stone-800/90 backdrop-blur-md border border-stone-200 dark:border-stone-700 rounded-2xl flex items-center justify-center gap-2 text-sm font-bold text-stone-600 dark:text-stone-200 active:scale-95 shadow-sm group"
->
-  <Sparkles size={16} className="text-teal-500 group-hover:rotate-12 transition-transform" /> Ask AI (Perplexity 深度探索)
-</button>
-
-{/* 穿搭選天 Modal */}
-{showOutfitPicker && <OutfitPickerModal onClose={() => setShowOutfitPicker(false)} />}
+        <button
+          onClick={() => window.open(`https://www.perplexity.ai/search?q=${encodeURIComponent('長崎 佐賀 2026 6月中旬 長崎佐賀都在市區內 必吃美食與私房景點 歷史文化深度介紹 也請納入日本在地Tabelog與小紅書評價 以中文回答')}`, '_blank')}
+          className="w-full mt-3 py-3 bg-white/90 dark:bg-stone-800/90 backdrop-blur-md border border-stone-200 dark:border-stone-700 rounded-2xl flex items-center justify-center gap-2 text-sm font-bold text-stone-600 dark:text-stone-200 active:scale-95 shadow-sm group"
+        >
+          <Sparkles size={16} className="text-teal-500 group-hover:rotate-12 transition-transform" /> Ask AI (Perplexity 深度探索)
+        </button>
 
 {showSecret && secretLinks.length > 0 && (
   <div className="mt-3 overflow-hidden rounded-2xl border-2 border-ink" style={{border: '2px solid #1A1510'}}>
@@ -1051,7 +1037,7 @@ const WeatherHero = ({ isAdmin, versionText, updateVersion, onLock, showSecret, 
   );
 };
 
-const FloatingStatus = ({ itinerary, showOutfitPicker }) => {
+const FloatingStatus = ({ itinerary }) => {
   const [nextStop, setNextStop] = useState(null);
 
   useEffect(() => {
@@ -1095,8 +1081,7 @@ const FloatingStatus = ({ itinerary, showOutfitPicker }) => {
   if (!nextStop) return null;
 
   return (
-    <div className="fixed bottom-20 left-4 right-4 z-30" style={{ visibility: showOutfitPicker ? 'hidden' : 'visible' }}>
-
+    <div className="fixed bottom-20 left-4 right-4 z-30">
       <div className="bg-stone-900/95 backdrop-blur-md text-stone-50 p-4 rounded-2xl shadow-2xl border border-stone-700/50 flex items-center justify-between">
         <div className="flex items-center gap-3 overflow-hidden">
           <div className={`w-10 h-10 rounded-full flex items-center justify-center text-stone-900 flex-shrink-0 ${nextStop.finished ? 'bg-green-500' : 'bg-amber-500 animate-pulse'}`}>
@@ -1119,100 +1104,6 @@ const FloatingStatus = ({ itinerary, showOutfitPicker }) => {
     </div>
   );
 };
-
-const OutfitPickerModal = ({ onClose }) => {
-  const scrollRef = useRef(null);
-  const [selectedDayIdx, setSelectedDayIdx] = useState(() => {
-    const today = new Date().toISOString().split('T')[0];
-    const idx = INITIAL_ITINERARY_DATA.findIndex(d => d.date === today);
-    return idx >= 0 ? idx : 0;
-  });
-
-  useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTop = selectedDayIdx * 52;
-    }
-  }, []);
-
-  return (
-    <div
-      className="fixed inset-0 z-[99999] flex items-end justify-center"
-      onClick={onClose}
-    >
-      <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
-      <div
-        className="relative bg-white dark:bg-stone-800 w-full max-w-md rounded-t-3xl shadow-2xl animate-fadeIn flex flex-col"
-        style={{ paddingBottom: 'calc(1.5rem + env(safe-area-inset-bottom, 0px))', maxHeight: '70vh' }}
-        onClick={(e) => e.stopPropagation()}
-      >
-        {/* 頂部把手 + 標題 */}
-        <div className="px-6 pt-5 pb-2 flex-shrink-0">
-          <div className="w-10 h-1 bg-stone-200 dark:bg-stone-600 rounded-full mx-auto mb-5" />
-          <h3 className="font-bold text-stone-800 dark:text-stone-100 text-base mb-4 flex items-center gap-2">
-            <Shirt size={18} className="text-amber-500" /> 選擇天數
-          </h3>
-        </div>
-
-        {/* 滾輪 — flex: 1 讓它佔滿剩餘空間，自動置中 */}
-        <div className="relative flex-1 overflow-hidden px-6">
-          <div className="absolute top-0 left-6 right-6 h-16 bg-gradient-to-b from-white dark:from-stone-800 to-transparent z-10 pointer-events-none" />
-          <div className="absolute bottom-0 left-6 right-6 h-16 bg-gradient-to-t from-white dark:from-stone-800 to-transparent z-10 pointer-events-none" />
-          <div className="absolute top-1/2 left-10 right-10 h-[52px] -translate-y-1/2 border-t-2 border-b-2 border-amber-400 rounded-xl z-10 pointer-events-none" />
-
-          <div
-            ref={scrollRef}
-            className="overflow-y-scroll h-full"
-            style={{ scrollSnapType: 'y mandatory' }}
-            onTouchStart={(e) => e.stopPropagation()}
-            onTouchMove={(e) => e.stopPropagation()}
-            onTouchEnd={(e) => {
-              e.stopPropagation();
-              const idx = Math.round(scrollRef.current.scrollTop / 52);
-              setSelectedDayIdx(Math.min(Math.max(idx, 0), INITIAL_ITINERARY_DATA.length - 1));
-            }}
-            onScroll={() => {
-              const idx = Math.round(scrollRef.current.scrollTop / 52);
-              setSelectedDayIdx(Math.min(Math.max(idx, 0), INITIAL_ITINERARY_DATA.length - 1));
-            }}
-          >
-            <div style={{ height: '64px' }} />
-            {INITIAL_ITINERARY_DATA.map((day) => (
-              <div
-                key={day.day}
-                style={{ scrollSnapAlign: 'center', height: '52px' }}
-                className="flex flex-col justify-center px-4"
-              >
-                <span className="font-bold text-stone-800 dark:text-stone-100 text-sm">
-                  Day {day.day}・{day.displayDate}
-                </span>
-                <span className="text-xs text-stone-400 truncate">{day.title}</span>
-              </div>
-            ))}
-            <div style={{ height: '64px' }} />
-          </div>
-        </div>
-
-        {/* 按鈕 — 永遠在底部，不會被擋 */}
-        <div className="px-6 pt-4 flex-shrink-0">
-          <button
-            onClick={() => {
-              const day = INITIAL_ITINERARY_DATA[selectedDayIdx];
-              const locationNames = day.locations.map(l => l.name).join('、');
-              const query = `${day.date} 日本長崎佐賀天氣預報，當天行程包含：${locationNames}，請根據天氣預報建議今天穿什麼衣服、需要帶什麼裝備，以繁體中文回答`;
-              window.open(`https://www.perplexity.ai/search?q=${encodeURIComponent(query)}`, '_blank');
-              onClose();
-            }}
-            className="w-full py-3.5 bg-stone-800 text-amber-50 rounded-2xl font-bold text-sm flex items-center justify-center gap-2 active:scale-95"
-          >
-            <Sparkles size={16} className="text-teal-400" /> 查詢這天的穿搭建議
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-
 
 const OutfitGuide = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -2783,7 +2674,6 @@ export default function TravelApp() {
   const [noticeText, setNoticeText] = useState('載入中...');
   const [secretClickCount, setSecretClickCount] = useState(0);
   const [showSecret, setShowSecret] = useState(false);
-  const [showOutfitPicker, setShowOutfitPicker] = useState(false);
 
   const handleSecretTrigger = () => {
   setSecretClickCount(prev => {
@@ -4941,17 +4831,15 @@ fontSize: '13px',
             ) : (
               <div id="main-app-container" className="bg-[#FDFBF7] dark:bg-stone-900 min-h-screen">
                 <WeatherHero
-  isAdmin={isAdmin}
-  itinerary={itinerary}
-  setItinerary={setItinerary}
-  versionText={appVersion}
-  updateVersion={handleUpdateVersion}
-  showSecret={showSecret}
-  showOutfitPicker={showOutfitPicker}
-  setShowOutfitPicker={setShowOutfitPicker}
-  onLock={() => { setIsLocked(true); setIsUnlocking(false); setInputPwd(''); setIsAdmin(false); setIsMember(false); localStorage.removeItem('isUnlocked'); localStorage.removeItem('userRole'); }}
-  onHardRefresh={() => window.location.reload()}
-/>
+                  isAdmin={isAdmin}
+                  itinerary={itinerary}
+                  setItinerary={setItinerary}
+                  versionText={appVersion}
+                  updateVersion={handleUpdateVersion}
+                  showSecret={showSecret}
+                  onLock={() => { setIsLocked(true); setIsUnlocking(false); setInputPwd(''); setIsAdmin(false); setIsMember(false); localStorage.removeItem('isUnlocked'); localStorage.removeItem('userRole'); }}
+                  onHardRefresh={() => window.location.reload()}
+                />
                 <main className="pb-28">
                   {activeTab === 'itinerary' && (
                     <div className="pb-4">
@@ -4974,7 +4862,7 @@ fontSize: '13px',
                         <div className="text-center text-xs text-stone-400 mt-12 mb-4 font-serif italic">— Journey to Kyushu —</div>
                         <div className="flex justify-center mb-8"><button onClick={() => window.print()} className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-stone-200 text-[10px] font-bold text-stone-400 shadow-sm"><FileText size={10} /> 匯出 PDF 精裝行程</button></div>
                       </div>
-                      <FloatingStatus itinerary={itinerary} showOutfitPicker={showOutfitPicker} />
+                      <FloatingStatus itinerary={itinerary} />
                     </div>
                   )}
 
