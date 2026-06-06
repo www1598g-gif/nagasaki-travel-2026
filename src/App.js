@@ -653,14 +653,15 @@ const UTILS_DATA = {
 // UIUX part
 // ============================================
 
-const WeatherHero = ({ isAdmin, versionText, updateVersion, onLock, showSecret, onHardRefresh, itinerary, setItinerary }) => {
+const WeatherHero = ({ isAdmin, versionText, updateVersion, onLock, showSecret, onHardRefresh, itinerary, setItinerary, showOutfitPicker, setShowOutfitPicker }) => {
+
   const [data, setData] = useState(null);
   const [aqi, setAqi] = useState(15);
   const [bannerText, setBannerText] = useState('');
   const [lastUpdate, setLastUpdate] = useState('');
   const [alerts, setAlerts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [showOutfitPicker, setShowOutfitPicker] = useState(false);
+  
   const [secretLinks, setSecretLinks] = useState([]);
   const [newLinkName, setNewLinkName] = useState('');
   const [newLinkUrl, setNewLinkUrl] = useState('');
@@ -1094,7 +1095,7 @@ const FloatingStatus = ({ itinerary, showOutfitPicker }) => {
   if (!nextStop) return null;
 
   return (
-    <div className="fixed bottom-20 left-4 right-4 z-30">
+    <div className="fixed bottom-20 left-4 right-4 z-30" style={{ visibility: showOutfitPicker ? 'hidden' : 'visible' }}>
 
       <div className="bg-stone-900/95 backdrop-blur-md text-stone-50 p-4 rounded-2xl shadow-2xl border border-stone-700/50 flex items-center justify-between">
         <div className="flex items-center gap-3 overflow-hidden">
@@ -2775,6 +2776,7 @@ export default function TravelApp() {
   const [noticeText, setNoticeText] = useState('載入中...');
   const [secretClickCount, setSecretClickCount] = useState(0);
   const [showSecret, setShowSecret] = useState(false);
+  const [showOutfitPicker, setShowOutfitPicker] = useState(false);
 
   const handleSecretTrigger = () => {
   setSecretClickCount(prev => {
@@ -4932,15 +4934,17 @@ fontSize: '13px',
             ) : (
               <div id="main-app-container" className="bg-[#FDFBF7] dark:bg-stone-900 min-h-screen">
                 <WeatherHero
-                  isAdmin={isAdmin}
-                  itinerary={itinerary}
-                  setItinerary={setItinerary}
-                  versionText={appVersion}
-                  updateVersion={handleUpdateVersion}
-                  showSecret={showSecret}
-                  onLock={() => { setIsLocked(true); setIsUnlocking(false); setInputPwd(''); setIsAdmin(false); setIsMember(false); localStorage.removeItem('isUnlocked'); localStorage.removeItem('userRole'); }}
-                  onHardRefresh={() => window.location.reload()}
-                />
+  isAdmin={isAdmin}
+  itinerary={itinerary}
+  setItinerary={setItinerary}
+  versionText={appVersion}
+  updateVersion={handleUpdateVersion}
+  showSecret={showSecret}
+  showOutfitPicker={showOutfitPicker}
+  setShowOutfitPicker={setShowOutfitPicker}
+  onLock={() => { setIsLocked(true); setIsUnlocking(false); setInputPwd(''); setIsAdmin(false); setIsMember(false); localStorage.removeItem('isUnlocked'); localStorage.removeItem('userRole'); }}
+  onHardRefresh={() => window.location.reload()}
+/>
                 <main className="pb-28">
                   {activeTab === 'itinerary' && (
                     <div className="pb-4">
