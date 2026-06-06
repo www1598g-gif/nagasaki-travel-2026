@@ -1105,14 +1105,121 @@ const FloatingStatus = ({ itinerary }) => {
   );
 };
 
+
+const OutfitPickerModal = ({ onClose }) => {
+  const scrollRef = useRef(null);
+  const [selectedDayIdx, setSelectedDayIdx] = useState(() => {
+    const today = new Date().toISOString().split('T')[0];
+    const idx = INITIAL_ITINERARY_DATA.findIndex(d => d.date === today);
+    return idx >= 0 ? idx : 0;
+  });
+
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = selectedDayIdx * 52;
+    }
+  }, []);
+
+  return (
+    <div className="fixed inset-0 z-[99999] flex items-end justify-center" onClick={onClose}>
+      <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
+      <div
+        className="relative bg-white dark:bg-stone-800 w-full max-w-md rounded-t-3xl shadow-2xl flex flex-col"
+        style={{ maxHeight: '60vh', paddingBottom: 'calc(1.5rem + env(safe-area-inset-bottom, 0px))' }}
+        onClick={e => e.stopPropagation()}
+      >
+        {/* 把手 + 標題 */}
+        <div className="px-6 pt-5 pb-3 flex-shrink-0">
+          <div className="w-10 h-1 bg-stone-200 dark:bg-stone-600 rounded-full mx-auto mb-4" />
+          <h3 className="font-bold text-stone-800 dark:text-stone-100 text-base flex items-center gap-2">
+            <Shirt size={18} className="text-amber-500" /> 選擇天數
+          </h3>
+        </div>
+
+        {/* 滾輪區 */}
+        <div className="relative flex-1 overflow-hidden px-6 min-h-[160px]">
+          <div className="absolute top-0 left-0 right-0 h-14 bg-gradient-to-b from-white dark:from-stone-800 to-transparent z-10 pointer-events-none" />
+          <div className="absolute bottom-0 left-0 right-0 h-14 bg-gradient-to-t from-white dark:from-stone-800 to-transparent z-10 pointer-events-none" />
+          <div className="absolute top-1/2 left-8 right-8 h-[52px] -translate-y-1/2 border-t-2 border-b-2 border-amber-400 rounded-xl z-10 pointer-events-none" />
+
+          <div
+            ref={scrollRef}
+            className="overflow-y-scroll h-full no-scrollbar"
+            style={{ scrollSnapType: 'y mandatory' }}
+            onTouchStart={e => e.stopPropagation()}
+            onTouchMove={e => e.stopPropagation()}
+            onScroll={() => {
+              const idx = Math.round(scrollRef.current.scrollTop / 52);
+              setSelectedDayIdx(Math.min(Math.max(idx, 0), INITIAL_ITINERARY_DATA.length - 1));
+            }}
+          >
+            <div style={{ height: '54px' }} />
+            {INITIAL_ITINERARY_DATA.map((day) => (
+              <div
+                key={day.day}
+                style={{ scrollSnapAlign: 'center', height: '52px' }}
+                className="flex flex-col justify-center px-2"
+              >
+                <span className="font-bold text-stone-800 dark:text-stone-100 text-sm">
+                  Day {day.day}・{day.displayDate}
+                </span>
+                <span className="text-xs text-stone-400 truncate">{day.title}</span>
+              </div>
+            ))}
+            <div style={{ height: '54px' }} />
+          </div>
+        </div>
+
+        {/* 按鈕 — 永遠在底部 */}
+        <div className="px-6 pt-4 flex-shrink-0">
+          <button
+            onClick={() => {
+              const day = INITIAL_ITINERARY_DATA[selectedDayIdx];
+              const locationNames = day.locations.map(l => l.name).join('、');
+              const query = `${day.date} 日本長崎佐賀天氣預報，當天行程包含：${locationNames}，請根據天氣預報建議今天穿什麼衣服、需要帶什麼裝備，以繁體中文回答`;
+              window.open(`https://www.perplexity.ai/search?q=${encodeURIComponent(query)}`, '_blank');
+              onClose();
+            }}
+            className="w-full py-3.5 bg-stone-800 text-amber-50 rounded-2xl font-bold text-sm flex items-center justify-center gap-2 active:scale-95"
+          >
+            <Sparkles size={16} className="text-teal-400" /> 查詢這天的穿搭建議
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+
+
+
+
+
+
+
+
+
 const OutfitGuide = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [showOutfit, setShowOutfit] = useState(false);
+
   if (!isOpen)
     return (
-      <button onClick={() => setIsOpen(true)} className="mx-6 mt-6 bg-white dark:bg-stone-800 shadow-sm border border-stone-100 dark:border-stone-700 py-3 px-4 rounded-xl text-xs font-bold flex items-center justify-center gap-2 text-stone-600 dark:text-stone-300 w-[calc(100%-3rem)] active:scale-95 transition-transform"
-      >
-        <Info size={14} className="text-amber-500" /> 查看初夏穿搭 & 爛腳等級說明
-      </button>
+      <div className="mx-6 mt-6 flex flex-col gap-2">
+        <button
+          onClick={() => setIsOpen(true)}
+          className="bg-white dark:bg-stone-800 shadow-sm border border-stone-100 dark:border-stone-700 py-3 px-4 rounded-xl text-xs font-bold flex items-center justify-center gap-2 text-stone-600 dark:text-stone-300 w-full active:scale-95 transition-transform"
+        >
+          <Info size={14} className="text-amber-500" /> 查看初夏穿搭 & 爛腳等級說明
+        </button>
+        <button
+          onClick={() => setShowOutfit(true)}
+          className="bg-white dark:bg-stone-800 shadow-sm border border-stone-100 dark:border-stone-700 py-3 px-4 rounded-xl text-xs font-bold flex items-center justify-center gap-2 text-stone-600 dark:text-stone-300 w-full active:scale-95 transition-transform"
+        >
+          <Shirt size={16} className="text-amber-500" /> 今日穿搭 AI 建議
+        </button>
+        {showOutfit && <OutfitPickerModal onClose={() => setShowOutfit(false)} />}
+      </div>
     );
 
   return (
