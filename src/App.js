@@ -661,7 +661,6 @@ const WeatherHero = ({ isAdmin, versionText, updateVersion, onLock, showSecret, 
   const [alerts, setAlerts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [showOutfitPicker, setShowOutfitPicker] = useState(false);
-  const [selectedDayIdx, setSelectedDayIdx] = useState(0);
   const [secretLinks, setSecretLinks] = useState([]);
   const [newLinkName, setNewLinkName] = useState('');
   const [newLinkUrl, setNewLinkUrl] = useState('');
@@ -1012,89 +1011,7 @@ const WeatherHero = ({ isAdmin, versionText, updateVersion, onLock, showSecret, 
 </button>
 
 {/* 穿搭選天 Modal */}
-{showOutfitPicker && (
-  <div
-    className="fixed inset-0 z-[9999] flex items-end justify-center"
-    onClick={() => setShowOutfitPicker(false)}
-  >
-    <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
-    <div
-      className="relative bg-white dark:bg-stone-800 w-full max-w-md rounded-t-3xl p-6 pb-12 shadow-2xl animate-fadeIn"
-      onClick={(e) => e.stopPropagation()}
-    >
-      <div className="w-10 h-1 bg-stone-200 dark:bg-stone-600 rounded-full mx-auto mb-5" />
-      <h3 className="font-bold text-stone-800 dark:text-stone-100 text-base mb-4 flex items-center gap-2">
-        <Shirt size={18} className="text-amber-500" /> 選擇天數
-      </h3>
-
-      {/* 滾輪選單 */}
-      <div className="relative h-[180px] overflow-hidden">
-        {/* 上下遮罩 */}
-        <div className="absolute top-0 left-0 right-0 h-16 bg-gradient-to-b from-white dark:from-stone-800 to-transparent z-10 pointer-events-none" />
-        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white dark:from-stone-800 to-transparent z-10 pointer-events-none" />
-        {/* 中間選中線 */}
-        <div className="absolute top-1/2 left-4 right-4 h-[52px] -translate-y-1/2 border-t-2 border-b-2 border-amber-400 rounded-xl z-10 pointer-events-none" />
-
-        <div
-          className="overflow-y-scroll h-full scroll-smooth"
-  style={{ scrollSnapType: 'y mandatory' }}
-  onTouchStart={(e) => e.stopPropagation()}
-  onTouchMove={(e) => e.stopPropagation()}
-  onTouchEnd={(e) => e.stopPropagation()}
-          ref={(el) => {
-            if (el) {
-              // 預設滾到今天
-              const today = new Date().toISOString().split('T')[0];
-              const idx = INITIAL_ITINERARY_DATA.findIndex(d => d.date === today);
-              const targetIdx = idx >= 0 ? idx : 0;
-              setTimeout(() => {
-                el.scrollTop = targetIdx * 52;
-              }, 50);
-            }
-          }}
-          onScrollEnd={(e) => {
-            const idx = Math.round(e.target.scrollTop / 52);
-            setSelectedDayIdx(idx);
-          }}
-          onScroll={(e) => {
-            const idx = Math.round(e.target.scrollTop / 52);
-            setSelectedDayIdx(idx);
-          }}
-        >
-          {/* 上方留白 */}
-          <div style={{ height: '64px', scrollSnapAlign: 'none', flexShrink: 0 }} />
-          {INITIAL_ITINERARY_DATA.map((day, idx) => (
-            <div
-              key={day.day}
-              style={{ scrollSnapAlign: 'center', height: '52px' }}
-              className="flex flex-col justify-center px-4"
-            >
-              <span className="font-bold text-stone-800 dark:text-stone-100 text-sm">
-                Day {day.day}・{day.displayDate}
-              </span>
-              <span className="text-xs text-stone-400 truncate">{day.title}</span>
-            </div>
-          ))}
-          {/* 下方留白 */}
-          <div style={{ height: '64px', scrollSnapAlign: 'none', flexShrink: 0 }} />
-        </div>
-      </div>
-
-      <button
-        onClick={() => {
-          const day = INITIAL_ITINERARY_DATA[selectedDayIdx];
-          const locationNames = day.locations.map(l => l.name).join('、');
-          const query = `${day.date} 日本長崎佐賀天氣預報，當天行程包含：${locationNames}，請根據天氣預報建議今天穿什麼衣服、需要帶什麼裝備，以繁體中文回答`;
-          window.open(`https://www.perplexity.ai/search?q=${encodeURIComponent(query)}`, '_blank');
-          setShowOutfitPicker(false);
-        }}
-        className="w-full mt-6 py-3.5 bg-stone-800 text-amber-50 rounded-2xl font-bold text-sm flex items-center justify-center gap-2 active:scale-95"
-      >
-        <Sparkles size={16} className="text-teal-400" /> 查詢這天的穿搭建議
-      </button>
-    </div>
-  </div>
-)}
+{showOutfitPicker && <OutfitPickerModal onClose={() => setShowOutfitPicker(false)} />}
 
 {showSecret && secretLinks.length > 0 && (
   <div className="mt-3 overflow-hidden rounded-2xl border-2 border-ink" style={{border: '2px solid #1A1510'}}>
@@ -1200,6 +1117,93 @@ const FloatingStatus = ({ itinerary }) => {
     </div>
   );
 };
+
+const OutfitPickerModal = ({ onClose }) => {
+  const scrollRef = useRef(null);
+  const [selectedDayIdx, setSelectedDayIdx] = useState(() => {
+    const today = new Date().toISOString().split('T')[0];
+    const idx = INITIAL_ITINERARY_DATA.findIndex(d => d.date === today);
+    return idx >= 0 ? idx : 0;
+  });
+
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = selectedDayIdx * 52;
+    }
+  }, []);
+
+  return (
+    <div
+      className="fixed inset-0 z-[9999] flex items-end justify-center"
+      onClick={onClose}
+    >
+      <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
+      <div
+        className="relative bg-white dark:bg-stone-800 w-full max-w-md rounded-t-3xl p-6 pb-12 shadow-2xl animate-fadeIn"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="w-10 h-1 bg-stone-200 dark:bg-stone-600 rounded-full mx-auto mb-5" />
+        <h3 className="font-bold text-stone-800 dark:text-stone-100 text-base mb-4 flex items-center gap-2">
+          <Shirt size={18} className="text-amber-500" /> 選擇天數
+        </h3>
+
+        <div className="relative h-[180px] overflow-hidden">
+          <div className="absolute top-0 left-0 right-0 h-16 bg-gradient-to-b from-white dark:from-stone-800 to-transparent z-10 pointer-events-none" />
+          <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white dark:from-stone-800 to-transparent z-10 pointer-events-none" />
+          <div className="absolute top-1/2 left-4 right-4 h-[52px] -translate-y-1/2 border-t-2 border-b-2 border-amber-400 rounded-xl z-10 pointer-events-none" />
+
+          <div
+            ref={scrollRef}
+            className="overflow-y-scroll h-full"
+            style={{ scrollSnapType: 'y mandatory' }}
+            onTouchStart={(e) => e.stopPropagation()}
+            onTouchMove={(e) => e.stopPropagation()}
+            onTouchEnd={(e) => {
+              e.stopPropagation();
+              const idx = Math.round(scrollRef.current.scrollTop / 52);
+              setSelectedDayIdx(Math.min(Math.max(idx, 0), INITIAL_ITINERARY_DATA.length - 1));
+            }}
+            onScroll={() => {
+              const idx = Math.round(scrollRef.current.scrollTop / 52);
+              setSelectedDayIdx(Math.min(Math.max(idx, 0), INITIAL_ITINERARY_DATA.length - 1));
+            }}
+          >
+            <div style={{ height: '64px' }} />
+            {INITIAL_ITINERARY_DATA.map((day) => (
+              <div
+                key={day.day}
+                style={{ scrollSnapAlign: 'center', height: '52px' }}
+                className="flex flex-col justify-center px-4"
+              >
+                <span className="font-bold text-stone-800 dark:text-stone-100 text-sm">
+                  Day {day.day}・{day.displayDate}
+                </span>
+                <span className="text-xs text-stone-400 truncate">{day.title}</span>
+              </div>
+            ))}
+            <div style={{ height: '64px' }} />
+          </div>
+        </div>
+
+        <button
+          onClick={() => {
+            const day = INITIAL_ITINERARY_DATA[selectedDayIdx];
+            const locationNames = day.locations.map(l => l.name).join('、');
+            const query = `${day.date} 日本長崎佐賀天氣預報，當天行程包含：${locationNames}，請根據天氣預報建議今天穿什麼衣服、需要帶什麼裝備，以繁體中文回答`;
+            window.open(`https://www.perplexity.ai/search?q=${encodeURIComponent(query)}`, '_blank');
+            onClose();
+          }}
+          className="w-full mt-6 py-3.5 bg-stone-800 text-amber-50 rounded-2xl font-bold text-sm flex items-center justify-center gap-2 active:scale-95"
+        >
+          <Sparkles size={16} className="text-teal-400" /> 查詢這天的穿搭建議
+        </button>
+      </div>
+    </div>
+  );
+};
+
+
+
 
 const OutfitGuide = () => {
   const [isOpen, setIsOpen] = useState(false);
