@@ -1124,10 +1124,10 @@ const OutfitPickerModal = ({ onClose }) => {
     <div className="fixed inset-0 z-[99999] flex items-end justify-center" onClick={onClose}>
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
       <div
-        className="relative bg-white dark:bg-stone-800 w-full max-w-md rounded-t-3xl shadow-2xl flex flex-col"
-        style={{ maxHeight: '60vh', paddingBottom: 'calc(1.5rem + env(safe-area-inset-bottom, 0px))' }}
-        onClick={e => e.stopPropagation()}
-      >
+  className="relative bg-white dark:bg-stone-800 w-full max-w-md rounded-t-3xl shadow-2xl"
+  style={{ paddingBottom: 'calc(1.5rem + env(safe-area-inset-bottom, 0px))' }}
+  onClick={e => e.stopPropagation()}
+>
         {/* 把手 + 標題 */}
         <div className="px-6 pt-5 pb-3 flex-shrink-0">
           <div className="w-10 h-1 bg-stone-200 dark:bg-stone-600 rounded-full mx-auto mb-4" />
@@ -1137,7 +1137,8 @@ const OutfitPickerModal = ({ onClose }) => {
         </div>
 
         {/* 滾輪區 */}
-        <div className="relative flex-1 overflow-hidden px-6 min-h-[160px]">
+        <div className="relative overflow-hidden px-6" style={{ height: '160px' }}>
+
           <div className="absolute top-0 left-0 right-0 h-14 bg-gradient-to-b from-white dark:from-stone-800 to-transparent z-10 pointer-events-none" />
           <div className="absolute bottom-0 left-0 right-0 h-14 bg-gradient-to-t from-white dark:from-stone-800 to-transparent z-10 pointer-events-none" />
           <div className="absolute top-1/2 left-8 right-8 h-[52px] -translate-y-1/2 border-t-2 border-b-2 border-amber-400 rounded-xl z-10 pointer-events-none" />
