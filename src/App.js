@@ -1141,7 +1141,8 @@ const OutfitPickerModal = ({ onClose }) => {
     >
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
       <div
-        className="relative bg-white dark:bg-stone-800 w-full max-w-md rounded-t-3xl p-6 pb-12 shadow-2xl animate-fadeIn"
+        className="relative bg-white dark:bg-stone-800 w-full max-w-md rounded-t-3xl p-6 pb-6 shadow-2xl animate-fadeIn"
+
         onClick={(e) => e.stopPropagation()}
       >
         <div className="w-10 h-1 bg-stone-200 dark:bg-stone-600 rounded-full mx-auto mb-5" />
@@ -1149,7 +1150,7 @@ const OutfitPickerModal = ({ onClose }) => {
           <Shirt size={18} className="text-amber-500" /> 選擇天數
         </h3>
 
-        <div className="relative h-[180px] overflow-hidden">
+        <div className="relative h-[150px] overflow-hidden">
           <div className="absolute top-0 left-0 right-0 h-16 bg-gradient-to-b from-white dark:from-stone-800 to-transparent z-10 pointer-events-none" />
           <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white dark:from-stone-800 to-transparent z-10 pointer-events-none" />
           <div className="absolute top-1/2 left-4 right-4 h-[52px] -translate-y-1/2 border-t-2 border-b-2 border-amber-400 rounded-xl z-10 pointer-events-none" />
