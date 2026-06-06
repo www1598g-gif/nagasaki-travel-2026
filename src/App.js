@@ -1013,11 +1013,12 @@ const WeatherHero = ({ isAdmin, versionText, updateVersion, onLock, showSecret, 
 {/* 穿搭選天 Modal */}
 {showOutfitPicker && (
   <div
-    className="fixed inset-0 z-50 flex items-end justify-center"
+    className="fixed inset-0 z-[9999] flex items-end justify-center"
     onClick={() => setShowOutfitPicker(false)}
   >
+    <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
     <div
-      className="bg-white dark:bg-stone-800 w-full max-w-md rounded-t-3xl p-6 pb-10 shadow-2xl animate-fadeIn"
+      className="relative bg-white dark:bg-stone-800 w-full max-w-md rounded-t-3xl p-6 pb-12 shadow-2xl animate-fadeIn"
       onClick={(e) => e.stopPropagation()}
     >
       <div className="w-10 h-1 bg-stone-200 dark:bg-stone-600 rounded-full mx-auto mb-5" />
