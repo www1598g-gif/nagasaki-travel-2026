@@ -1037,7 +1037,10 @@ const WeatherHero = ({ isAdmin, versionText, updateVersion, onLock, showSecret, 
 
         <div
           className="overflow-y-scroll h-full scroll-smooth"
-          style={{ scrollSnapType: 'y mandatory' }}
+  style={{ scrollSnapType: 'y mandatory' }}
+  onTouchStart={(e) => e.stopPropagation()}
+  onTouchMove={(e) => e.stopPropagation()}
+  onTouchEnd={(e) => e.stopPropagation()}
           ref={(el) => {
             if (el) {
               // 預設滾到今天
