@@ -1141,19 +1141,23 @@ const OutfitPickerModal = ({ onClose }) => {
     >
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
       <div
-        className="relative bg-white dark:bg-stone-800 w-full max-w-md rounded-t-3xl p-6 pb-6 shadow-2xl animate-fadeIn"
-
+        className="relative bg-white dark:bg-stone-800 w-full max-w-md rounded-t-3xl shadow-2xl animate-fadeIn flex flex-col"
+        style={{ paddingBottom: 'calc(1.5rem + env(safe-area-inset-bottom, 0px))', maxHeight: '70vh' }}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="w-10 h-1 bg-stone-200 dark:bg-stone-600 rounded-full mx-auto mb-5" />
-        <h3 className="font-bold text-stone-800 dark:text-stone-100 text-base mb-4 flex items-center gap-2">
-          <Shirt size={18} className="text-amber-500" /> 選擇天數
-        </h3>
+        {/* 頂部把手 + 標題 */}
+        <div className="px-6 pt-5 pb-2 flex-shrink-0">
+          <div className="w-10 h-1 bg-stone-200 dark:bg-stone-600 rounded-full mx-auto mb-5" />
+          <h3 className="font-bold text-stone-800 dark:text-stone-100 text-base mb-4 flex items-center gap-2">
+            <Shirt size={18} className="text-amber-500" /> 選擇天數
+          </h3>
+        </div>
 
-        <div className="relative h-[150px] overflow-hidden">
-          <div className="absolute top-0 left-0 right-0 h-16 bg-gradient-to-b from-white dark:from-stone-800 to-transparent z-10 pointer-events-none" />
-          <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white dark:from-stone-800 to-transparent z-10 pointer-events-none" />
-          <div className="absolute top-1/2 left-4 right-4 h-[52px] -translate-y-1/2 border-t-2 border-b-2 border-amber-400 rounded-xl z-10 pointer-events-none" />
+        {/* 滾輪 — flex: 1 讓它佔滿剩餘空間，自動置中 */}
+        <div className="relative flex-1 overflow-hidden px-6">
+          <div className="absolute top-0 left-6 right-6 h-16 bg-gradient-to-b from-white dark:from-stone-800 to-transparent z-10 pointer-events-none" />
+          <div className="absolute bottom-0 left-6 right-6 h-16 bg-gradient-to-t from-white dark:from-stone-800 to-transparent z-10 pointer-events-none" />
+          <div className="absolute top-1/2 left-10 right-10 h-[52px] -translate-y-1/2 border-t-2 border-b-2 border-amber-400 rounded-xl z-10 pointer-events-none" />
 
           <div
             ref={scrollRef}
@@ -1188,23 +1192,25 @@ const OutfitPickerModal = ({ onClose }) => {
           </div>
         </div>
 
-        <button
-          onClick={() => {
-            const day = INITIAL_ITINERARY_DATA[selectedDayIdx];
-            const locationNames = day.locations.map(l => l.name).join('、');
-            const query = `${day.date} 日本長崎佐賀天氣預報，當天行程包含：${locationNames}，請根據天氣預報建議今天穿什麼衣服、需要帶什麼裝備，以繁體中文回答`;
-            window.open(`https://www.perplexity.ai/search?q=${encodeURIComponent(query)}`, '_blank');
-            onClose();
-          }}
-          className="w-full mt-6 py-3.5 bg-stone-800 text-amber-50 rounded-2xl font-bold text-sm flex items-center justify-center gap-2 active:scale-95"
-        >
-          <Sparkles size={16} className="text-teal-400" /> 查詢這天的穿搭建議
-        </button>
+        {/* 按鈕 — 永遠在底部，不會被擋 */}
+        <div className="px-6 pt-4 flex-shrink-0">
+          <button
+            onClick={() => {
+              const day = INITIAL_ITINERARY_DATA[selectedDayIdx];
+              const locationNames = day.locations.map(l => l.name).join('、');
+              const query = `${day.date} 日本長崎佐賀天氣預報，當天行程包含：${locationNames}，請根據天氣預報建議今天穿什麼衣服、需要帶什麼裝備，以繁體中文回答`;
+              window.open(`https://www.perplexity.ai/search?q=${encodeURIComponent(query)}`, '_blank');
+              onClose();
+            }}
+            className="w-full py-3.5 bg-stone-800 text-amber-50 rounded-2xl font-bold text-sm flex items-center justify-center gap-2 active:scale-95"
+          >
+            <Sparkles size={16} className="text-teal-400" /> 查詢這天的穿搭建議
+          </button>
+        </div>
       </div>
     </div>
   );
 };
-
 
 
 
