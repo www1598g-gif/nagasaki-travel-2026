@@ -1134,7 +1134,7 @@ const OutfitPickerModal = ({ onClose }) => {
 
   return (
     <div
-      className="fixed inset-0 z-[9999] flex items-end justify-center"
+      className="fixed inset-0 z-[99999] flex items-end justify-center"
       onClick={onClose}
     >
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
