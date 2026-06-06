@@ -2776,7 +2776,7 @@ export default function TravelApp() {
   const [noticeText, setNoticeText] = useState('載入中...');
   const [secretClickCount, setSecretClickCount] = useState(0);
   const [showSecret, setShowSecret] = useState(false);
-  const [showOutfitPicker, setShowOutfitPicker] = useState(false);
+  const [showOutfitPicker, setShowOutfitPicker] = useState(false);
 
   const handleSecretTrigger = () => {
   setSecretClickCount(prev => {
