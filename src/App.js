@@ -661,6 +661,7 @@ const WeatherHero = ({ isAdmin, versionText, updateVersion, onLock, showSecret, 
   const [alerts, setAlerts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [showOutfitPicker, setShowOutfitPicker] = useState(false);
+  const [selectedDayIdx, setSelectedDayIdx] = useState(0);
   const [secretLinks, setSecretLinks] = useState([]);
   const [newLinkName, setNewLinkName] = useState('');
   const [newLinkUrl, setNewLinkUrl] = useState('');
@@ -1022,45 +1023,72 @@ const WeatherHero = ({ isAdmin, versionText, updateVersion, onLock, showSecret, 
       onClick={(e) => e.stopPropagation()}
     >
       <div className="w-10 h-1 bg-stone-200 dark:bg-stone-600 rounded-full mx-auto mb-5" />
-      <h3 className="font-bold text-stone-800 dark:text-stone-100 text-base mb-1 flex items-center gap-2">
-        <Shirt size={18} className="text-amber-500" /> 選擇要查詢的天數
+      <h3 className="font-bold text-stone-800 dark:text-stone-100 text-base mb-4 flex items-center gap-2">
+        <Shirt size={18} className="text-amber-500" /> 選擇天數
       </h3>
-      <p className="text-xs text-stone-400 mb-5">Perplexity 會自動查當天天氣預報並結合行程給建議</p>
-      <div className="space-y-2 overflow-y-auto max-h-[60vh]">
-        {INITIAL_ITINERARY_DATA.map((day) => {
-          const today = new Date().toISOString().split('T')[0];
-          const isToday = day.date === today;
-          return (
-            <button
+
+      {/* 滾輪選單 */}
+      <div className="relative h-[180px] overflow-hidden">
+        {/* 上下遮罩 */}
+        <div className="absolute top-0 left-0 right-0 h-16 bg-gradient-to-b from-white dark:from-stone-800 to-transparent z-10 pointer-events-none" />
+        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white dark:from-stone-800 to-transparent z-10 pointer-events-none" />
+        {/* 中間選中線 */}
+        <div className="absolute top-1/2 left-4 right-4 h-[52px] -translate-y-1/2 border-t-2 border-b-2 border-amber-400 rounded-xl z-10 pointer-events-none" />
+
+        <div
+          className="overflow-y-scroll h-full scroll-smooth"
+          style={{ scrollSnapType: 'y mandatory' }}
+          ref={(el) => {
+            if (el) {
+              // 預設滾到今天
+              const today = new Date().toISOString().split('T')[0];
+              const idx = INITIAL_ITINERARY_DATA.findIndex(d => d.date === today);
+              const targetIdx = idx >= 0 ? idx : 0;
+              setTimeout(() => {
+                el.scrollTop = targetIdx * 52;
+              }, 50);
+            }
+          }}
+          onScrollEnd={(e) => {
+            const idx = Math.round(e.target.scrollTop / 52);
+            setSelectedDayIdx(idx);
+          }}
+          onScroll={(e) => {
+            const idx = Math.round(e.target.scrollTop / 52);
+            setSelectedDayIdx(idx);
+          }}
+        >
+          {/* 上方留白 */}
+          <div style={{ height: '64px', scrollSnapAlign: 'none', flexShrink: 0 }} />
+          {INITIAL_ITINERARY_DATA.map((day, idx) => (
+            <div
               key={day.day}
-              onClick={() => {
-                const locationNames = day.locations.map(l => l.name).join('、');
-                const query = `${day.date} 日本長崎佐賀天氣預報，當天行程包含：${locationNames}，請根據天氣預報建議今天穿什麼衣服、需要帶什麼裝備，以繁體中文回答`;
-                window.open(`https://www.perplexity.ai/search?q=${encodeURIComponent(query)}`, '_blank');
-                setShowOutfitPicker(false);
-              }}
-              className={`w-full text-left p-4 rounded-2xl border transition-all active:scale-95 ${
-                isToday
-                  ? 'bg-amber-50 border-amber-300 dark:bg-amber-900/30 dark:border-amber-600'
-                  : 'bg-stone-50 border-stone-100 dark:bg-stone-700/50 dark:border-stone-600'
-              }`}
+              style={{ scrollSnapAlign: 'center', height: '52px' }}
+              className="flex flex-col justify-center px-4"
             >
-              <div className="flex items-center justify-between">
-                <div>
-                  <span className="font-bold text-stone-800 dark:text-stone-100 text-sm">
-                    Day {day.day}・{day.displayDate}
-                  </span>
-                  {isToday && (
-                    <span className="ml-2 text-[10px] font-bold bg-amber-400 text-white px-2 py-0.5 rounded-full">今天</span>
-                  )}
-                  <p className="text-xs text-stone-400 mt-0.5 truncate pr-4">{day.title}</p>
-                </div>
-                <ArrowRight size={16} className="text-stone-300 flex-shrink-0" />
-              </div>
-            </button>
-          );
-        })}
+              <span className="font-bold text-stone-800 dark:text-stone-100 text-sm">
+                Day {day.day}・{day.displayDate}
+              </span>
+              <span className="text-xs text-stone-400 truncate">{day.title}</span>
+            </div>
+          ))}
+          {/* 下方留白 */}
+          <div style={{ height: '64px', scrollSnapAlign: 'none', flexShrink: 0 }} />
+        </div>
       </div>
+
+      <button
+        onClick={() => {
+          const day = INITIAL_ITINERARY_DATA[selectedDayIdx];
+          const locationNames = day.locations.map(l => l.name).join('、');
+          const query = `${day.date} 日本長崎佐賀天氣預報，當天行程包含：${locationNames}，請根據天氣預報建議今天穿什麼衣服、需要帶什麼裝備，以繁體中文回答`;
+          window.open(`https://www.perplexity.ai/search?q=${encodeURIComponent(query)}`, '_blank');
+          setShowOutfitPicker(false);
+        }}
+        className="w-full mt-6 py-3.5 bg-stone-800 text-amber-50 rounded-2xl font-bold text-sm flex items-center justify-center gap-2 active:scale-95"
+      >
+        <Sparkles size={16} className="text-teal-400" /> 查詢這天的穿搭建議
+      </button>
     </div>
   </div>
 )}
