@@ -1094,7 +1094,7 @@ const FloatingStatus = ({ itinerary, showOutfitPicker }) => {
   if (!nextStop) return null;
 
   return (
-    <div className="fixed bottom-20 left-4 right-4 z-30" style={{ visibility: showOutfitPicker ? 'hidden' : 'visible' }}>
+    <div className="fixed bottom-20 left-4 right-4 z-30">
 
       <div className="bg-stone-900/95 backdrop-blur-md text-stone-50 p-4 rounded-2xl shadow-2xl border border-stone-700/50 flex items-center justify-between">
         <div className="flex items-center gap-3 overflow-hidden">
