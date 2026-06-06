@@ -660,6 +660,7 @@ const WeatherHero = ({ isAdmin, versionText, updateVersion, onLock, showSecret, 
   const [lastUpdate, setLastUpdate] = useState('');
   const [alerts, setAlerts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [showOutfitPicker, setShowOutfitPicker] = useState(false);
   const [secretLinks, setSecretLinks] = useState([]);
   const [newLinkName, setNewLinkName] = useState('');
   const [newLinkUrl, setNewLinkUrl] = useState('');
@@ -993,12 +994,75 @@ const WeatherHero = ({ isAdmin, versionText, updateVersion, onLock, showSecret, 
             </div>
           </div>
         )}
-        <button
-          onClick={() => window.open(`https://www.perplexity.ai/search?q=${encodeURIComponent('長崎 佐賀 2026 6月中旬 長崎佐賀都在市區內 必吃美食與私房景點 歷史文化深度介紹 也請納入日本在地Tabelog與小紅書評價 以中文回答')}`, '_blank')}
-          className="w-full mt-3 py-3 bg-white/90 dark:bg-stone-800/90 backdrop-blur-md border border-stone-200 dark:border-stone-700 rounded-2xl flex items-center justify-center gap-2 text-sm font-bold text-stone-600 dark:text-stone-200 active:scale-95 shadow-sm group"
-        >
-          <Sparkles size={16} className="text-teal-500 group-hover:rotate-12 transition-transform" /> Ask AI (Perplexity 深度探索)
-        </button>
+        {/* 穿搭 AI 按鈕 */}
+<button
+  onClick={() => setShowOutfitPicker(true)}
+  className="w-full mt-3 py-3 bg-white/90 dark:bg-stone-800/90 backdrop-blur-md border border-stone-200 dark:border-stone-700 rounded-2xl flex items-center justify-center gap-2 text-sm font-bold text-stone-600 dark:text-stone-200 active:scale-95 shadow-sm group"
+>
+  <Shirt size={16} className="text-amber-500 group-hover:rotate-12 transition-transform" /> 今日穿搭 AI 建議
+</button>
+
+{/* Ask AI 原本按鈕，維持不動 */}
+<button
+  onClick={() => window.open(`https://www.perplexity.ai/search?q=${encodeURIComponent('長崎 佐賀 2026 6月中旬 長崎佐賀都在市區內 必吃美食與私房景點 歷史文化深度介紹 也請納入日本在地Tabelog與小紅書評價 以中文回答')}`, '_blank')}
+  className="w-full mt-3 py-3 bg-white/90 dark:bg-stone-800/90 backdrop-blur-md border border-stone-200 dark:border-stone-700 rounded-2xl flex items-center justify-center gap-2 text-sm font-bold text-stone-600 dark:text-stone-200 active:scale-95 shadow-sm group"
+>
+  <Sparkles size={16} className="text-teal-500 group-hover:rotate-12 transition-transform" /> Ask AI (Perplexity 深度探索)
+</button>
+
+{/* 穿搭選天 Modal */}
+{showOutfitPicker && (
+  <div
+    className="fixed inset-0 z-50 flex items-end justify-center"
+    onClick={() => setShowOutfitPicker(false)}
+  >
+    <div
+      className="bg-white dark:bg-stone-800 w-full max-w-md rounded-t-3xl p-6 pb-10 shadow-2xl animate-fadeIn"
+      onClick={(e) => e.stopPropagation()}
+    >
+      <div className="w-10 h-1 bg-stone-200 dark:bg-stone-600 rounded-full mx-auto mb-5" />
+      <h3 className="font-bold text-stone-800 dark:text-stone-100 text-base mb-1 flex items-center gap-2">
+        <Shirt size={18} className="text-amber-500" /> 選擇要查詢的天數
+      </h3>
+      <p className="text-xs text-stone-400 mb-5">Perplexity 會自動查當天天氣預報並結合行程給建議</p>
+      <div className="space-y-2">
+        {INITIAL_ITINERARY_DATA.map((day) => {
+          const today = new Date().toISOString().split('T')[0];
+          const isToday = day.date === today;
+          return (
+            <button
+              key={day.day}
+              onClick={() => {
+                const locationNames = day.locations.map(l => l.name).join('、');
+                const query = `${day.date} 日本長崎佐賀天氣預報，當天行程包含：${locationNames}，請根據天氣預報建議今天穿什麼衣服、需要帶什麼裝備，以繁體中文回答`;
+                window.open(`https://www.perplexity.ai/search?q=${encodeURIComponent(query)}`, '_blank');
+                setShowOutfitPicker(false);
+              }}
+              className={`w-full text-left p-4 rounded-2xl border transition-all active:scale-95 ${
+                isToday
+                  ? 'bg-amber-50 border-amber-300 dark:bg-amber-900/30 dark:border-amber-600'
+                  : 'bg-stone-50 border-stone-100 dark:bg-stone-700/50 dark:border-stone-600'
+              }`}
+            >
+              <div className="flex items-center justify-between">
+                <div>
+                  <span className="font-bold text-stone-800 dark:text-stone-100 text-sm">
+                    Day {day.day}・{day.displayDate}
+                  </span>
+                  {isToday && (
+                    <span className="ml-2 text-[10px] font-bold bg-amber-400 text-white px-2 py-0.5 rounded-full">今天</span>
+                  )}
+                  <p className="text-xs text-stone-400 mt-0.5 truncate pr-4">{day.title}</p>
+                </div>
+                <ArrowRight size={16} className="text-stone-300 flex-shrink-0" />
+              </div>
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  </div>
+)}
 
 {showSecret && secretLinks.length > 0 && (
   <div className="mt-3 overflow-hidden rounded-2xl border-2 border-ink" style={{border: '2px solid #1A1510'}}>
