@@ -672,8 +672,8 @@ const WeatherHero = ({ isAdmin, versionText, updateVersion, onLock, showSecret, 
         setSecretLinks(val);
       } else {
         const defaultLinks = [
-          { name: '🚀 九州鐵道即時 JR 運行情報', url: 'https://www.jrkyushu.co.jp/trains/info/' }
-          { name: '🎌 佑任日本手冊', url: 'https://drive.google.com/file/d/1_HNNiJCvZRzQpDLn7e3_msPox4iX2gBk/view?usp=drive_link' }
+          { name: '🚀 九州鐵道即時 JR 運行情報', url: 'https://www.jrkyushu.co.jp/trains/info/' },
+          { name: '🎌 佑任日本手冊', url: 'https://drive.google.com/file/d/1_HNNiJCvZRzQpDLn7e3_msPox4iX2gBk/view?usp=drive_link' },
 
         ];
         setSecretLinks(defaultLinks);
