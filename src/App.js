@@ -2378,6 +2378,21 @@ const handleAppDownload = () => {
     </div>
 
 
+<div className="flex items-center justify-between p-3 bg-stone-50 dark:bg-stone-700/50 rounded-xl border border-stone-100 dark:border-stone-600">
+  <div>
+    <div className="font-bold text-stone-800 dark:text-stone-100 text-sm">tenki.jp</div>
+    <div className="text-[10px] text-stone-500">日本氣象協會・最準確日本天氣預報</div>
+  </div>
+  <div className="flex gap-2">
+    <a href="https://apps.apple.com/tw/app/tenki-jp-%E5%A4%A9%E6%B0%97%E4%BA%88%E5%A0%B1-%E9%9B%A8%E9%9B%B2%E3%83%AC%E3%83%BC%E3%83%80%E3%83%BC-%E5%9C%B0%E9%9C%87%E9%80%9F%E5%A0%B1/id433865746" target="_blank" rel="noreferrer"
+      className="text-[10px] font-bold bg-stone-800 text-white px-2 py-1 rounded-lg">iOS</a>
+    <a href="https://play.google.com/store/apps/details?id=jwa.or.jp.tenkijp3&hl=zh_TW" target="_blank" rel="noreferrer"
+      className="text-[10px] font-bold bg-stone-800 text-white px-2 py-1 rounded-lg">Android</a>
+  </div>
+</div>
+
+
+
 
 {/* 台灣虎航 */}
 <div className="flex items-center justify-between p-3 bg-stone-50 dark:bg-stone-700/50 rounded-xl border border-stone-100 dark:border-stone-600">
