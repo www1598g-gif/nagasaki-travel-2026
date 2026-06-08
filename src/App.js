@@ -2376,7 +2376,7 @@ const handleAppDownload = () => {
           className="text-[10px] font-bold bg-stone-800 text-white px-2 py-1 rounded-lg">Android</a>
       </div>
     </div>
-  </div>
+
 
 
 {/* 台灣虎航 */}
@@ -2485,7 +2485,7 @@ const handleAppDownload = () => {
   <ArrowRight size={16} className="text-amber-400" />
 </a>
 
-
+  </div>
 
 
 
