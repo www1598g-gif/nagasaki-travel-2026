@@ -2476,7 +2476,7 @@ const handleAppDownload = () => {
 
 {/* 佑任短句本 */}
 <a href="https://drive.google.com/file/d/1_HNNiJCvZRzQpDLn7e3_msPox4iX2gBk/view?usp=sharing" target="_blank" rel="noreferrer"
-  className="mt-3 flex items-center justify-between p-3 bg-amber-50 dark:bg-amber-900/20 rounded-xl border border-amber-200 dark:border-amber-800 active:scale-95 transition-all"
+  className="flex items-center justify-between p-3 bg-amber-50 dark:bg-amber-900/20 rounded-xl border border-amber-200 dark:border-amber-800 active:scale-95 transition-all"
 >
   <div>
     <div className="font-bold text-stone-800 dark:text-stone-100 text-sm">佑任の日語突發即用短句本</div>
@@ -2491,7 +2491,7 @@ const handleAppDownload = () => {
 
 
 {/* eSIM 防爆流量區塊 */}
-  <section className="bg-white dark:bg-stone-800 p-6 rounded-2xl border border-stone-100 dark:border-stone-700 mb-6">
+  <section className="mt-3 bg-white dark:bg-stone-800 p-6 rounded-2xl border border-stone-100 dark:border-stone-700 mb-6">
 
     
   <button
