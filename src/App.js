@@ -2229,7 +2229,7 @@ useEffect(() => {
 };
 
 const UtilsPage = ({ isAdmin, isMember, systemInfo, updateSystemInfo }) => {
-
+const [showEsim, setShowEsim] = useState(false); // 
 const handleAppDownload = () => {
   const userAgent = navigator.userAgent || navigator.vendor || window.opera;
   if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
@@ -2492,9 +2492,22 @@ const handleAppDownload = () => {
 
 {/* eSIM 防爆流量區塊 */}
   <section className="bg-white dark:bg-stone-800 p-6 rounded-2xl border border-stone-100 dark:border-stone-700 mb-6">
-    <h3 className="flex items-center gap-2 font-bold text-stone-800 dark:text-stone-100 mb-4 border-b pb-3">
+
+    
+  <button
+    onClick={() => setShowEsim(!showEsim)}
+    className="w-full flex items-center justify-between"
+  >
+    <h3 className="flex items-center gap-2 font-bold text-stone-800 dark:text-stone-100">
       <Signal size={18} className="text-blue-500" /> eSIM 出國防爆流量指南
     </h3>
+    {showEsim ? <ChevronUp size={18} className="text-stone-400" /> : <ChevronDown size={18} className="text-stone-400" />}
+  </button>
+
+  {showEsim && (
+    <div className="mt-4 animate-fadeIn">
+
+   
 
     <div className="mb-5 p-4 bg-amber-50 dark:bg-amber-900/20 rounded-2xl border border-amber-200 dark:border-amber-800">
       <p className="text-xs font-bold text-amber-700 dark:text-amber-300 mb-1 flex items-center gap-1">
@@ -2530,6 +2543,10 @@ const handleAppDownload = () => {
         />
       </div>
     </div>
+
+
+     </div>
+  )}
   </section>
 
 
