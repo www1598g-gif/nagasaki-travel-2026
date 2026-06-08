@@ -2386,9 +2386,9 @@ const handleAppDownload = () => {
     <div className="text-[10px] text-stone-500">航班查詢・報到・行李・訂位管理</div>
   </div>
   <div className="flex gap-2">
-    <a href="https://apps.apple.com/tw/app/tigerair-taiwan/id1438512559" target="_blank" rel="noreferrer"
+    <a href="https://apps.apple.com/tw/app/tigerair-taiwan/id1188608835?l=en-GB" target="_blank" rel="noreferrer"
       className="text-[10px] font-bold bg-stone-800 text-white px-2 py-1 rounded-lg">iOS</a>
-    <a href="https://play.google.com/store/apps/details?id=com.tigerair.tigerairtw" target="_blank" rel="noreferrer"
+    <a href="https://play.google.com/store/apps/details?id=com.tigerair" target="_blank" rel="noreferrer"
       className="text-[10px] font-bold bg-stone-800 text-white px-2 py-1 rounded-lg">Android</a>
   </div>
 </div>
@@ -2400,7 +2400,7 @@ const handleAppDownload = () => {
     <div className="text-[10px] text-stone-500">日本 NICT 開發・31語言語音即時翻譯</div>
   </div>
   <div className="flex gap-2">
-    <a href="https://apps.apple.com/jp/app/voicetora/id578670059" target="_blank" rel="noreferrer"
+    <a href="https://apps.apple.com/tw/app/voicetra/id581137577" target="_blank" rel="noreferrer"
       className="text-[10px] font-bold bg-stone-800 text-white px-2 py-1 rounded-lg">iOS</a>
     <a href="https://play.google.com/store/apps/details?id=jp.go.nict.voicetra" target="_blank" rel="noreferrer"
       className="text-[10px] font-bold bg-stone-800 text-white px-2 py-1 rounded-lg">Android</a>
@@ -2414,9 +2414,9 @@ const handleAppDownload = () => {
     <div className="text-[10px] text-stone-500">日本最大計程車叫車 App・支援信用卡</div>
   </div>
   <div className="flex gap-2">
-    <a href="https://apps.apple.com/jp/app/go-%E3%82%BF%E3%82%AF%E3%82%B7%E3%83%BC%E3%81%8C%E5%91%BC%E3%81%B9%E3%82%8B%E3%82%A2%E3%83%97%E3%83%AA/id1039796284" target="_blank" rel="noreferrer"
+    <a href="https://apps.apple.com/us/app/go-taxi-app-for-japan/id1254341709" target="_blank" rel="noreferrer"
       className="text-[10px] font-bold bg-stone-800 text-white px-2 py-1 rounded-lg">iOS</a>
-    <a href="https://play.google.com/store/apps/details?id=jp.co.japantaxi.app" target="_blank" rel="noreferrer"
+    <a href="https://play.google.com/store/apps/details?gl=GB&hl=en-US&id=com.dena.automotive.taxibell&referrer=adjust_reftag%3DcDP6KwoncZ1ET%26utm_source%3D%255Bpaid_digital-agency%255DD2CR_Google%2Blisting_%25E8%258B%25B1%25E8%25AA%259E%25E5%259C%258F_2024_Android%26utm_campaign%3D%257Bcampaignid%257D%26utm_content%3D%257Badgroupid%257D%26utm_term%3D%257Bkeyword%257D_%257Bmatchtype%257D" target="_blank" rel="noreferrer"
       className="text-[10px] font-bold bg-stone-800 text-white px-2 py-1 rounded-lg">Android</a>
   </div>
 </div>
@@ -2428,9 +2428,9 @@ const handleAppDownload = () => {
     <div className="text-[10px] text-stone-500">日本最大餐廳評分・在地口碑查詢</div>
   </div>
   <div className="flex gap-2">
-    <a href="https://apps.apple.com/jp/app/tabelog/id370346457" target="_blank" rel="noreferrer"
+    <a href="https://apps.apple.com/tw/app/tabelog-%E6%97%A5%E6%9C%AC%E9%A4%90%E5%BB%B3%E6%8E%A2%E7%B4%A2-%E8%A8%82%E4%BD%8D%E8%88%87%E8%A9%95%E5%83%B9%E5%85%A8%E6%96%B9%E4%BD%8D%E5%B9%B3%E5%8F%B0/id6752922875" target="_blank" rel="noreferrer"
       className="text-[10px] font-bold bg-stone-800 text-white px-2 py-1 rounded-lg">iOS</a>
-    <a href="https://play.google.com/store/apps/details?id=com.kbalmobile.tabelog" target="_blank" rel="noreferrer"
+    <a href="https://play.google.com/store/apps/details?id=com.kakaku.tabelog.tourists&hl=zh_TW" target="_blank" rel="noreferrer"
       className="text-[10px] font-bold bg-stone-800 text-white px-2 py-1 rounded-lg">Android</a>
   </div>
 </div>
@@ -2444,7 +2444,7 @@ const handleAppDownload = () => {
   <div className="flex gap-2">
     <a href="https://apps.apple.com/tw/app/tunnelbear-vpn/id564842283" target="_blank" rel="noreferrer"
       className="text-[10px] font-bold bg-stone-800 text-white px-2 py-1 rounded-lg">iOS</a>
-    <a href="https://play.google.com/store/apps/details?id=com.tunnelbear.android.activity" target="_blank" rel="noreferrer"
+    <a href="https://play.google.com/store/apps/details/TunnelBear_VPN?id=com.tunnelbear.android&hl=zh_TW" target="_blank" rel="noreferrer"
       className="text-[10px] font-bold bg-stone-800 text-white px-2 py-1 rounded-lg">Android</a>
   </div>
 </div>
@@ -2456,9 +2456,9 @@ const handleAppDownload = () => {
     <div className="text-[10px] text-stone-500">掃條碼查日本美妝成分・免稅優惠券</div>
   </div>
   <div className="flex gap-2">
-    <a href="https://apps.apple.com/tw/app/payke/id891488579" target="_blank" rel="noreferrer"
+    <a href="https://apps.apple.com/tw/app/payke-%E4%BD%BF%E7%94%A8%E5%84%AA%E6%83%A0%E5%88%B8-%E8%AE%93%E6%97%A5%E6%9C%AC%E6%97%85%E8%A1%8C%E6%9B%B4%E5%88%92%E7%AE%97-%E7%BF%BB%E8%AD%AF-%E8%A9%95%E5%83%B9/id1040452788" target="_blank" rel="noreferrer"
       className="text-[10px] font-bold bg-stone-800 text-white px-2 py-1 rounded-lg">iOS</a>
-    <a href="https://play.google.com/store/apps/details?id=com.payke.android" target="_blank" rel="noreferrer"
+    <a href="https://play.google.com/store/apps/details?id=jp.co.payke.Payke1&referrer=adjust_reftag%3Dc03pvyt6A7swx%26utm_source%3DHP" target="_blank" rel="noreferrer"
       className="text-[10px] font-bold bg-stone-800 text-white px-2 py-1 rounded-lg">Android</a>
   </div>
 </div>
