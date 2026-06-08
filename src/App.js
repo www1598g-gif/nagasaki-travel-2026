@@ -2379,6 +2379,117 @@ const handleAppDownload = () => {
   </div>
 
 
+{/* 台灣虎航 */}
+<div className="flex items-center justify-between p-3 bg-stone-50 dark:bg-stone-700/50 rounded-xl border border-stone-100 dark:border-stone-600">
+  <div>
+    <div className="font-bold text-stone-800 dark:text-stone-100 text-sm">台灣虎航</div>
+    <div className="text-[10px] text-stone-500">航班查詢・報到・行李・訂位管理</div>
+  </div>
+  <div className="flex gap-2">
+    <a href="https://apps.apple.com/tw/app/tigerair-taiwan/id1438512559" target="_blank" rel="noreferrer"
+      className="text-[10px] font-bold bg-stone-800 text-white px-2 py-1 rounded-lg">iOS</a>
+    <a href="https://play.google.com/store/apps/details?id=com.tigerair.tigerairtw" target="_blank" rel="noreferrer"
+      className="text-[10px] font-bold bg-stone-800 text-white px-2 py-1 rounded-lg">Android</a>
+  </div>
+</div>
+
+{/* VoiceTra */}
+<div className="flex items-center justify-between p-3 bg-stone-50 dark:bg-stone-700/50 rounded-xl border border-stone-100 dark:border-stone-600">
+  <div>
+    <div className="font-bold text-stone-800 dark:text-stone-100 text-sm">VoiceTra</div>
+    <div className="text-[10px] text-stone-500">日本 NICT 開發・31語言語音即時翻譯</div>
+  </div>
+  <div className="flex gap-2">
+    <a href="https://apps.apple.com/jp/app/voicetora/id578670059" target="_blank" rel="noreferrer"
+      className="text-[10px] font-bold bg-stone-800 text-white px-2 py-1 rounded-lg">iOS</a>
+    <a href="https://play.google.com/store/apps/details?id=jp.go.nict.voicetra" target="_blank" rel="noreferrer"
+      className="text-[10px] font-bold bg-stone-800 text-white px-2 py-1 rounded-lg">Android</a>
+  </div>
+</div>
+
+{/* GO 計程車 */}
+<div className="flex items-center justify-between p-3 bg-stone-50 dark:bg-stone-700/50 rounded-xl border border-stone-100 dark:border-stone-600">
+  <div>
+    <div className="font-bold text-stone-800 dark:text-stone-100 text-sm">GO 日本計程車</div>
+    <div className="text-[10px] text-stone-500">日本最大計程車叫車 App・支援信用卡</div>
+  </div>
+  <div className="flex gap-2">
+    <a href="https://apps.apple.com/jp/app/go-%E3%82%BF%E3%82%AF%E3%82%B7%E3%83%BC%E3%81%8C%E5%91%BC%E3%81%B9%E3%82%8B%E3%82%A2%E3%83%97%E3%83%AA/id1039796284" target="_blank" rel="noreferrer"
+      className="text-[10px] font-bold bg-stone-800 text-white px-2 py-1 rounded-lg">iOS</a>
+    <a href="https://play.google.com/store/apps/details?id=jp.co.japantaxi.app" target="_blank" rel="noreferrer"
+      className="text-[10px] font-bold bg-stone-800 text-white px-2 py-1 rounded-lg">Android</a>
+  </div>
+</div>
+
+{/* Tabelog */}
+<div className="flex items-center justify-between p-3 bg-stone-50 dark:bg-stone-700/50 rounded-xl border border-stone-100 dark:border-stone-600">
+  <div>
+    <div className="font-bold text-stone-800 dark:text-stone-100 text-sm">Tabelog 食べログ</div>
+    <div className="text-[10px] text-stone-500">日本最大餐廳評分・在地口碑查詢</div>
+  </div>
+  <div className="flex gap-2">
+    <a href="https://apps.apple.com/jp/app/tabelog/id370346457" target="_blank" rel="noreferrer"
+      className="text-[10px] font-bold bg-stone-800 text-white px-2 py-1 rounded-lg">iOS</a>
+    <a href="https://play.google.com/store/apps/details?id=com.kbalmobile.tabelog" target="_blank" rel="noreferrer"
+      className="text-[10px] font-bold bg-stone-800 text-white px-2 py-1 rounded-lg">Android</a>
+  </div>
+</div>
+
+{/* TunnelBear VPN */}
+<div className="flex items-center justify-between p-3 bg-stone-50 dark:bg-stone-700/50 rounded-xl border border-stone-100 dark:border-stone-600">
+  <div>
+    <div className="font-bold text-stone-800 dark:text-stone-100 text-sm">TunnelBear VPN</div>
+    <div className="text-[10px] text-stone-500">加拿大 VPN・跨國解鎖串流服務</div>
+  </div>
+  <div className="flex gap-2">
+    <a href="https://apps.apple.com/tw/app/tunnelbear-vpn/id564842283" target="_blank" rel="noreferrer"
+      className="text-[10px] font-bold bg-stone-800 text-white px-2 py-1 rounded-lg">iOS</a>
+    <a href="https://play.google.com/store/apps/details?id=com.tunnelbear.android.activity" target="_blank" rel="noreferrer"
+      className="text-[10px] font-bold bg-stone-800 text-white px-2 py-1 rounded-lg">Android</a>
+  </div>
+</div>
+
+{/* Payke */}
+<div className="flex items-center justify-between p-3 bg-stone-50 dark:bg-stone-700/50 rounded-xl border border-stone-100 dark:border-stone-600">
+  <div>
+    <div className="font-bold text-stone-800 dark:text-stone-100 text-sm">Payke</div>
+    <div className="text-[10px] text-stone-500">掃條碼查日本美妝成分・免稅優惠券</div>
+  </div>
+  <div className="flex gap-2">
+    <a href="https://apps.apple.com/tw/app/payke/id891488579" target="_blank" rel="noreferrer"
+      className="text-[10px] font-bold bg-stone-800 text-white px-2 py-1 rounded-lg">iOS</a>
+    <a href="https://play.google.com/store/apps/details?id=com.payke.android" target="_blank" rel="noreferrer"
+      className="text-[10px] font-bold bg-stone-800 text-white px-2 py-1 rounded-lg">Android</a>
+  </div>
+</div>
+
+{/* 林氏壁 */}
+<a href="https://linshibi.com/" target="_blank" rel="noreferrer"
+  className="flex items-center justify-between p-3 bg-stone-50 dark:bg-stone-700/50 rounded-xl border border-stone-100 dark:border-stone-600 active:scale-95 transition-all"
+>
+  <div>
+    <div className="font-bold text-stone-800 dark:text-stone-100 text-sm">林氏壁情報站</div>
+    <div className="text-[10px] text-stone-500">日本旅遊資訊・攻略・必買推薦懶人包</div>
+  </div>
+  <ArrowRight size={16} className="text-stone-400" />
+</a>
+
+{/* 佑任短句本 */}
+<a href="https://drive.google.com/file/d/1_HNNiJCvZRzQpDLn7e3_msPox4iX2gBk/view?usp=sharing" target="_blank" rel="noreferrer"
+  className="flex items-center justify-between p-3 bg-amber-50 dark:bg-amber-900/20 rounded-xl border border-amber-200 dark:border-amber-800 active:scale-95 transition-all"
+>
+  <div>
+    <div className="font-bold text-stone-800 dark:text-stone-100 text-sm">佑任の日語突發即用短句本</div>
+    <div className="text-[10px] text-amber-600 dark:text-amber-400">點我開啟 Google Drive 📖</div>
+  </div>
+  <ArrowRight size={16} className="text-amber-400" />
+</a>
+
+
+
+
+
+
 {/* eSIM 防爆流量區塊 */}
   <section className="bg-white dark:bg-stone-800 p-6 rounded-2xl border border-stone-100 dark:border-stone-700 mb-6">
     <h3 className="flex items-center gap-2 font-bold text-stone-800 dark:text-stone-100 mb-4 border-b pb-3">
@@ -2390,7 +2501,7 @@ const handleAppDownload = () => {
         <AlertTriangle size={12} /> Whoscall 用戶注意
       </p>
       <p className="text-xs text-stone-600 dark:text-stone-300 leading-relaxed">
-        開著 Whoscall 在國外使用 eSIM，後台「自動網站檢查」功能會持續消耗流量，可能吃掉 5-10GB。出發前請關閉該功能，並在手機設定中確認未開啟 VPN。
+        開著 Whoscall 在國外使用 eSIM，後台「自動網站檢查」功能會持續消耗流量，可能吃掉 5-10GB。出發前請關閉此app的行動數據，並確認沒開VPN。
       </p>
     </div>
 
@@ -2401,7 +2512,7 @@ const handleAppDownload = () => {
           <span className="text-xs text-stone-400 font-bold">大容量怪獸設定清單</span>
         </div>
         <img
-          src={process.env.PUBLIC_URL + '/images/esim_ios.png'}
+          src={process.env.PUBLIC_URL + '/images/esim_ios.jpg'}
           alt="iOS eSIM 防爆流量設定"
           className="w-full rounded-2xl border border-stone-100 dark:border-stone-700 shadow-sm"
         />
@@ -2413,7 +2524,7 @@ const handleAppDownload = () => {
           <span className="text-xs text-stone-400 font-bold">大容量怪獸設定清單</span>
         </div>
         <img
-          src={process.env.PUBLIC_URL + '/images/esim_android.png'}
+          src={process.env.PUBLIC_URL + '/images/esim_android.jpg'}
           alt="Android eSIM 防爆流量設定"
           className="w-full rounded-2xl border border-stone-100 dark:border-stone-700 shadow-sm"
         />
