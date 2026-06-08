@@ -2377,6 +2377,51 @@ const handleAppDownload = () => {
       </div>
     </div>
   </div>
+
+
+{/* eSIM 防爆流量區塊 */}
+  <section className="bg-white dark:bg-stone-800 p-6 rounded-2xl border border-stone-100 dark:border-stone-700 mb-6">
+    <h3 className="flex items-center gap-2 font-bold text-stone-800 dark:text-stone-100 mb-4 border-b pb-3">
+      <Signal size={18} className="text-blue-500" /> eSIM 出國防爆流量指南
+    </h3>
+
+    <div className="mb-5 p-4 bg-amber-50 dark:bg-amber-900/20 rounded-2xl border border-amber-200 dark:border-amber-800">
+      <p className="text-xs font-bold text-amber-700 dark:text-amber-300 mb-1 flex items-center gap-1">
+        <AlertTriangle size={12} /> Whoscall 用戶注意
+      </p>
+      <p className="text-xs text-stone-600 dark:text-stone-300 leading-relaxed">
+        開著 Whoscall 在國外使用 eSIM，後台「自動網站檢查」功能會持續消耗流量，可能吃掉 5-10GB。出發前請關閉該功能，並在手機設定中確認未開啟 VPN。
+      </p>
+    </div>
+
+    <div className="space-y-6">
+      <div>
+        <div className="flex items-center gap-2 mb-3">
+          <span className="text-xs font-bold bg-stone-800 text-amber-50 px-3 py-1 rounded-full font-mono tracking-wider">iOS</span>
+          <span className="text-xs text-stone-400 font-bold">大容量怪獸設定清單</span>
+        </div>
+        <img
+          src={process.env.PUBLIC_URL + '/images/esim_ios.png'}
+          alt="iOS eSIM 防爆流量設定"
+          className="w-full rounded-2xl border border-stone-100 dark:border-stone-700 shadow-sm"
+        />
+      </div>
+
+      <div>
+        <div className="flex items-center gap-2 mb-3">
+          <span className="text-xs font-bold bg-stone-800 text-amber-50 px-3 py-1 rounded-full font-mono tracking-wider">Android</span>
+          <span className="text-xs text-stone-400 font-bold">大容量怪獸設定清單</span>
+        </div>
+        <img
+          src={process.env.PUBLIC_URL + '/images/esim_android.png'}
+          alt="Android eSIM 防爆流量設定"
+          className="w-full rounded-2xl border border-stone-100 dark:border-stone-700 shadow-sm"
+        />
+      </div>
+    </div>
+  </section>
+
+
 </section>
 <section className="bg-white dark:bg-stone-800 p-6 rounded-2xl border border-stone-100 dark:border-stone-700 mb-6">
   <h3 className="flex items-center gap-2 font-bold text-red-700 dark:text-red-400 mb-4 border-b border-stone-100 dark:border-stone-700 pb-3">
