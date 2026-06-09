@@ -5150,7 +5150,26 @@ body .dark div.font-serif.select-none.leading-none.pointer-events-none {
   color: #2DD4BF !important;
 }
 
+/* ============================================================
+   TARGETED FIX — 深色模式 admin 移動行程小字 + 淺色模式管理端設定
+   ============================================================ */
 
+/* 深色模式：「順幾」「→」「Enter」文字 和 移到輸入框的數字 */
+.dark .flex.items-center.gap-1.flex-wrap span,
+.dark .flex.items-center.gap-1.flex-wrap input[type="number"] {
+  color: #F5EDD5 !important;
+}
+
+/* 深色模式：移到輸入框的數字（輸入時也要可見）*/
+.dark .flex.items-center.gap-1.flex-wrap input[type="number"]::placeholder {
+  color: rgba(245, 237, 213, 0.5) !important;
+}
+
+/* 淺色模式：管理端設定的 input（System Ver. 那行）強制深色字 */
+:not(.dark) .bg-stone-800 input[type="text"],
+:not(.dark) .bg-stone-800 input[type="text"]::placeholder {
+  color: #E8D87A !important;
+}
 
         `}
       </style>
