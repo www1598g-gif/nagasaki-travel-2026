@@ -1419,7 +1419,7 @@ const LocationCard = ({ item, day, index, isAdmin, updateTime, updateContent, on
 onChange={e => setTargetDaySelect(parseInt(e.target.value))}
   >
     {totalDays.map(d => (
-      <option key={d}value={String(d)>Day {d}</option>
+      <option key={d} value={String(d)}>Day {d}</option>
     ))}
   </select>
   <span className="text-xs text-stone-400">Enter</span>
