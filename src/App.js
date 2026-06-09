@@ -3199,7 +3199,7 @@ const handleMoveToIndex = (fromDay, fromIndex, toIndex, toDay) => {
   const newItinerary = JSON.parse(JSON.stringify(itinerary));
 
 console.log('fromDay:', fromDayNum, 'fromIndex:', fromIndex, 'toIndex:', toIndex, 'toDay:', toDayNum);
-
+console.log('itinerary days:', newItinerary.map(d => d.day));
 
   if (fromDayNum === toDayNum) {
     const dayData = newItinerary.find((d) => d.day === fromDayNum);
