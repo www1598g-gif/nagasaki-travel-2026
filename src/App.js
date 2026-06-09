@@ -1502,6 +1502,8 @@ const DayCard = ({ dayData, isOpen, toggle, isAdmin, updateTime, updateContent, 
 
       {isOpen && (
         <div className="mt-4 pl-4 border-l-2 border-stone-200/50 space-y-4 pb-4 animate-fadeIn">
+
+        {console.log('Day', dayData.day, 'locations length:', dayData.locations.length)}
           {dayData.locations.map((loc, idx) => (
             <LocationCard
               key={idx}
