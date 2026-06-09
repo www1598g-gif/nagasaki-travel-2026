@@ -1385,12 +1385,12 @@ const LocationCard = ({ item, day, index, isAdmin, updateTime, updateContent, on
     <button onClick={(e) => { e.stopPropagation(); onMoveUp(); }} disabled={isFirst} className="p-2 bg-white border rounded-lg shadow-sm">⬆️</button>
     <button onClick={(e) => { e.stopPropagation(); onMoveDown(); }} disabled={isLast} className="p-2 bg-white border rounded-lg shadow-sm">⬇️</button>
     <div className="flex items-center gap-1" onClick={e => e.stopPropagation()}>
-  <span className="text-xs text-stone-400">目前第 {index}</span>
+  <span className="text-xs text-stone-400">順 {index}</span>
   <span className="text-xs text-stone-300">→</span>
   <input
     type="number"
     min="1"
-    placeholder="移到第?"
+    placeholder="移到?"
     className="w-16 text-xs p-2 border rounded-lg text-center"
     onKeyDown={(e) => {
       if (e.key === 'Enter') {
@@ -1402,7 +1402,7 @@ const LocationCard = ({ item, day, index, isAdmin, updateTime, updateContent, on
       }
     }}
   />
-  <span className="text-xs text-stone-400">按Enter</span>
+  <span className="text-xs text-stone-400">Enter</span>
 </div>
   </div>
   <button onClick={(e) => { e.stopPropagation(); onDelete(); }} className="px-3 py-2 rounded-lg bg-red-50 text-red-600 border border-red-100 font-bold text-xs">🗑️ 刪除</button>
