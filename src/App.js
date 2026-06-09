@@ -5203,7 +5203,7 @@ fontSize: '13px',
                             onAdd={() => handleAddLocation(day.day)}
                             onDelete={(locIdx) => handleDeleteLocation(day.day, locIdx)}
                             onMove={(locIdx, dir) => handleMoveLocation(day.day, locIdx, dir)}
-                            onMoveToIndex={(from, to) => handleMoveToIndex(day.day, from, to)}  {/* ← 加這行 */}
+                            onMoveToIndex={(from, to) => handleMoveToIndex(day.day, from, to)} 
 
                           />
                         ))}
