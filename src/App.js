@@ -1268,7 +1268,8 @@ const LocationCard = ({ item, day, index, isAdmin, updateTime, updateContent, on
   const [isExpanded, setIsExpanded] = useState(false);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
-  const [targetDaySelect, setTargetDaySelect] = useState(day);
+  const [targetDaySelect, setTargetDaySelect] = useState(Number(day));
+
 
 
   const BACKUP_IMAGE = 'https://images.unsplash.com/photo-1542640244-7e672d6cef21?w=800&q=80';
@@ -1401,10 +1402,12 @@ const LocationCard = ({ item, day, index, isAdmin, updateTime, updateContent, on
     className="w-14 text-xs p-2 border rounded-lg text-center"
     onKeyDown={(e) => {
   if (e.key === 'Enter') {
-    const targetPos = parseInt(e.target.value) - 1;
+    const targetPos = parseInt(e.target.value, 10) - 1;
     if (!isNaN(targetPos) && targetPos >= 0) {
-      onMoveTo(targetPos, targetDaySelect);
+      onMoveTo(targetPos, Number(targetDaySelect));
       e.target.value = '';
+    } else {
+      alert('請輸入正確的位置數字');
     }
   }
 }}
@@ -1418,7 +1421,7 @@ const LocationCard = ({ item, day, index, isAdmin, updateTime, updateContent, on
     value={String(targetDaySelect)}
 onChange={e => {
   e.stopPropagation();
-  setTargetDaySelect(parseInt(e.target.value));
+  setTargetDaySelect(Number(e.target.value));
 }}
   >
     {totalDays.map(d => (
@@ -3185,44 +3188,33 @@ export default function TravelApp() {
 
  const handleMoveLocation = (dayNum, locIndex, direction) => {
   const newItinerary = JSON.parse(JSON.stringify(itinerary));
-  console.log('itinerary days:', newItinerary.map(d => d.day));
-
-  const dayData = newItinerary.find((d) => d.day === dayNum);
-  if (dayData) {
-    const newIndex = locIndex + direction;
-    if (newIndex >= 0 && newIndex < dayData.locations.length) {
-      const temp = dayData.locations[locIndex];
-      dayData.locations[locIndex] = dayData.locations[newIndex];
-      dayData.locations[newIndex] = temp;
-      updateFirebase(newItinerary);
-    }
-  }
+  const dayData = newItinerary.find((d) => Number(d.day) === Number(dayNum));
+  if (!dayData) { console.error('找不到 day:', dayNum); return; }
+  const newIndex = locIndex + direction;
+  if (newIndex < 0 || newIndex >= dayData.locations.length) return;
+  [dayData.locations[locIndex], dayData.locations[newIndex]] =
+    [dayData.locations[newIndex], dayData.locations[locIndex]];
+  updateFirebase(newItinerary);
 };
 
-// 新增這個專門處理「跳到指定位置」
 const handleMoveToIndex = (fromDay, fromIndex, toIndex, toDay) => {
-  const fromDayNum = parseInt(fromDay);
-  const toDayNum = parseInt(toDay);
+  const fromDayNum = Number(fromDay);
+  const toDayNum = Number(toDay);
+  const targetPos = Number(toIndex);
+  console.log('移動 → fromDay:', fromDayNum, 'fromIndex:', fromIndex, 'toPos:', targetPos, 'toDay:', toDayNum);
   const newItinerary = JSON.parse(JSON.stringify(itinerary));
-
-console.log('fromDay:', fromDayNum, 'fromIndex:', fromIndex, 'toIndex:', toIndex, 'toDay:', toDayNum);
-console.log('itinerary days:', newItinerary.map(d => d.day));
-
+  const fromDayData = newItinerary.find(d => Number(d.day) === fromDayNum);
+  const toDayData = newItinerary.find(d => Number(d.day) === toDayNum);
+  if (!fromDayData || !toDayData) { console.error('找不到天數', { fromDayNum, toDayNum, days: newItinerary.map(d => d.day) }); return; }
   if (fromDayNum === toDayNum) {
-    const dayData = newItinerary.find((d) => d.day === fromDayNum);
-    if (!dayData) return;
-    const target = Math.max(0, Math.min(toIndex, dayData.locations.length - 1));
-    const [removed] = dayData.locations.splice(fromIndex, 1);
-    dayData.locations.splice(target, 0, removed);
-  } else {
-    const fromDayData = newItinerary.find((d) => d.day === fromDayNum);
-    const toDayData = newItinerary.find((d) => d.day === toDayNum);
-    if (!fromDayData || !toDayData) return;
+    const clamped = Math.max(0, Math.min(targetPos, fromDayData.locations.length - 1));
     const [removed] = fromDayData.locations.splice(fromIndex, 1);
-    const target = Math.max(0, Math.min(toIndex, toDayData.locations.length));
-    toDayData.locations.splice(target, 0, removed);
+    fromDayData.locations.splice(clamped, 0, removed);
+  } else {
+    const [removed] = fromDayData.locations.splice(fromIndex, 1);
+    const clamped = Math.max(0, Math.min(targetPos, toDayData.locations.length));
+    toDayData.locations.splice(clamped, 0, removed);
   }
-
   updateFirebase(newItinerary);
 };
 
