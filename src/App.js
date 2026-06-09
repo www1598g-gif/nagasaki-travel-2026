@@ -1385,23 +1385,25 @@ const LocationCard = ({ item, day, index, isAdmin, updateTime, updateContent, on
     <button onClick={(e) => { e.stopPropagation(); onMoveUp(); }} disabled={isFirst} className="p-2 bg-white border rounded-lg shadow-sm">⬆️</button>
     <button onClick={(e) => { e.stopPropagation(); onMoveDown(); }} disabled={isLast} className="p-2 bg-white border rounded-lg shadow-sm">⬇️</button>
     <div className="flex items-center gap-1" onClick={e => e.stopPropagation()}>
-      <input
-        type="number"
-        min="1"
-        placeholder="移到第幾個"
-        className="w-20 text-xs p-2 border rounded-lg text-center"
-        onKeyDown={(e) => {
-          if (e.key === 'Enter') {
-            const target = parseInt(e.target.value) - 1;
-            if (!isNaN(target)) {
-              onMoveTo(target);
-              e.target.value = '';
-            }
-          }
-        }}
-      />
-      <span className="text-xs text-stone-400">按Enter</span>
-    </div>
+  <span className="text-xs text-stone-400">目前第 {index}</span>
+  <span className="text-xs text-stone-300">→</span>
+  <input
+    type="number"
+    min="1"
+    placeholder="移到第?"
+    className="w-16 text-xs p-2 border rounded-lg text-center"
+    onKeyDown={(e) => {
+      if (e.key === 'Enter') {
+        const target = parseInt(e.target.value) - 1;
+        if (!isNaN(target)) {
+          onMoveTo(target);
+          e.target.value = '';
+        }
+      }
+    }}
+  />
+  <span className="text-xs text-stone-400">按Enter</span>
+</div>
   </div>
   <button onClick={(e) => { e.stopPropagation(); onDelete(); }} className="px-3 py-2 rounded-lg bg-red-50 text-red-600 border border-red-100 font-bold text-xs">🗑️ 刪除</button>
 </div>
@@ -1418,7 +1420,7 @@ const LocationCard = ({ item, day, index, isAdmin, updateTime, updateContent, on
   );
 };
 
-const DayCard = ({ dayData, isOpen, toggle, isAdmin, updateTime, updateContent, onAdd, onDelete, onMove }) => {
+const DayCard = ({ dayData, isOpen, toggle, isAdmin, updateTime, updateContent, onAdd, onDelete, onMove, onMoveToIndex }) => {
   const cardRef = useRef(null);
 
   const smoothScrollTo = (element, duration = 10) => {
@@ -1489,7 +1491,8 @@ const DayCard = ({ dayData, isOpen, toggle, isAdmin, updateTime, updateContent, 
               onDelete={() => onDelete(idx)}
               onMoveUp={() => onMove(idx, -1)}
               onMoveDown={() => onMove(idx, 1)}
-              onMoveTo={(targetIndex) => onMove(idx, targetIndex - idx)}
+              onMoveTo={(targetIndex) => onMoveToIndex(dayNum, idx, targetIndex)}
+              onMoveToIndex={(from, to) => handleMoveToIndex(day.day, from, to)}
               isFirst={idx === 0}
               isLast={idx === dayData.locations.length - 1}
             />
@@ -3116,16 +3119,32 @@ export default function TravelApp() {
     if (dayData) { dayData.locations.splice(locIndex, 1); updateFirebase(newItinerary); }
   };
 
-  const handleMoveLocation = (dayNum, locIndex, direction) => {
-    const newItinerary = [...itinerary];
-    const dayData = newItinerary.find((d) => d.day === dayNum);
-    if (dayData) {
-      const newIndex = locIndex + direction;
-      if (newIndex >= 0 && newIndex < dayData.locations.length) {
-        const temp = dayData.locations[locIndex]; dayData.locations[locIndex] = dayData.locations[newIndex]; dayData.locations[newIndex] = temp; updateFirebase(newItinerary);
-      }
+ const handleMoveLocation = (dayNum, locIndex, direction) => {
+  const newItinerary = [...itinerary];
+  const dayData = newItinerary.find((d) => d.day === dayNum);
+  if (dayData) {
+    const newIndex = locIndex + direction;
+    if (newIndex >= 0 && newIndex < dayData.locations.length) {
+      const temp = dayData.locations[locIndex];
+      dayData.locations[locIndex] = dayData.locations[newIndex];
+      dayData.locations[newIndex] = temp;
+      updateFirebase(newItinerary);
     }
-  };
+  }
+};
+
+// 新增這個專門處理「跳到指定位置」
+const handleMoveToIndex = (dayNum, fromIndex, toIndex) => {
+  const newItinerary = [...itinerary];
+  const dayData = newItinerary.find((d) => d.day === dayNum);
+  if (dayData) {
+    const maxIndex = dayData.locations.length - 1;
+    const target = Math.max(0, Math.min(toIndex, maxIndex));
+    const [removed] = dayData.locations.splice(fromIndex, 1); // 抽出來
+    dayData.locations.splice(target, 0, removed); // 插入目標位置
+    updateFirebase(newItinerary);
+  }
+};
 
   useEffect(() => {
     let lastShakeTime = 0;
