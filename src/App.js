@@ -3173,31 +3173,30 @@ export default function TravelApp() {
 
 // 新增這個專門處理「跳到指定位置」
 const handleMoveToIndex = (fromDay, fromIndex, toIndex, toDay) => {
-  const newItinerary = [...itinerary].map(d => ({...d, locations: [...d.locations]}));
-  
   const fromDayNum = parseInt(fromDay);
   const toDayNum = parseInt(toDay);
-  
+
+  // 完全深拷貝
+  const newItinerary = JSON.parse(JSON.stringify(itinerary));
+
   if (fromDayNum === toDayNum) {
     const dayData = newItinerary.find((d) => d.day === fromDayNum);
-    if (dayData) {
-      const maxIndex = dayData.locations.length - 1;
-      const target = Math.max(0, Math.min(toIndex, maxIndex));
-      const [removed] = dayData.locations.splice(fromIndex, 1);
-      dayData.locations.splice(target, 0, removed);
-      updateFirebase(newItinerary);
-    }
+    if (!dayData) return;
+    const maxIndex = dayData.locations.length - 1;
+    const target = Math.max(0, Math.min(toIndex, maxIndex));
+    const [removed] = dayData.locations.splice(fromIndex, 1);
+    dayData.locations.splice(target, 0, removed);
   } else {
     const fromDayData = newItinerary.find((d) => d.day === fromDayNum);
     const toDayData = newItinerary.find((d) => d.day === toDayNum);
-    if (fromDayData && toDayData) {
-      const [removed] = fromDayData.locations.splice(fromIndex, 1);
-      const maxIndex = toDayData.locations.length;
-      const target = Math.max(0, Math.min(toIndex, maxIndex));
-      toDayData.locations.splice(target, 0, removed);
-      updateFirebase(newItinerary);
-    }
+    if (!fromDayData || !toDayData) return;
+    const [removed] = fromDayData.locations.splice(fromIndex, 1);
+    const maxIndex = toDayData.locations.length;
+    const target = Math.max(0, Math.min(toIndex, maxIndex));
+    toDayData.locations.splice(target, 0, removed);
   }
+
+  updateFirebase(newItinerary);
 };
 
   useEffect(() => {
