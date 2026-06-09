@@ -1398,8 +1398,10 @@ const LocationCard = ({ item, day, index, isAdmin, updateTime, updateContent, on
     onKeyDown={(e) => {
   if (e.key === 'Enter') {
     const targetPos = parseInt(e.target.value) - 1;
-    const targetDay = parseInt(document.getElementById(`day-select-${day}-${index}`).value);
-    if (!isNaN(targetPos)) {
+    const selectEl = document.getElementById(`day-select-${day}-${index}`);
+    if (!selectEl) return;
+    const targetDay = parseInt(selectEl.value);
+    if (!isNaN(targetPos) && targetPos >= 0) {
       onMoveTo(targetPos, targetDay);
       e.target.value = '';
     }
