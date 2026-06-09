@@ -1530,7 +1530,7 @@ const DayCard = ({ dayData, isOpen, toggle, isAdmin, updateTime, updateContent, 
               onDelete={() => onDelete(idx)}
               onMoveUp={() => onMove(idx, -1)}
               onMoveDown={() => onMove(idx, 1)}
-              onMoveTo={(targetIndex, targetDay) => onMoveToIndex(dayData.day, idx, targetIndex, targetDay)}
+              onMoveTo={(targetIndex, targetDay) => onMoveToIndex(idx, targetIndex, targetDay)}
               totalDays={totalDays}
               isFirst={idx === 0}
               isLast={idx === dayData.locations.length - 1}
