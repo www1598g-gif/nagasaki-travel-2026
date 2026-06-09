@@ -3196,6 +3196,9 @@ const handleMoveToIndex = (fromDay, fromIndex, toIndex, toDay) => {
   const toDayNum = parseInt(toDay);
   const newItinerary = JSON.parse(JSON.stringify(itinerary));
 
+console.log('fromDay:', fromDayNum, 'fromIndex:', fromIndex, 'toIndex:', toIndex, 'toDay:', toDayNum);
+
+
   if (fromDayNum === toDayNum) {
     const dayData = newItinerary.find((d) => d.day === fromDayNum);
     if (!dayData) return;
