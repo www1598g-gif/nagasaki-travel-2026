@@ -1263,6 +1263,8 @@ const OutfitGuide = () => {
 };
 
 const LocationCard = ({ item, day, index, isAdmin, updateTime, updateContent, onDelete, onMoveUp, onMoveDown, onMoveTo, isFirst, isLast, totalDays }) => {
+  console.log('day prop:', day, 'index:', index);
+
   const [isExpanded, setIsExpanded] = useState(false);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
