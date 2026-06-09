@@ -3180,6 +3180,8 @@ export default function TravelApp() {
 
  const handleMoveLocation = (dayNum, locIndex, direction) => {
   const newItinerary = JSON.parse(JSON.stringify(itinerary));
+  console.log('itinerary days:', newItinerary.map(d => d.day));
+
   const dayData = newItinerary.find((d) => d.day === dayNum);
   if (dayData) {
     const newIndex = locIndex + direction;
