@@ -5161,8 +5161,10 @@ body .dark div.font-serif.select-none.leading-none.pointer-events-none {
 }
 
 /* 深色模式：移到輸入框的數字（輸入時也要可見）*/
-.dark .flex.items-center.gap-1.flex-wrap input[type="number"]::placeholder {
-  color: rgba(245, 237, 213, 0.2) !important;
+.dark .flex.items-center.gap-1.flex-wrap input[type="number"] {
+  background-color: #1A1510 !important;
+  color: #F5EDD5 !important;
+  border: 1px solid rgba(245, 237, 213, 0.3) !important;
 }
 
 /* 淺色模式：管理端設定的 input（System Ver. 那行）強制深色字 */
