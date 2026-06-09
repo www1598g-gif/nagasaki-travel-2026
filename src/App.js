@@ -1266,6 +1266,8 @@ const LocationCard = ({ item, day, index, isAdmin, updateTime, updateContent, on
   const [isExpanded, setIsExpanded] = useState(false);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
+  const [targetDaySelect, setTargetDaySelect] = useState(day);
+
 
   const BACKUP_IMAGE = 'https://images.unsplash.com/photo-1542640244-7e672d6cef21?w=800&q=80';
 
@@ -1398,11 +1400,8 @@ const LocationCard = ({ item, day, index, isAdmin, updateTime, updateContent, on
     onKeyDown={(e) => {
   if (e.key === 'Enter') {
     const targetPos = parseInt(e.target.value) - 1;
-    const selectEl = document.getElementById(`day-select-${day}-${index}`);
-    if (!selectEl) return;
-    const targetDay = parseInt(selectEl.value);
     if (!isNaN(targetPos) && targetPos >= 0) {
-      onMoveTo(targetPos, targetDay);
+      onMoveTo(targetPos, targetDaySelect);
       e.target.value = '';
     }
   }
@@ -1414,7 +1413,8 @@ const LocationCard = ({ item, day, index, isAdmin, updateTime, updateContent, on
   <select
     id={`day-select-${day}-${index}`}
     className="text-xs p-2 border rounded-lg bg-white dark:bg-stone-700"
-    defaultValue={day}
+    value={targetDaySelect}
+onChange={e => setTargetDaySelect(parseInt(e.target.value))}
   >
     {totalDays.map(d => (
       <option key={d} value={d}>Day {d}</option>
