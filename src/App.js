@@ -1416,7 +1416,10 @@ const LocationCard = ({ item, day, index, isAdmin, updateTime, updateContent, on
     id={`day-select-${day}-${index}`}
     className="text-xs p-2 border rounded-lg bg-white dark:bg-stone-700"
     value={String(targetDaySelect)}
-onChange={e => setTargetDaySelect(parseInt(e.target.value))}
+onChange={e => {
+  e.stopPropagation();
+  setTargetDaySelect(parseInt(e.target.value));
+}}
   >
     {totalDays.map(d => (
       <option key={d} value={String(d)}>Day {d}</option>
