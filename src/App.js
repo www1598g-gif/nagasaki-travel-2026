@@ -1268,7 +1268,7 @@ const LocationCard = ({ item, day, index, isAdmin, updateTime, updateContent, on
   const [isExpanded, setIsExpanded] = useState(false);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
-  const [targetDaySelect, setTargetDaySelect] = useState(Number(day));
+  const [targetDaySelect, setTargetDaySelect] = useState(() => Number(day) || 1);
 
 
 
@@ -1415,19 +1415,27 @@ const LocationCard = ({ item, day, index, isAdmin, updateTime, updateContent, on
 
     
   />
+
+
+
+
   <select
-    id={`day-select-${day}-${index}`}
-    className="text-xs p-2 border rounded-lg bg-white dark:bg-stone-700"
-    value={String(targetDaySelect)}
-onChange={e => {
-  e.stopPropagation();
-  setTargetDaySelect(Number(e.target.value));
-}}
-  >
-    {totalDays.map(d => (
-      <option key={d} value={String(d)}>Day {d}</option>
-    ))}
-  </select>
+  id={`day-select-${day}-${index}`}
+  className="text-xs p-2 border rounded-lg bg-white dark:bg-stone-700"
+  value={String(targetDaySelect)}
+  onClick={e => e.stopPropagation()}
+  onChange={e => {
+    e.stopPropagation();
+    setTargetDaySelect(Number(e.target.value));
+  }}
+>
+  {totalDays.map(d => (
+    <option key={d} value={String(d)}>Day {d}</option>
+  ))}
+</select>
+
+
+
   <span className="text-xs text-stone-400">Enter</span>
 </div>
 
