@@ -1262,7 +1262,7 @@ const OutfitGuide = () => {
   );
 };
 
-const LocationCard = ({ item, day, index, isAdmin, updateTime, updateContent, onDelete, onMoveUp, onMoveDown, isFirst, isLast }) => {
+const LocationCard = ({ item, day, index, isAdmin, updateTime, updateContent, onDelete, onMoveUp, onMoveDown, onMoveTo, isFirst, isLast }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [hasError, setHasError] = useState(false);
@@ -1376,11 +1376,39 @@ const LocationCard = ({ item, day, index, isAdmin, updateTime, updateContent, on
             </div>
             {isAdmin && (
               <div className="mt-4 pt-3 border-t border-stone-200 dark:border-stone-700 flex justify-between items-center">
-                <div className="flex gap-2">
-                  <button onClick={(e) => { e.stopPropagation(); onMoveUp(); }} disabled={isFirst} className="p-2 bg-white border rounded-lg shadow-sm">⬆️</button>
-                  <button onClick={(e) => { e.stopPropagation(); onMoveDown(); }} disabled={isLast} className="p-2 bg-white border rounded-lg shadow-sm">⬇️</button>
-                </div>
-                <button onClick={(e) => { e.stopPropagation(); onDelete(); }} className="px-3 py-2 rounded-lg bg-red-50 text-red-600 border border-red-100 font-bold text-xs">🗑️ 刪除</button>
+
+
+
+
+                <div className="flex justify-between items-center">
+  <div className="flex items-center gap-2">
+    <button onClick={(e) => { e.stopPropagation(); onMoveUp(); }} disabled={isFirst} className="p-2 bg-white border rounded-lg shadow-sm">⬆️</button>
+    <button onClick={(e) => { e.stopPropagation(); onMoveDown(); }} disabled={isLast} className="p-2 bg-white border rounded-lg shadow-sm">⬇️</button>
+    <div className="flex items-center gap-1" onClick={e => e.stopPropagation()}>
+      <input
+        type="number"
+        min="1"
+        placeholder="移到第幾個"
+        className="w-20 text-xs p-2 border rounded-lg text-center"
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            const target = parseInt(e.target.value) - 1;
+            if (!isNaN(target)) {
+              onMoveTo(target);
+              e.target.value = '';
+            }
+          }
+        }}
+      />
+      <span className="text-xs text-stone-400">按Enter</span>
+    </div>
+  </div>
+  <button onClick={(e) => { e.stopPropagation(); onDelete(); }} className="px-3 py-2 rounded-lg bg-red-50 text-red-600 border border-red-100 font-bold text-xs">🗑️ 刪除</button>
+</div>
+
+
+
+
               </div>
             )}
           </div>
@@ -1461,6 +1489,7 @@ const DayCard = ({ dayData, isOpen, toggle, isAdmin, updateTime, updateContent, 
               onDelete={() => onDelete(idx)}
               onMoveUp={() => onMove(idx, -1)}
               onMoveDown={() => onMove(idx, 1)}
+              onMoveTo={(targetIndex) => onMove(idx, targetIndex - idx)}
               isFirst={idx === 0}
               isLast={idx === dayData.locations.length - 1}
             />
