@@ -3087,7 +3087,7 @@ export default function TravelApp() {
     const data = snapshot.val();
     const cleaned = Object.values(data).map(day => ({
       ...day,
-       locations: Object.values(day.locations || {}).filter(loc => loc !== null && loc !== undefined)
+       locations: Object.keys(day.locations || {}).sort((a, b) => parseInt(a) - parseInt(b)).map(k => day.locations[k]).filter(loc => loc !== null && loc !== undefined)
     }));
     setItinerary(cleaned);
     localStorage.setItem('cm_itinerary_backup', JSON.stringify(cleaned));
