@@ -3079,12 +3079,17 @@ export default function TravelApp() {
     let unsubscribeConnected = null;
 
     get(itineraryRef).then((snapshot) => {
-      if (snapshot.exists()) {
-        setItinerary(snapshot.val());
-        localStorage.setItem('cm_itinerary_backup', JSON.stringify(snapshot.val()));
-      } else {
-        setItinerary(INITIAL_ITINERARY_DATA);
-      }
+  if (snapshot.exists()) {
+    const data = snapshot.val();
+    const cleaned = data.map(day => ({
+      ...day,
+      locations: (day.locations || []).filter(loc => loc !== null && loc !== undefined)
+    }));
+    setItinerary(cleaned);
+    localStorage.setItem('cm_itinerary_backup', JSON.stringify(cleaned));
+  } else {
+    setItinerary(INITIAL_ITINERARY_DATA);
+  }
     }).catch(() => {
       const saved = localStorage.getItem('cm_itinerary_backup');
       if (saved) setItinerary(JSON.parse(saved));
@@ -3099,9 +3104,18 @@ export default function TravelApp() {
     });
 
     unsubscribeItinerary = onValue(itineraryRef, (snapshot) => {
-      const data = snapshot.val();
-      if (data) { setItinerary(data); localStorage.setItem('cm_itinerary_backup', JSON.stringify(data)); setIsLoadingData(false); }
-    });
+  const data = snapshot.val();
+  if (data) {
+    const cleaned = data.map(day => ({
+      ...day,
+      locations: (day.locations || []).filter(loc => loc !== null && loc !== undefined)
+    }));
+    setItinerary(cleaned);
+    localStorage.setItem('cm_itinerary_backup', JSON.stringify(cleaned));
+    set(itineraryRef, cleaned); // 順便把雲端爛資料修復
+    setIsLoadingData(false);
+  }
+});
 
     const handleVisibilityChange = () => {
       if (document.visibilityState === 'visible') {
