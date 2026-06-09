@@ -3112,7 +3112,7 @@ export default function TravelApp() {
   if (data) {
     const normalized = Object.values(data).map(day => ({
       ...day,
-      locations: Object.values(day.locations || {}).filter(loc => loc != null)
+      locations: Object.keys(day.locations || {}).sort((a, b) => parseInt(a) - parseInt(b)).map(k => day.locations[k]).filter(loc => loc != null)
     }));
     setItinerary(normalized);
     localStorage.setItem('cm_itinerary_backup', JSON.stringify(normalized));
