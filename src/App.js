@@ -1439,7 +1439,7 @@ const LocationCard = ({ item, day, index, isAdmin, updateTime, updateContent, on
   );
 };
 
-const DayCard = ({ dayData, isOpen, toggle, isAdmin, updateTime, updateContent, onAdd, onDelete, onMove, onMoveToIndex }) => {
+const DayCard = ({ dayData, isOpen, toggle, isAdmin, updateTime, updateContent, onAdd, onDelete, onMove, onMoveToIndex, totalDays }) => {
   const cardRef = useRef(null);
 
   const smoothScrollTo = (element, duration = 10) => {
@@ -1511,7 +1511,7 @@ const DayCard = ({ dayData, isOpen, toggle, isAdmin, updateTime, updateContent, 
               onMoveUp={() => onMove(idx, -1)}
               onMoveDown={() => onMove(idx, 1)}
               onMoveTo={(targetIndex, targetDay) => onMoveToIndex(dayData.day, idx, targetIndex, targetDay)}
-              totalDays={itinerary.map(d => d.day)}
+              totalDays={totalDays}
               isFirst={idx === 0}
               isLast={idx === dayData.locations.length - 1}
             />
@@ -5257,7 +5257,7 @@ fontSize: '13px',
                             onDelete={(locIdx) => handleDeleteLocation(day.day, locIdx)}
                             onMove={(locIdx, dir) => handleMoveLocation(day.day, locIdx, dir)}
                             onMoveToIndex={(from, to, toDay) => handleMoveToIndex(day.day, from, to, toDay)}
-
+                            totalDays={itinerary.map(d => d.day)}
                           />
                         ))}
                         <div className="text-center text-xs text-stone-400 mt-12 mb-4 font-serif italic">— Journey to Kyushu —</div>
