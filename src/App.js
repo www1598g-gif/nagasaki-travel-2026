@@ -2824,17 +2824,36 @@ const PackingPage = ({ isKonamiActive, isAdmin, isMember, onSecretTrigger }) => 
   };
 
   useEffect(() => {
-    const saved = localStorage.getItem('cm_packing_list_v2');
-    if (saved) { setPackingData(JSON.parse(saved)); }
-    else {
-      const initialData = {};
-      USERS.forEach((user) => { initialData[user] = DEFAULT_ITEMS.map((item) => ({ name: item, checked: false })); });
-      setPackingData(initialData);
-      localStorage.setItem('cm_packing_list_v2', JSON.stringify(initialData));
-    }
-  }, []);
+  const packingRef = ref(db, 'packingList');
+  
+  // 先讀本地備份（避免 Firebase 慢導致畫面空白）
+  const saved = localStorage.getItem('cm_packing_list_v2');
+  if (saved) setPackingData(JSON.parse(saved));
 
-  const saveToStorage = (newData) => { localStorage.setItem('cm_packing_list_v2', JSON.stringify(newData)); setPackingData(newData); };
+  // 再接 Firebase 即時同步
+  const unsubscribe = onValue(packingRef, (snapshot) => {
+    const val = snapshot.val();
+    if (val) {
+      setPackingData(val);
+      localStorage.setItem('cm_packing_list_v2', JSON.stringify(val));
+    } else {
+      // Firebase 是空的，初始化預設資料
+      const initialData = {};
+      USERS.forEach((user) => {
+        initialData[user] = DEFAULT_ITEMS.map((item) => ({ name: item, checked: false }));
+      });
+      set(packingRef, initialData);
+      setPackingData(initialData);
+    }
+  });
+
+  return () => unsubscribe();
+}, []);
+
+  const saveToStorage = (newData) => {
+  set(ref(db, 'packingList'), newData).catch(() => alert("雲端同步失敗 🛜"));
+  setPackingData(newData);
+};
 
   const toggleItem = (user, index) => {
     if (!isAdmin && !isMember) { setShowToast(true); setTimeout(() => setShowToast(false), 3000); return; }
