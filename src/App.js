@@ -3173,11 +3173,13 @@ export default function TravelApp() {
 
 // 新增這個專門處理「跳到指定位置」
 const handleMoveToIndex = (fromDay, fromIndex, toIndex, toDay) => {
-  const newItinerary = [...itinerary];
+  const newItinerary = [...itinerary].map(d => ({...d, locations: [...d.locations]}));
   
-  if (fromDay === toDay) {
-    // 同一天內移動
-    const dayData = newItinerary.find((d) => d.day === fromDay);
+  const fromDayNum = parseInt(fromDay);
+  const toDayNum = parseInt(toDay);
+  
+  if (fromDayNum === toDayNum) {
+    const dayData = newItinerary.find((d) => d.day === fromDayNum);
     if (dayData) {
       const maxIndex = dayData.locations.length - 1;
       const target = Math.max(0, Math.min(toIndex, maxIndex));
@@ -3186,9 +3188,8 @@ const handleMoveToIndex = (fromDay, fromIndex, toIndex, toDay) => {
       updateFirebase(newItinerary);
     }
   } else {
-    // 跨天移動
-    const fromDayData = newItinerary.find((d) => d.day === fromDay);
-    const toDayData = newItinerary.find((d) => d.day === toDay);
+    const fromDayData = newItinerary.find((d) => d.day === fromDayNum);
+    const toDayData = newItinerary.find((d) => d.day === toDayNum);
     if (fromDayData && toDayData) {
       const [removed] = fromDayData.locations.splice(fromIndex, 1);
       const maxIndex = toDayData.locations.length;
