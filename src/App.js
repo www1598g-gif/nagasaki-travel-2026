@@ -3081,9 +3081,9 @@ export default function TravelApp() {
     get(itineraryRef).then((snapshot) => {
   if (snapshot.exists()) {
     const data = snapshot.val();
-    const cleaned = data.map(day => ({
+    const cleaned = Object.values(data).map(day => ({
       ...day,
-      locations: (day.locations || []).filter(loc => loc !== null && loc !== undefined)
+       locations: Object.values(day.locations || {}).filter(loc => loc !== null && loc !== undefined)
     }));
     setItinerary(cleaned);
     localStorage.setItem('cm_itinerary_backup', JSON.stringify(cleaned));
@@ -3106,13 +3106,12 @@ export default function TravelApp() {
     unsubscribeItinerary = onValue(itineraryRef, (snapshot) => {
   const data = snapshot.val();
   if (data) {
-    const cleaned = data.map(day => ({
+    const normalized = Object.values(data).map(day => ({
       ...day,
-      locations: (day.locations || []).filter(loc => loc !== null && loc !== undefined)
+      locations: Object.values(day.locations || {}).filter(loc => loc != null)
     }));
-    setItinerary(cleaned);
-    localStorage.setItem('cm_itinerary_backup', JSON.stringify(cleaned));
-    set(itineraryRef, cleaned); // 順便把雲端爛資料修復
+    setItinerary(normalized);
+    localStorage.setItem('cm_itinerary_backup', JSON.stringify(normalized));
     setIsLoadingData(false);
   }
 });
@@ -3138,9 +3137,13 @@ export default function TravelApp() {
   }, []);
 
   const updateFirebase = (newItinerary) => {
-    setItinerary(newItinerary);
-    set(ref(db, 'itinerary'), newItinerary).catch(() => alert("雲端同步失敗 🛜"));
-  };
+  const safe = newItinerary.map(day => ({
+    ...day,
+    locations: (day.locations || []).filter(loc => loc != null)
+  }));
+  setItinerary(safe);
+  set(ref(db, 'itinerary'), safe).catch(() => alert("雲端同步失敗 🛜"));
+};
 
   const handleUpdateNotice = (newText) => { setNoticeText(newText); set(ref(db, 'noticeBoard'), newText); };
   const updateSystemInfo = (newText) => { setSystemInfo(newText); set(ref(db, 'systemInfo'), newText); };
@@ -3172,7 +3175,7 @@ export default function TravelApp() {
   };
 
  const handleMoveLocation = (dayNum, locIndex, direction) => {
-  const newItinerary = [...itinerary];
+  const newItinerary = JSON.parse(JSON.stringify(itinerary));
   const dayData = newItinerary.find((d) => d.day === dayNum);
   if (dayData) {
     const newIndex = locIndex + direction;
@@ -3189,15 +3192,12 @@ export default function TravelApp() {
 const handleMoveToIndex = (fromDay, fromIndex, toIndex, toDay) => {
   const fromDayNum = parseInt(fromDay);
   const toDayNum = parseInt(toDay);
-
-  // 完全深拷貝
   const newItinerary = JSON.parse(JSON.stringify(itinerary));
 
   if (fromDayNum === toDayNum) {
     const dayData = newItinerary.find((d) => d.day === fromDayNum);
     if (!dayData) return;
-    const maxIndex = dayData.locations.length - 1;
-    const target = Math.max(0, Math.min(toIndex, maxIndex));
+    const target = Math.max(0, Math.min(toIndex, dayData.locations.length - 1));
     const [removed] = dayData.locations.splice(fromIndex, 1);
     dayData.locations.splice(target, 0, removed);
   } else {
@@ -3205,8 +3205,7 @@ const handleMoveToIndex = (fromDay, fromIndex, toIndex, toDay) => {
     const toDayData = newItinerary.find((d) => d.day === toDayNum);
     if (!fromDayData || !toDayData) return;
     const [removed] = fromDayData.locations.splice(fromIndex, 1);
-    const maxIndex = toDayData.locations.length;
-    const target = Math.max(0, Math.min(toIndex, maxIndex));
+    const target = Math.max(0, Math.min(toIndex, toDayData.locations.length));
     toDayData.locations.splice(target, 0, removed);
   }
 
