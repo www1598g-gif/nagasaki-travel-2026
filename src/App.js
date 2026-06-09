@@ -5203,6 +5203,8 @@ fontSize: '13px',
                             onAdd={() => handleAddLocation(day.day)}
                             onDelete={(locIdx) => handleDeleteLocation(day.day, locIdx)}
                             onMove={(locIdx, dir) => handleMoveLocation(day.day, locIdx, dir)}
+                            onMoveToIndex={(from, to) => handleMoveToIndex(day.day, from, to)}  {/* ← 加這行 */}
+
                           />
                         ))}
                         <div className="text-center text-xs text-stone-400 mt-12 mb-4 font-serif italic">— Journey to Kyushu —</div>
