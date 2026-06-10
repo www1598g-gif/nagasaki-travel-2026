@@ -3292,7 +3292,7 @@ const hashPassword = async (pwd) => {
   const hash = await hashPassword(inputPwd);
   const ADMIN_HASH = '3b82b420366fa66a414d72aa05de7414336e87d8f1fca9c5ecee85b090a64209';
   const MEMBER_HASH = 'be41b7f1fa56ba2b0582910053c86cf6ee7e311efc51300220df0918bb9a287b';
-  const GUEST_HASH = '2926a2731f4b312c08982cacf8061eb14bf65c1a87cc5d70e864e079c6220731';   //8888的hash
+  const GUEST_HASH = '2926a2731f4b312c08982cacf8061eb14bf65c1a87cc5d70e864e079c6220731';   //訪客的hash
   if (hash === ADMIN_HASH) { localStorage.setItem('isUnlocked', 'true'); localStorage.setItem('userRole', ADMIN_HASH); setIsAdmin(true); setIsMember(true); setIsUnlocking(true); setTimeout(() => setIsLocked(false), 1000); }
   else if (hash === MEMBER_HASH) { localStorage.setItem('isUnlocked', 'true'); localStorage.setItem('userRole', MEMBER_HASH); setIsAdmin(false); setIsMember(true); setIsUnlocking(true); setTimeout(() => setIsLocked(false), 1000); }
   else if (hash === GUEST_HASH) { localStorage.setItem('isUnlocked', 'true'); localStorage.setItem('userRole', GUEST_HASH); setIsAdmin(false); setIsMember(false); setIsUnlocking(true); setTimeout(() => setIsLocked(false), 1000); }
