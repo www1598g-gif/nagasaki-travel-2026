@@ -1210,7 +1210,7 @@ const OutfitGuide = () => {
   const [showPrecisionWeather, setShowPrecisionWeather] = useState(false);
   const [precisionData, setPrecisionData] = useState(null);
   const [isPrecisionLoading, setIsPrecisionLoading] = useState(false);
-  const [selectedTarget, setSelectedTarget] = useState('takashima');
+  const [selectedTarget, setSelectedTarget] = useState('huistenbosch');
 
   const fetchPrecisionWeather = async (target) => {
     setIsPrecisionLoading(true);
@@ -1251,7 +1251,7 @@ const OutfitGuide = () => {
           className="bg-white dark:bg-stone-800 shadow-sm border-2 border-stone-900 py-3 px-4 rounded-xl text-xs font-bold flex items-center justify-center gap-2 text-stone-800 dark:text-stone-200 w-full active:scale-95 transition-transform"
           style={{ boxShadow: '2px 2px 0 #1A1510' }}
         >
-          <Zap size={14} className="text-amber-500 fill-amber-500" /> 更精準日本在地天氣預報
+          <Zap size={14} className="text-amber-500 fill-amber-500" /> 更精準未來3-8小時天氣
         </button>
 
 
@@ -1269,9 +1269,9 @@ const OutfitGuide = () => {
               <div className="flex justify-between items-center mb-5">
                 <h3 className="font-bold text-stone-800 dark:text-stone-100 text-sm flex items-center gap-1.5"><Wind size={16} className="text-blue-500" /> 日本在地權威觀測</h3>
                 <select className="text-xs p-1.5 border-2 border-stone-900 rounded-lg bg-[#F7E84E] font-bold text-stone-800" value={selectedTarget} onChange={(e) => { setSelectedTarget(e.target.value); fetchPrecisionWeather(e.target.value); }}>
-                  <option value="takashima">🌊 軍艦島外海 (高島)</option>
                   <option value="huistenbosch">🌷 豪斯登堡 (佐世保)</option>
                   <option value="nagasaki_city">🏢 長崎市區 (五島町)</option>
+                  <option value="takashima">🌊 軍艦島外海 (高島)</option>
                 </select>
               </div>
               {isPrecisionLoading ? (
