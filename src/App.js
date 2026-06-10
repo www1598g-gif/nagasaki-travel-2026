@@ -1205,27 +1205,8 @@ const OutfitPickerModal = ({ onClose }) => {
 const OutfitGuide = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [showOutfit, setShowOutfit] = useState(false);
- //新增強天氣
-// --- 新增開始 ---
-  const [showPrecisionWeather, setShowPrecisionWeather] = useState(false);
-  const [precisionData, setPrecisionData] = useState(null);
-  const [isPrecisionLoading, setIsPrecisionLoading] = useState(false);
-  const [selectedTarget, setSelectedTarget] = useState('huistenbosch');
-
-  const fetchPrecisionWeather = async (target) => {
-    setIsPrecisionLoading(true);
-    setShowPrecisionWeather(true);
-    try {
-      const res = await fetch(`https://joram-weather-api.vercel.app/api/weather?target=${target}`);
-      const json = await res.json();
-      if (json.success) setPrecisionData(json);
-    } catch (e) {
-      console.error("精準氣象站斷線");
-    } finally {
-      setIsPrecisionLoading(false);
-    }
-  };
-  // --- 新增結束 ---
+  const [showWeather, setShowWeather] = useState(false);
+ 
 
 
 
@@ -1247,7 +1228,7 @@ const OutfitGuide = () => {
         </button>
 
 <button
-          onClick={() => fetchPrecisionWeather(selectedTarget)}
+          onClick={() => setShowWeather(true)}
           className="bg-white dark:bg-stone-800 shadow-sm border-2 border-stone-900 py-3 px-4 rounded-xl text-xs font-bold flex items-center justify-center gap-2 text-stone-800 dark:text-stone-200 w-full active:scale-95 transition-transform"
           style={{ boxShadow: '2px 2px 0 #1A1510' }}
         >
@@ -1258,56 +1239,24 @@ const OutfitGuide = () => {
 
 
 
-        {showOutfit && <OutfitPickerModal onClose={() => setShowOutfit(false)} />}
+         {showOutfit && <OutfitPickerModal onClose={() => setShowOutfit(false)} />}
+
 
 {/* --- 新增彈窗開始 --- */}
-        {showPrecisionWeather && (
-          <div className="fixed inset-0 z-[99999] flex items-end justify-center" onClick={() => setShowPrecisionWeather(false)}>
+       {showWeather && (
+          <div className="fixed inset-0 z-[99999] flex items-end justify-center" onClick={() => setShowWeather(false)}>
             <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
             <div className="relative bg-white dark:bg-stone-800 w-full max-w-md rounded-t-3xl shadow-2xl p-6 border-t-4 border-stone-900" style={{ paddingBottom: 'calc(1.5rem + env(safe-area-inset-bottom, 0px))' }} onClick={e => e.stopPropagation()}>
               <div className="w-10 h-1 bg-stone-200 dark:bg-stone-600 rounded-full mx-auto mb-4" />
-              <div className="flex justify-between items-center mb-5">
-                <h3 className="font-bold text-stone-800 dark:text-stone-100 text-sm flex items-center gap-1.5"><Wind size={16} className="text-blue-500" /> 日本在地權威觀測</h3>
-                <select className="text-xs p-1.5 border-2 border-stone-900 rounded-lg bg-[#F7E84E] font-bold text-stone-800" value={selectedTarget} onChange={(e) => { setSelectedTarget(e.target.value); fetchPrecisionWeather(e.target.value); }}>
-                  <option value="huistenbosch">🌷 豪斯登堡 (佐世保)</option>
-                  <option value="nagasaki_city">🏢 長崎市區 (五島町)</option>
-                  <option value="takashima">🌊 軍艦島外海 (高島)</option>
-                </select>
+              <h3 className="font-bold text-stone-800 dark:text-stone-100 text-sm flex items-center gap-1.5 mb-5"><Wind size={16} className="text-blue-500" /> 日本在地權威觀測</h3>
+              <div className="flex flex-col gap-2">
+                <button onClick={() => window.open('https://weathernews.jp/onebox/33.086749/129.787998/', '_blank')} className="w-full py-2.5 bg-[#F7E84E] border-2 border-stone-900 rounded-xl font-bold text-xs text-stone-800 active:scale-95">🌷 豪斯登堡 (佐世保)</button>
+                <button onClick={() => window.open('https://weathernews.jp/onebox/32.748801/129.872901/', '_blank')} className="w-full py-2.5 bg-[#F7E84E] border-2 border-stone-900 rounded-xl font-bold text-xs text-stone-800 active:scale-95">🏢 長崎市區 (五島町)</button>
+                <button onClick={() => window.open('https://weathernews.jp/onebox/32.657423/129.753335/', '_blank')} className="w-full py-2.5 bg-[#F7E84E] border-2 border-stone-900 rounded-xl font-bold text-xs text-stone-800 active:scale-95">🌊 軍艦島外海 (高島)</button>
               </div>
-              {isPrecisionLoading ? (
-                <div className="py-12 flex flex-col items-center justify-center gap-2"><Loader2 size={28} className="animate-spin text-amber-500" /><span className="text-[10px] font-mono text-stone-400">正在橫渡對馬海峽擷取衛星雲圖...</span></div>
-              ) : precisionData ? (
-  <div className="space-y-4 animate-fadeIn">
-                  <div className="bg-amber-50 dark:bg-stone-900/40 p-4 rounded-xl border-2 border-stone-900 flex justify-between items-center" style={{ boxShadow: '2px 2px 0 #1A1510' }}>
-                    <div><div className="text-[9px] font-bold text-stone-400 uppercase font-mono">Current Status</div><div className="text-base font-bold text-stone-800 dark:text-stone-200">{precisionData?.current.weather}</div></div>
-                    <div className="text-3xl font-serif font-black text-amber-600">{precisionData?.current.temp}</div>
-                  </div>
-                  <div className="text-[9px] font-bold text-stone-400 tracking-widest uppercase mb-1 font-mono">📢 未來 3~8 小時極精準預報</div>
-                  <div className="grid grid-cols-4 gap-2">
-                    {precisionData?.hourly.map((h, i) => (
-                      <div key={i} className="bg-stone-50 dark:bg-stone-700/50 p-2.5 rounded-xl border border-stone-200 dark:border-stone-600 text-center flex flex-col items-center justify-between min-h-[75px]">
-                        <span className="text-[9px] font-mono text-stone-400 font-bold">{h.time}</span>
-                        <span className="text-xs font-bold text-stone-700 dark:text-stone-200">{h.temp}</span>
-                        <span className={`text-[9px] font-mono font-black px-1.5 py-0.5 rounded-full border ${parseInt(h.rain) >= 40 ? 'bg-red-100 text-red-600 border-red-200' : 'bg-blue-50 text-blue-500 border-blue-100'}`}>{h.rain}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-
-) : (
-  <div className="py-12 text-center text-xs text-stone-400 font-mono">⚠️ 氣象站暫時離線，請稍後再試</div>
-
-
-
-              )}
             </div>
           </div>
         )}
-        {/* --- 新增結束 --- */}
-
-
-
       </div>
     );
 
