@@ -3083,7 +3083,7 @@ export default function TravelApp() {
 };
 
   useEffect(() => {
-    const savedRole = localStorage.getItem('userRole'); //hash
+    const savedRole = localStorage.getItem('userRole'); //hash_for_SHA256
     if (savedRole === '3b82b420366fa66a414d72aa05de7414336e87d8f1fca9c5ecee85b090a64209') { setIsAdmin(true); setIsMember(true); }
     else if (savedRole === 'be41b7f1fa56ba2b0582910053c86cf6ee7e311efc51300220df0918bb9a287b') { setIsAdmin(false); setIsMember(true); }
   }, []);
