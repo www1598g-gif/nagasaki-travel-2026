@@ -2003,8 +2003,7 @@ const SharedWhiteboard = ({ isAdmin, isMember }) => {
           onChange={e => setSize(parseInt(e.target.value))} className="flex-1" />
         <div className="w-6 h-6 flex items-center justify-center">
           <div className="rounded-full transition-all border border-stone-400"
-            style={{ background: color }}
-            style={{ width: Math.max(4, Math.min(size * 1.2, 24)), height: Math.max(4, Math.min(size * 1.2, 24)) }} />
+            style={{ background: color, width: Math.max(4, Math.min(size * 1.2, 24)), height: Math.max(4, Math.min(size * 1.2, 24)) }} />
         </div>
       </div>
 
