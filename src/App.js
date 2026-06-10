@@ -1276,8 +1276,8 @@ const OutfitGuide = () => {
               </div>
               {isPrecisionLoading ? (
                 <div className="py-12 flex flex-col items-center justify-center gap-2"><Loader2 size={28} className="animate-spin text-amber-500" /><span className="text-[10px] font-mono text-stone-400">正在橫渡對馬海峽擷取衛星雲圖...</span></div>
-              ) : (
-                <div className="space-y-4 animate-fadeIn">
+              ) : precisionData ? (
+  <div className="space-y-4 animate-fadeIn">
                   <div className="bg-amber-50 dark:bg-stone-900/40 p-4 rounded-xl border-2 border-stone-900 flex justify-between items-center" style={{ boxShadow: '2px 2px 0 #1A1510' }}>
                     <div><div className="text-[9px] font-bold text-stone-400 uppercase font-mono">Current Status</div><div className="text-base font-bold text-stone-800 dark:text-stone-200">{precisionData?.current.weather}</div></div>
                     <div className="text-3xl font-serif font-black text-amber-600">{precisionData?.current.temp}</div>
@@ -1293,6 +1293,13 @@ const OutfitGuide = () => {
                     ))}
                   </div>
                 </div>
+
+
+) : (
+  <div className="py-12 text-center text-xs text-stone-400 font-mono">⚠️ 氣象站暫時離線，請稍後再試</div>
+
+
+
               )}
             </div>
           </div>
