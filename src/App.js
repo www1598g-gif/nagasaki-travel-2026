@@ -1263,7 +1263,7 @@ const OutfitGuide = () => {
 };
 
 const LocationCard = ({ item, day, index, isAdmin, updateTime, updateContent, onDelete, onMoveUp, onMoveDown, onMoveTo, isFirst, isLast, totalDays }) => {
-  console.log('day prop:', day, 'index:', index);
+  
 
   const [isExpanded, setIsExpanded] = useState(false);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
@@ -1517,7 +1517,7 @@ const DayCard = ({ dayData, isOpen, toggle, isAdmin, updateTime, updateContent, 
       {isOpen && (
         <div className="mt-4 pl-4 border-l-2 border-stone-200/50 space-y-4 pb-4 animate-fadeIn">
 
-        {console.log('Day', dayData.day, 'locations length:', dayData.locations.length)}
+        
           {dayData.locations.map((loc, idx) => (
             <LocationCard
               key={idx}
@@ -3206,6 +3206,8 @@ export default function TravelApp() {
 };
 
 const handleMoveToIndex = (fromDay, fromIndex, toIndex, toDay) => {
+  console.log('fromDay raw:', fromDay, typeof fromDay);
+
   const fromDayNum = Number(fromDay);
   const toDayNum = Number(toDay);
   const targetPos = Number(toIndex);
