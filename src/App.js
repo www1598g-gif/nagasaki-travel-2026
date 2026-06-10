@@ -1991,10 +1991,12 @@ const SharedWhiteboard = ({ isAdmin, isMember }) => {
           className="text-[9px] font-bold px-3 py-1.5 rounded-full border border-stone-400 text-stone-600 dark:text-stone-300 bg-white dark:bg-stone-700">
           ↪ 下一步
         </button>
-        <button onClick={clearBoard}
-          className="text-[9px] font-bold px-3 py-1.5 rounded-full border border-red-300 text-red-500 bg-white dark:bg-stone-700">
-          🗑 清空
-        </button>
+        {isAdmin && (
+  <button onClick={clearBoard}
+    className="text-[9px] font-bold px-3 py-1.5 rounded-full border border-red-300 text-red-500 bg-white dark:bg-stone-700">
+    🗑 清空
+  </button>
+)}
       </div>
 
       <div className="px-4 py-2 bg-amber-50 dark:bg-stone-800 border-t border-stone-200 dark:border-stone-700 flex items-center gap-3">
@@ -2391,7 +2393,7 @@ const handleAppDownload = () => {
 
 
 
-
+{isMember && (
       <section className="bg-white dark:bg-stone-800 p-6 rounded-2xl border border-stone-100 dark:border-stone-700 mb-6">
 
   <h3 className="flex items-center gap-2 font-bold text-stone-800 dark:text-stone-100 mb-4 border-b dark:border-stone-700 pb-3">
@@ -2636,6 +2638,9 @@ const handleAppDownload = () => {
 
 
 </section>
+
+)}
+
 <section className="bg-white dark:bg-stone-800 p-6 rounded-2xl border border-stone-100 dark:border-stone-700 mb-6">
   <h3 className="flex items-center gap-2 font-bold text-red-700 dark:text-red-400 mb-4 border-b border-stone-100 dark:border-stone-700 pb-3">
     <AlertCircle size={18} className="text-red-600" /> 緊急救援中心
