@@ -1991,7 +1991,7 @@ const SharedWhiteboard = ({ isAdmin, isMember }) => {
           className="text-[9px] font-bold px-3 py-1.5 rounded-full border border-stone-400 text-stone-600 dark:text-stone-300 bg-white dark:bg-stone-700">
           ↪ 下一步
         </button>
-        {isAdmin && (
+        {(isAdmin || isMember) && (
   <button onClick={clearBoard}
     className="text-[9px] font-bold px-3 py-1.5 rounded-full border border-red-300 text-red-500 bg-white dark:bg-stone-700">
     🗑 清空
