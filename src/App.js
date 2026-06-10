@@ -2206,6 +2206,8 @@ useEffect(() => {
         )}
       </section>
 
+
+{isMember && (
 <section>
   <button onClick={() => setShowReservations(!showReservations)} className="w-full bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-900/50 rounded-2xl p-4 flex items-center justify-between">
     <div className="flex items-center gap-3">
@@ -2235,7 +2237,7 @@ useEffect(() => {
     </div>
   )}
 </section>
-
+)}
 
 
 
