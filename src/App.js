@@ -1232,7 +1232,7 @@ const OutfitGuide = () => {
           className="bg-white dark:bg-stone-800 shadow-sm border-2 border-stone-900 py-3 px-4 rounded-xl text-xs font-bold flex items-center justify-center gap-2 text-stone-800 dark:text-stone-200 w-full active:scale-95 transition-transform"
           style={{ boxShadow: '2px 2px 0 #1A1510' }}
         >
-          <Zap size={14} className="text-amber-500 fill-amber-500" /> 更精準未來3-8小時天氣
+          <Zap size={14} className="text-amber-500 fill-amber-500" /> 更精準未來12小時天氣
         </button>
 
 
