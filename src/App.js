@@ -3081,9 +3081,9 @@ export default function TravelApp() {
 };
 
   useEffect(() => {
-    const savedRole = localStorage.getItem('userRole');
-    if (savedRole === 'ODY4Njc3MDg=') { setIsAdmin(true); setIsMember(true); }
-    else if (savedRole === 'NTU2Ng==') { setIsAdmin(false); setIsMember(true); }
+    const savedRole = localStorage.getItem('userRole'); //hash
+    if (savedRole === '3b82b420366fa66a414d72aa05de7414336e87d8f1fca9c5ecee85b090a64209') { setIsAdmin(true); setIsMember(true); }
+    else if (savedRole === 'be41b7f1fa56ba2b0582910053c86cf6ee7e311efc51300220df0918bb9a287b') { setIsAdmin(false); setIsMember(true); }
   }, []);
 
   useEffect(() => {
@@ -3274,17 +3274,30 @@ const handleMoveToIndex = (fromDay, fromIndex, toIndex, toDay) => {
     }
   }, [konamiSequence]);
 
-  const handleUnlock = () => {
-    if (typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function') { DeviceMotionEvent.requestPermission().catch(console.error); }
-    const encodedInput = btoa(inputPwd);
-    const validCodes = ['ODY4Njc3MDg=', 'NTU2Ng==', 'ODg4OA=='];
-    if (validCodes.includes(encodedInput)) { localStorage.setItem('isUnlocked', 'true'); localStorage.setItem('userRole', encodedInput); }
-    if (encodedInput === 'ODY4Njc3MDg=') { setIsAdmin(true); setIsMember(true); setIsUnlocking(true); setTimeout(() => setIsLocked(false), 1000); }
-    else if (encodedInput === 'NTU2Ng==') { setIsAdmin(false); setIsMember(true); setIsUnlocking(true); setTimeout(() => setIsLocked(false), 1000); }
-    else if (encodedInput === 'ODg4OA==') { setIsAdmin(false); setIsMember(false); setIsUnlocking(true); setTimeout(() => setIsLocked(false), 1000); }
-    else { alert('密碼錯誤！🔒'); setInputPwd(''); }
-  };
 
+const hashPassword = async (pwd) => {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(pwd);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+};
+
+
+
+
+
+ const handleUnlock = async () => {
+  if (typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function') { DeviceMotionEvent.requestPermission().catch(console.error); }
+  const hash = await hashPassword(inputPwd);
+  const ADMIN_HASH = '3b82b420366fa66a414d72aa05de7414336e87d8f1fca9c5ecee85b090a64209';
+  const MEMBER_HASH = 'be41b7f1fa56ba2b0582910053c86cf6ee7e311efc51300220df0918bb9a287b';
+  const GUEST_HASH = '2926a2731f4b312c08982cacf8061eb14bf65c1a87cc5d70e864e079c6220731';   //8888的hash
+  if (hash === ADMIN_HASH) { localStorage.setItem('isUnlocked', 'true'); localStorage.setItem('userRole', ADMIN_HASH); setIsAdmin(true); setIsMember(true); setIsUnlocking(true); setTimeout(() => setIsLocked(false), 1000); }
+  else if (hash === MEMBER_HASH) { localStorage.setItem('isUnlocked', 'true'); localStorage.setItem('userRole', MEMBER_HASH); setIsAdmin(false); setIsMember(true); setIsUnlocking(true); setTimeout(() => setIsLocked(false), 1000); }
+  else if (hash === GUEST_HASH) { localStorage.setItem('isUnlocked', 'true'); localStorage.setItem('userRole', GUEST_HASH); setIsAdmin(false); setIsMember(false); setIsUnlocking(true); setTimeout(() => setIsLocked(false), 1000); }
+  else { alert('密碼錯誤！🔒'); setInputPwd(''); }
+};
   return (
     <div className={darkMode ? 'dark' : ''}>
       <style>
