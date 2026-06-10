@@ -1253,6 +1253,7 @@ const OutfitGuide = () => {
                 <button onClick={() => window.open('https://weathernews.jp/onebox/33.086749/129.787998/', '_blank')} className="w-full py-2.5 bg-[#F7E84E] border-2 border-stone-900 rounded-xl font-bold text-xs text-stone-800 active:scale-95">🌷 豪斯登堡 (佐世保)</button>
                 <button onClick={() => window.open('https://weathernews.jp/onebox/32.748801/129.872901/', '_blank')} className="w-full py-2.5 bg-[#F7E84E] border-2 border-stone-900 rounded-xl font-bold text-xs text-stone-800 active:scale-95">🏢 長崎市區 (五島町)</button>
                 <button onClick={() => window.open('https://weathernews.jp/onebox/32.657423/129.753335/', '_blank')} className="w-full py-2.5 bg-[#F7E84E] border-2 border-stone-900 rounded-xl font-bold text-xs text-stone-800 active:scale-95">🌊 軍艦島外海 (高島)</button>
+                <button onClick={() => window.open('https://weathernews.jp/onebox/33.263391/130.296329/q=%E4%BD%90%E8%B3%80%E7%9C%8C%E4%BD%90%E8%B3%80%E5%B8%82%E9%A7%85%E5%89%8D%E4%B8%AD%E5%A4%AE&v=7752f6826c96ad2bf9a87e5fb93a040b52dc564bdb43bafc3723e52abd392728&temp=Temp.c&lang=zh_TW', '_blank')} className="w-full py-2.5 bg-[#F7E84E] border-2 border-stone-900 rounded-xl font-bold text-xs text-stone-800 active:scale-95">🏯 佐賀市區 (佐賀站)</button>
               </div>
             </div>
           </div>
