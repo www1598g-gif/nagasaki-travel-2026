@@ -2600,7 +2600,7 @@ const handleAppDownload = () => {
 </a>
 
 {/* 佑任短句本 */}
-<a href="https://drive.google.com/file/d/1_HNNiJCvZRzQpDLn7e3_msPox4iX2gBk/view?usp=sharing" target="_blank" rel="noreferrer"
+<a href="https://drive.google.com/file/d/1EPeIs8EED3Ul8bBv6hb0km7Lgfv7yY4l/view?usp=drive_link" target="_blank" rel="noreferrer"
   className="flex items-center justify-between p-3 bg-amber-50 dark:bg-amber-900/20 rounded-xl border border-amber-200 dark:border-amber-800 active:scale-95 transition-all"
 >
   <div>
