@@ -3096,7 +3096,7 @@ export default function TravelApp() {
   const [konamiSequence, setKonamiSequence] = useState([]);
   const [isKonamiActive, setIsKonamiActive] = useState(false);
 
-  const JUNGLE_BG = process.env.PUBLIC_URL + '/images/jungle1.jpeg';
+  const JUNGLE_BG = process.env.PUBLIC_URL + '/images/jungle2.jpeg';
 
   const [itinerary, setItinerary] = useState(INITIAL_ITINERARY_DATA);
   const [appVersion, setAppVersion] = useState('V25 終極版');
